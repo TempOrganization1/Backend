@@ -9,6 +9,7 @@ import com.sparta.actualprcatice.repository.RefreshTokenRepository;
 import com.sparta.actualprcatice.security.JwtFilter;
 import com.sparta.actualprcatice.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +43,7 @@ public class MemberService {
     }
 
 
-    public ResponseEntity<?> login(MemberReqeustDto memberReqeustDto, HttpServletResponse response) {
+    public ResponseEntity<?> login(MemberReqeustDto memberReqeustDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken = memberReqeustDto.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -61,9 +62,10 @@ public class MemberService {
 
         refreshTokenRepository.save(refreshToken);
 
-        response.setHeader(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
-        response.setHeader("Refresh-Token", tokenDto.getRefreshToken());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
+        headers.set("Refresh-Token", tokenDto.getRefreshToken());
 
-        return new ResponseEntity<>("로그인에 성공했습니다.",HttpStatus.OK);
+        return new ResponseEntity<>("로그인에 성공했습니다.",headers, HttpStatus.OK);
     }
 }
