@@ -1,5 +1,6 @@
 package com.sparta.actualprcatice.entity;
 
+import com.sparta.actualprcatice.dto.request.PartyRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,6 +35,10 @@ public class Party {
     private Admin admin;
 
 
+    public Party(PartyRequestDto partyRequestDto) {
 
+        this.name = partyRequestDto.getPartyName();
+        this.introduction = partyRequestDto.getPartyIntroduction();
 
+    }
 }
