@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Party {
 
     @Id

@@ -24,9 +24,9 @@ public class MemberParty {
     private Party party;
 
     public MemberParty(Member member, Party party) {
+    
         this.member = member;
         this.party = party;
     }
-
 }
 
