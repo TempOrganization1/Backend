@@ -74,9 +74,22 @@ public class PartyService {
         return new ResponseEntity<>("그룹 정보가 수정되었습니다", HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity<?> deleteParty(Long partyId, Member member) {
+
+        Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
+
+        if (validateMember(member, party))
+            throw new IllegalArgumentException("그룹 정보를 삭제할 수 있는 권한이 없습니다.");
+
+        partyRepository.delete(party);
+
+        return new ResponseEntity<>("그룹이 삭제되었습니다.", HttpStatus.OK);
+    }
 
     public boolean validateMember(Member member, Party party) {
 
         return !adminRepository.existsByMemberAndParty(member, party);
     }
+
 }

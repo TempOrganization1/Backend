@@ -17,7 +17,7 @@ public class PartyController {
 
     // 그룹 생성
     @PostMapping
-    public ResponseEntity<?> createParty(@RequestBody PartyRequestDto partyRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
+    public ResponseEntity<?> createParty(@RequestBody PartyRequestDto partyRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         return partyService.createParty(partyRequestDto,memberDetails.getMember());
     }
@@ -31,8 +31,15 @@ public class PartyController {
 
     // 그룹 정보 수정
     @PutMapping("/{party_id}")
-    public ResponseEntity<?> updateParty(@PathVariable(name = "party_id") Long partyId, @RequestBody PartyRequestDto partyRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
+    public ResponseEntity<?> updateParty(@PathVariable(name = "party_id") Long partyId, @RequestBody PartyRequestDto partyRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         return partyService.updateParty(partyId, partyRequestDto, memberDetails.getMember());
+    }
+
+    // 그룹 삭제
+    @DeleteMapping("/{party_id}")
+    public ResponseEntity<?> deleteParty(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return partyService.deleteParty(partyId, memberDetails.getMember());
     }
 }
