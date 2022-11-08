@@ -23,7 +23,7 @@ public class Party {
     private String introduction;
 
     @OneToMany(mappedBy = "party")
-    private List<Member_Party> memberPartyList;
+    private List<MemberParty> memberPartyList;
 
     @OneToMany(mappedBy = "party")
     private List<Schedule> scheduleList;

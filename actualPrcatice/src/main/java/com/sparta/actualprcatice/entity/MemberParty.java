@@ -6,9 +6,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
-public class Member_Party {
+@NoArgsConstructor
+@Table(name = "MEMBER_PARTY")
+public class MemberParty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
