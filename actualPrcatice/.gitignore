@@ -75,6 +75,13 @@ out/
 # *.iml
 # *.ipr
 
+# db file
+projectdb.trace.db
+projectdb.mv.db
+projectdb.lock.db
+
+*.db
+
 # CMake
 cmake-build-*/
 
