@@ -1,7 +1,7 @@
 package com.sparta.actualprcatice.controller;
 
-import com.sparta.actualproject.dto.request.MemberReqeustDto;
-import com.sparta.actualproject.service.MemberService;
+import com.sparta.actualprcatice.dto.request.MemberReqeustDto;
+import com.sparta.actualprcatice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

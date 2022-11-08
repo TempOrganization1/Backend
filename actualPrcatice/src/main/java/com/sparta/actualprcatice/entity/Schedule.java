@@ -1,7 +1,6 @@
 package com.sparta.actualprcatice.entity;
 
-
-import com.sparta.actualproject.util.TimeStamped;
+import com.sparta.actualprcatice.util.TimeStamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

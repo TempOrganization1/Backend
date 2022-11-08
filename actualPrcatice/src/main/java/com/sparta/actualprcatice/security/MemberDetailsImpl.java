@@ -1,12 +1,9 @@
-package com.sparta.actualprcatice.service;
+package com.sparta.actualprcatice.security;
 
-import com.sparta.actualproject.entity.Authority;
-import com.sparta.actualproject.entity.Member;
+import com.sparta.actualprcatice.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class MemberDetailsImpl implements UserDetails {
@@ -20,14 +17,7 @@ public class MemberDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Authority authority = member.getAuthority();
-
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority.toString());
-
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(simpleGrantedAuthority);
-
-        return authorities;
+        return null;
     }
 
     public Member getMember() {return  member;}
@@ -40,6 +30,8 @@ public class MemberDetailsImpl implements UserDetails {
     public String getUsername() {
         return member.getEmail();
     }
+
+    public String getEmail() { return  member.getEmail(); }
 
 //    public String getNickname() {
 //        return member.getNickname();

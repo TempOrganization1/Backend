@@ -1,9 +1,8 @@
 package com.sparta.actualprcatice.security;
 
-import com.sparta.actualproject.dto.TokenDto;
-import com.sparta.actualproject.entity.Member;
-import com.sparta.actualproject.repository.MemberRepository;
-import com.sparta.actualproject.service.MemberDetailsImpl;
+import com.sparta.actualprcatice.dto.TokenDto;
+import com.sparta.actualprcatice.entity.Member;
+import com.sparta.actualprcatice.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -24,9 +23,8 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
 
-    private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 300;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
     private final MemberRepository memberRepository;
@@ -43,21 +41,17 @@ public class TokenProvider {
 
     public TokenDto generateTokenDto(Authentication authentication) {
         // 권한들 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
 
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 
-        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Can't find " + authentication.getName() ));;
+        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + authentication.getName() ));;
 
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())       // payload "sub": "name"
                 .setAudience(member.getEmail())             // payload "aud": "Email"
-                .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (예시)
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
                 .compact();
@@ -81,13 +75,9 @@ public class TokenProvider {
 
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get(AUTHORITIES_KEY) == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        }
-
         String email = claims.getAudience();
         Member member = memberRepository.findByEmail( email )
-                .orElseThrow(() -> new UsernameNotFoundException("Can't find " + email ));;
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + email ));;
 
         MemberDetailsImpl memberDetails = new MemberDetailsImpl(member);
 

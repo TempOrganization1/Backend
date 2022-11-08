@@ -1,7 +1,7 @@
 package com.sparta.actualprcatice.entity;
 
-import com.sparta.actualproject.dto.request.MemberReqeustDto;
-import com.sparta.actualproject.util.TimeStamped;
+import com.sparta.actualprcatice.dto.request.MemberReqeustDto;
+import com.sparta.actualprcatice.util.TimeStamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,9 +32,6 @@ public class Member extends TimeStamped {
     @Column(nullable = false)
     private String imageUrl="123";
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Authority authority = Authority.ROLE_USER;
 
     @OneToMany(mappedBy = "member")
     private List<Schedule> scheduleList;
