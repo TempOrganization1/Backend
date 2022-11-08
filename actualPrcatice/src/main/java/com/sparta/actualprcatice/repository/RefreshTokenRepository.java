@@ -1,6 +1,6 @@
 package com.sparta.actualprcatice.repository;
 
-import com.example.consolelog.entity.RefreshToken;
+import com.sparta.actualproject.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

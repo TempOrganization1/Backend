@@ -6,25 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor
-public class Comment extends TimeStamped {
+public class Notification extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String content;
+    private String message;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ALBUM_ID")
-    private Album album;
-
+    @OneToMany(mappedBy = "notification")
+    private List<Member> memberList;
 }

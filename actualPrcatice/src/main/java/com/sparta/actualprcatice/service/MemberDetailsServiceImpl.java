@@ -1,7 +1,8 @@
 package com.sparta.actualprcatice.service;
 
-import com.example.consolelog.entity.Member;
-import com.example.consolelog.repository.MemberRepository;
+
+import com.sparta.actualproject.entity.Member;
+import com.sparta.actualproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,9 +16,9 @@ public class MemberDetailsServiceImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findByName(nickname).orElseThrow(() -> new UsernameNotFoundException("Can't find " + nickname));
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Can't find " + email));
 
         return new MemberDetailsImpl(member);
     }

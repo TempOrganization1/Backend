@@ -14,10 +14,10 @@ public class Time {
         public static final int DAY = 30;
         public static final int MONTH = 12;
     }
-    public static String calculateTime(Board board) {
+    public static String calculateTime(Schedule schedule) {
 
         long curTime = System.currentTimeMillis();
-        long regTime = Timestamp.valueOf(board.getCreatedAt()).getTime();
+        long regTime = Timestamp.valueOf(schedule.getCreatedAt()).getTime();
         long diffTime = Math.abs((curTime - regTime) / 1000);
         String msg = null;
 

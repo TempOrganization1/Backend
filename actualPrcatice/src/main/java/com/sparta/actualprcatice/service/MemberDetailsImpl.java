@@ -1,7 +1,7 @@
 package com.sparta.actualprcatice.service;
 
-import com.example.consolelog.entity.Authority;
-import com.example.consolelog.entity.Member;
+import com.sparta.actualproject.entity.Authority;
+import com.sparta.actualproject.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,12 +38,12 @@ public class MemberDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return member.getName();
+        return member.getEmail();
     }
 
-    public String getNickname() {
-        return member.getNickname();
-    }
+//    public String getNickname() {
+//        return member.getNickname();
+//    }
 
     public String getName() {
         return member.getName();

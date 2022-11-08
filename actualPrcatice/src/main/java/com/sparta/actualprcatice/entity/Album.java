@@ -1,16 +1,15 @@
 package com.sparta.actualprcatice.entity;
 
-
-import com.sparta.actualproject.util.TimeStamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor
-public class Comment extends TimeStamped {
+public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +18,23 @@ public class Comment extends TimeStamped {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private String place;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ALBUM_ID")
-    private Album album;
+    @JoinColumn(name = "PARTY_ID")
+    private Party party;
+
+    @OneToMany(mappedBy = "album")
+    private List<Comment> commentList;
+
+
 
 }
