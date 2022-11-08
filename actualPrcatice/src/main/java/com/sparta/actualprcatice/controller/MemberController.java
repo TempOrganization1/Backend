@@ -4,10 +4,7 @@ import com.sparta.actualprcatice.dto.request.MemberReqeustDto;
 import com.sparta.actualprcatice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +23,12 @@ public class MemberController {
     public ResponseEntity<?> login(@RequestBody MemberReqeustDto memberReqeustDto) {
 
         return memberService.login(memberReqeustDto);
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<?> checkEmail(@RequestParam String email) {
+
+        return memberService.checkEmail(email);
     }
 
 

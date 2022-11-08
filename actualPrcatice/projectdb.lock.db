@@ -1,6 +1,6 @@
 #FileLock
-#Tue Nov 08 15:36:13 KST 2022
-server=localhost\:49218
-hostName=localhost
+#Tue Nov 08 13:50:39 UTC 2022
+hostName=ijinseog-ui-macbookpro.local
+id=1845771e69799d13c1628678f8cc371a788b130d088
 method=file
-id=18455f420b6d8052187ce7aceec79ef8227f63a9eaf
+server=169.254.179.211\:52155
