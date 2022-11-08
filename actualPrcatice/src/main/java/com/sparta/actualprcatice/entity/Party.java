@@ -1,5 +1,6 @@
 package com.sparta.actualprcatice.entity;
 
+import com.sparta.actualprcatice.dto.request.PartyRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,8 +8,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Party {
 
     @Id
@@ -21,7 +22,7 @@ public class Party {
     @Column(nullable = false)
     private String introduction;
 
-    @OneToMany(mappedBy = "party")
+    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
     private List<MemberParty> memberPartyList;
 
     @OneToMany(mappedBy = "party")
@@ -30,10 +31,19 @@ public class Party {
     @OneToMany(mappedBy = "party")
     private List<Album> albumList;
 
-    @OneToOne(mappedBy = "party")
+    @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
     private Admin admin;
 
 
+    public Party(PartyRequestDto partyRequestDto) {
 
+        this.name = partyRequestDto.getPartyName();
+        this.introduction = partyRequestDto.getPartyIntroduction();
+    }
 
+    public void update(PartyRequestDto partyRequestDto) {
+
+        this.name = partyRequestDto.getPartyName();
+        this.introduction = partyRequestDto.getPartyIntroduction();
+    }
 }

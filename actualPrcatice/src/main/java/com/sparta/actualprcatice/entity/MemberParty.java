@@ -23,4 +23,10 @@ public class MemberParty {
     @JoinColumn(name = "PARTY_ID")
     private Party party;
 
+    public MemberParty(Member member, Party party) {
+    
+        this.member = member;
+        this.party = party;
+    }
 }
+

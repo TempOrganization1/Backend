@@ -23,7 +23,10 @@ public class Admin {
     private Member member;
 
 
+    public Admin(Member member, Party party) {
 
+        this.party = party;
+        this.member = member;
 
-
+    }
 }
