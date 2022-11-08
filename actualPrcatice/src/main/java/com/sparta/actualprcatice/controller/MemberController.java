@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
@@ -25,9 +23,9 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberReqeustDto memberReqeustDto, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody MemberReqeustDto memberReqeustDto) {
 
-        return memberService.login(memberReqeustDto, response);
+        return memberService.login(memberReqeustDto);
     }
 
 
