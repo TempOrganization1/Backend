@@ -2,7 +2,6 @@ package com.sparta.actualprcatice.dto.request;
 
 import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import javax.validation.constraints.NotBlank;
 
 @Getter

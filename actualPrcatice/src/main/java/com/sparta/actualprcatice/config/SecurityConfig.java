@@ -1,8 +1,8 @@
 package com.sparta.actualprcatice.config;
 
-import com.sparta.actualproject.exception.JwtAccessDeniedHandler;
-import com.sparta.actualproject.security.JwtAuthenticationEntryPoint;
-import com.sparta.actualproject.security.TokenProvider;
+import com.sparta.actualprcatice.exception.JwtAccessDeniedHandler;
+import com.sparta.actualprcatice.security.JwtAuthenticationEntryPoint;
+import com.sparta.actualprcatice.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;

@@ -1,13 +1,13 @@
 package com.sparta.actualprcatice.service;
 
-import com.sparta.actualproject.dto.TokenDto;
-import com.sparta.actualproject.dto.request.MemberReqeustDto;
-import com.sparta.actualproject.entity.Member;
-import com.sparta.actualproject.entity.RefreshToken;
-import com.sparta.actualproject.repository.MemberRepository;
-import com.sparta.actualproject.repository.RefreshTokenRepository;
-import com.sparta.actualproject.security.JwtFilter;
-import com.sparta.actualproject.security.TokenProvider;
+import com.sparta.actualprcatice.dto.TokenDto;
+import com.sparta.actualprcatice.dto.request.MemberReqeustDto;
+import com.sparta.actualprcatice.entity.Member;
+import com.sparta.actualprcatice.entity.RefreshToken;
+import com.sparta.actualprcatice.repository.MemberRepository;
+import com.sparta.actualprcatice.repository.RefreshTokenRepository;
+import com.sparta.actualprcatice.security.JwtFilter;
+import com.sparta.actualprcatice.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

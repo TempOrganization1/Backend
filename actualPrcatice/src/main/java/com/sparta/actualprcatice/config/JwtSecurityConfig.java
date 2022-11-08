@@ -1,7 +1,7 @@
 package com.sparta.actualprcatice.config;
 
-import com.sparta.actualproject.security.JwtFilter;
-import com.sparta.actualproject.security.TokenProvider;
+import com.sparta.actualprcatice.security.JwtFilter;
+import com.sparta.actualprcatice.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
