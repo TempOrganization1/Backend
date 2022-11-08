@@ -43,7 +43,7 @@ public class Member extends TimeStamped {
     private List<Comment> commentList;
 
     @OneToMany(mappedBy = "member")
-    private List<Member_Party> memberPartyList;
+    private List<MemberParty> memberPartyList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NOTIFICATION_ID")
