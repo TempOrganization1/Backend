@@ -28,4 +28,11 @@ public class PartyController {
 
         return partyService.getPartyList(memberDetails.getMember());
     }
+
+    // 그룹 정보 수정
+    @PutMapping("/{party_id}")
+    public ResponseEntity<?> updateParty(@PathVariable(name = "party_id") Long partyId, @RequestBody PartyRequestDto partyRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
+
+        return partyService.updateParty(partyId, partyRequestDto, memberDetails.getMember());
+    }
 }

@@ -39,6 +39,11 @@ public class Party {
 
         this.name = partyRequestDto.getPartyName();
         this.introduction = partyRequestDto.getPartyIntroduction();
+    }
 
+    public void update(PartyRequestDto partyRequestDto) {
+
+        this.name = partyRequestDto.getPartyName();
+        this.introduction = partyRequestDto.getPartyIntroduction();
     }
 }
