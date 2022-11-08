@@ -66,4 +66,12 @@ public class MemberService {
 
         return new ResponseEntity<>("로그인에 성공했습니다.",headers, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> checkEmail(String email) {
+
+        if (!memberRepository.existsByEmail(email))
+            throw new IllegalArgumentException("중복된 이메일입니다.");
+
+        return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);
+    }
 }
