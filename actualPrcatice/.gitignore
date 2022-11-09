@@ -75,6 +75,13 @@ out/
 # *.iml
 # *.ipr
 
+# db file
+projectdb.trace.db
+projectdb.mv.db
+projectdb.lock.db
+
+*.db
+
 # CMake
 cmake-build-*/
 
@@ -404,7 +411,7 @@ projectdb.lock.db
 projectdb.mv.db
 projectdb.trace.db
 
-
+*.db
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
