@@ -24,7 +24,6 @@ public class PartyService {
 
     private final PartyRepository partyRepository;
     private final AdminRepository adminRepository;
-
     private final MemberPartyRepository memberPartyRepository;
 
 
@@ -73,6 +72,7 @@ public class PartyService {
 
         return new ResponseEntity<>("그룹 정보가 수정되었습니다", HttpStatus.OK);
     }
+
 
     @Transactional
     public ResponseEntity<?> deleteParty(Long partyId, Member member) {

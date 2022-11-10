@@ -25,6 +25,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -64,14 +65,15 @@ public class MemberService {
         headers.set(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
         headers.set("Refresh-Token", tokenDto.getRefreshToken());
 
-        return new ResponseEntity<>("로그인에 성공했습니다.",headers, HttpStatus.OK);
+        return new ResponseEntity<>("로그인에 성공했습니다.", headers, HttpStatus.OK);
     }
 
     public ResponseEntity<?> checkEmail(String email) {
 
         if (!memberRepository.existsByEmail(email))
-            throw new IllegalArgumentException("중복된 이메일입니다.");
+            throw new IllegalArgumentException("중복된 이메일입니다."); // 추후에 커스텀 예외 처리 예정
 
         return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);
     }
+
 }

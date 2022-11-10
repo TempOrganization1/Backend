@@ -1,15 +1,22 @@
 package com.sparta.actualpractice.entity;
 
+import com.sparta.actualpractice.dto.request.AlbumRequestDto;
+import com.sparta.actualpractice.util.TimeStamped;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.List;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class Album {
+public class Album extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +43,8 @@ public class Album {
     private List<Comment> commentList;
 
 
+    public void update(AlbumRequestDto albumRequestDto) {
 
+        this.content = albumRequestDto.getContent();
+    }
 }
