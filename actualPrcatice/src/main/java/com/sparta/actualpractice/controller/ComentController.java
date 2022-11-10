@@ -7,10 +7,7 @@ import com.sparta.actualpractice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +19,12 @@ public class ComentController {
     public ResponseEntity<?> createComment(@PathVariable(name = "album_id") Long albumId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
 
         return commentService.createComment(albumId, commentRequestDto, memberDetails.getMember());
+    }
+
+
+    @PutMapping("/comments/{comment_id}")
+    public ResponseEntity<?> updateComment(@PathVariable(name = "comment_id") Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return commentService.updateComment(commentId, commentRequestDto, memberDetails.getMember());
     }
 }
