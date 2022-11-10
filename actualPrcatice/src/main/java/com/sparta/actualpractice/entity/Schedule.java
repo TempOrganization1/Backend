@@ -41,13 +41,13 @@ public class Schedule{
     @OneToMany(mappedBy = "schedule")
     private List<Participant> participantList;
 
-    public Schedule(Member member, ScheduleRequestDto scheduleRequestDto, String gatherTime, Party party, String gatherPlace) {
+    public Schedule(Member member, ScheduleRequestDto scheduleRequestDto, Party party) {
 
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();
-        this.place = gatherPlace;
+        this.time = scheduleRequestDto.getDate() + " " + scheduleRequestDto.getMeetTime();
+        this.place = scheduleRequestDto.getPlace().getAddress() + "," + scheduleRequestDto.getPlace().getPlaceName();
         this.member = member;
-        this.time = gatherTime;
         this.party = party;
     }
 }

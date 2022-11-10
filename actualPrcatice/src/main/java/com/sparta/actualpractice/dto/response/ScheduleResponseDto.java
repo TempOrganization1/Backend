@@ -14,7 +14,7 @@ public class ScheduleResponseDto {
     private String title;
     private String content;
     private String address;
-    private String placename;
+    private String placeName;
     private String date;
     private String meetTime;
 
@@ -36,7 +36,7 @@ public class ScheduleResponseDto {
         this.title = schedule.getTitle();
         this.content = schedule.getContent();
         this.address = schedule.getPlace().split(",")[0];
-        this.placename = schedule.getPlace().split(",")[1];
+        this.placeName = schedule.getPlace().split(",")[1];
         this.date = schedule.getTime().split(" ")[0];
         this.meetTime = schedule.getTime().split(" ")[1];
         this.participantResponseDtoList = participantResponseDtoList;

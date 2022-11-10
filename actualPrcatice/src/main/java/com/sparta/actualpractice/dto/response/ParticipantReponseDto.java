@@ -13,6 +13,6 @@ public class ParticipantReponseDto {
     public ParticipantReponseDto(Participant participant) {
 
         this.memberName = participant.getMember().getName();
-        this.profileImageUrl = participant.getSchedule().getMember().getImageUrl();
+        this.profileImageUrl = participant.getMember().getImageUrl();
     }
 }

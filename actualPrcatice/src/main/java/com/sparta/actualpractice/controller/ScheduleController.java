@@ -24,26 +24,23 @@ public class ScheduleController {
 //        return scheduleService.createSchedules(partyId, memberDetails.getMember(), scheduleRequestDto);
 //    }
     @PostMapping("{party_id}/schedules")
-    public ResponseEntity<?> createSchedules(
-        @PathVariable(name = "party_id") Long partyId,
-        @AuthenticationPrincipal MemberDetailsImpl memberDetails,
-        @RequestBody ScheduleRequestDto scheduleRequestDto){
-
+    public ResponseEntity<?> createSchedule(
+        @PathVariable(name = "party_id") Long partyId, @RequestBody ScheduleRequestDto scheduleRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
 
     return scheduleService.createSchedules(partyId, memberDetails.getMember(), scheduleRequestDto);
 }
 
     //개인 일정 조회 (자신이 속한 모든 그룹)
     @GetMapping("/schedules")
-    public ResponseEntity<?> getSchedulesList(@AuthenticationPrincipal MemberDetailsImpl memberDetails){
+    public ResponseEntity<?> getScheduleList(@AuthenticationPrincipal MemberDetailsImpl memberDetails){
 
-        return scheduleService.getSchedulesList(memberDetails.getMember());
+        return scheduleService.getScheduleList(memberDetails.getMember());
     }
     // 자신이 속한 특정 그룹 일정 조회
     @GetMapping("/{party_id}/schedules")
-    public ResponseEntity<?> getPartySchedulesList(@AuthenticationPrincipal MemberDetailsImpl memberDetails, @PathVariable(name = "party_id") Long partyId){
+    public ResponseEntity<?> getPartyScheduleList(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
 
-        return scheduleService.getPartySchedulesList(partyId,memberDetails.getMember());
+        return scheduleService.getPartyScheduleList(partyId, memberDetails.getMember());
     }
 
     // 본인 일정 상세 조회

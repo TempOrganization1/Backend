@@ -38,7 +38,6 @@ public class TokenProvider {
     }
 
     public TokenDto generateTokenDto(Authentication authentication) {
-        // 권한들 가져오기
 
         long now = (new Date()).getTime();
 

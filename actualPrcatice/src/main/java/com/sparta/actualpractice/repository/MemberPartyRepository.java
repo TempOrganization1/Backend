@@ -12,6 +12,8 @@ public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> 
 
     List<MemberParty> findAllByMember_Id(Long memberId);
 
+    List<MemberParty> findAllByMember(Member member);
+
     MemberParty findByMemberAndParty(Member member, Party party);
 
     boolean existsByPartyAndMember(Party party, Member member);
