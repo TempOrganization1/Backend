@@ -3,8 +3,10 @@ package com.sparta.actualpractice.service;
 import com.sparta.actualpractice.dto.request.AlbumRequestDto;
 import com.sparta.actualpractice.dto.response.AlbumListResponseDto;
 import com.sparta.actualpractice.dto.response.AlbumResponseDto;
+import com.sparta.actualpractice.dto.response.CommentResponseDto;
 import com.sparta.actualpractice.entity.*;
 import com.sparta.actualpractice.repository.AlbumRepository;
+import com.sparta.actualpractice.repository.CommentRepository;
 import com.sparta.actualpractice.repository.MemberPartyRepository;
 import com.sparta.actualpractice.repository.PartyRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class AlbumService {
     private final MemberPartyRepository memberPartyRepository;
     private final S3UploadService s3UploadService;
 
+    private final CommentRepository commentRepository;
 
     public ResponseEntity<?> createAlbum(Long partyId, AlbumRequestDto albumRequestDto, Member member) throws IOException {
 
@@ -72,12 +75,20 @@ public class AlbumService {
 
         Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
 
+        List<Comment> commentList = commentRepository.findAllByAlbumOrderByCreatedAtDesc(album);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for(Comment comment : commentList) {
+            commentResponseDtoList.add(new CommentResponseDto(comment));
+        }
+
         return new ResponseEntity<>(AlbumResponseDto.builder()
                 .content(album.getContent())
                 .writer(album.getMember().getName())
                 .place(album.getPlace())
                 .profileImageUrl(album.getMember().getImageUrl())
                 .imageUrl(album.getImageUrl())
+                .commentList(commentResponseDtoList)
                 .beforeTime(Time.calculateTime(album))
                 .build(), HttpStatus.OK);
     }
