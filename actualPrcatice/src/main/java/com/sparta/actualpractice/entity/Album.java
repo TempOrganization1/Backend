@@ -28,8 +28,8 @@ public class Album extends TimeStamped {
     @Column(nullable = false)
     private String imageUrl;
 
-//    @Column(nullable = false)
-//    private String place;
+    @Column(nullable = false)
+    private String place;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
@@ -42,10 +42,5 @@ public class Album extends TimeStamped {
     @OneToMany(mappedBy = "album")
     private List<Comment> commentList;
 
-    public Album(AlbumRequestDto albumRequestDto, Member member, Party party) {
-        this.content = albumRequestDto.getContent();
-        this.member = member;
-        this.party = party;
-    }
 
 }

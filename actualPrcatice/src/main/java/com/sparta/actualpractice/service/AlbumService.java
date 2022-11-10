@@ -2,10 +2,8 @@ package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.AlbumRequestDto;
 import com.sparta.actualpractice.dto.response.AlbumListResponseDto;
-import com.sparta.actualpractice.entity.Album;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.MemberParty;
-import com.sparta.actualpractice.entity.Party;
+import com.sparta.actualpractice.dto.response.AlbumResponseDto;
+import com.sparta.actualpractice.entity.*;
 import com.sparta.actualpractice.repository.AlbumRepository;
 import com.sparta.actualpractice.repository.MemberPartyRepository;
 import com.sparta.actualpractice.repository.PartyRepository;
@@ -36,15 +34,13 @@ public class AlbumService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if( !memberPartyRepository.existsByMemberAndParty(member, party))
-            throw new IllegalArgumentException("현재 사용자는 앨범에 접근 할 권한이 없습니다.");
+        checkAuthority(member, party);
 
-
-        //Album album = new Album(albumRequestDto, member, party);
         Album album = Album.builder()
                 .content(albumRequestDto.getContent())
                 .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(),dir))
                 .member(member)
+                .place(albumRequestDto.getPlace())
                 .party(party)
                 .build();
 
@@ -58,8 +54,7 @@ public class AlbumService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if( !memberPartyRepository.existsByMemberAndParty(member, party))
-            throw new IllegalArgumentException("현재 사용자는 앨범에 접근 할 권한이 없습니다.");
+        checkAuthority(member, party);
 
         List<Album> albumList = albumRepository.findAllByPartyOrderByCreatedAtDesc(party);
         List<AlbumListResponseDto> albumListResponseDtoList = new ArrayList<>();
@@ -72,9 +67,33 @@ public class AlbumService {
     }
 
 
+    public ResponseEntity<?> getAlbumDetail(Long albumId) {
+
+        Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
+
+
+        return new ResponseEntity<>(AlbumResponseDto.builder()
+                .content(album.getContent())
+                .writer(album.getMember().getName())
+                .place(album.getPlace())
+                .profileImageUrl(album.getMember().getImageUrl())
+                .imageUrl(album.getImageUrl())
+                .beforeTime(Time.calculateTime(album))
+                .build(), HttpStatus.OK);
+    }
+
+
 
     public boolean validateMember(Member member, Album album) {
 
         return !member.getEmail().equals(album.getMember().getEmail());
     }
+
+
+    public void checkAuthority(Member member, Party party) {
+
+        if( !memberPartyRepository.existsByMemberAndParty(member, party))
+            throw new IllegalArgumentException("현재 사용자는 앨범에 접근 할 권한이 없습니다.");
+    }
+
 }

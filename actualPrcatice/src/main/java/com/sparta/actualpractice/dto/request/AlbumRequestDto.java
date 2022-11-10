@@ -10,7 +10,7 @@ public class AlbumRequestDto {
 
     private String content;
 
-  //  private String place;
+    private String place;
 
     private MultipartFile imageUrl;
 }

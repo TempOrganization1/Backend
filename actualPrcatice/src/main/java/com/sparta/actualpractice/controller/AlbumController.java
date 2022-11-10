@@ -30,4 +30,9 @@ public class AlbumController {
         return albumService.getAlbumList(partyId, memberDetails.getMember());
     }
 
+    @GetMapping("/album/{album_id}")
+    public ResponseEntity<?> getAlbumDetail(@PathVariable(name = "album_id") Long albumId) {
+
+        return albumService.getAlbumDetail(albumId);
+    }
 }
