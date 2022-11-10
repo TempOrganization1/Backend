@@ -24,4 +24,10 @@ public class AlbumController {
         return albumService.createAlbum(partyId, albumRequestDto, memberDetails.getMember());
     }
 
+    @GetMapping("/{party_id}/album")
+    public ResponseEntity<?> getAlbumList(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return albumService.getAlbumList(partyId, memberDetails.getMember());
+    }
+
 }

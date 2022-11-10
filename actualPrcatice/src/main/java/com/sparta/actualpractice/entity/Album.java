@@ -1,6 +1,7 @@
 package com.sparta.actualpractice.entity;
 
 import com.sparta.actualpractice.dto.request.AlbumRequestDto;
+import com.sparta.actualpractice.util.TimeStamped;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Album {
+public class Album extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
