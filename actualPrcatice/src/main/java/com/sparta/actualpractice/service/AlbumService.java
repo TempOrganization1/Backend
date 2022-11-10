@@ -97,6 +97,18 @@ public class AlbumService {
         return new ResponseEntity<>("앨범 정보가 수정되었습니다.", HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity<?> deleteAlbum(Long albumId, Member member) {
+
+        Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
+
+        if(validateMember(member, album))
+            throw new IllegalArgumentException("앨범 작성자와 현재 사용자가 일치하지 않습니다.");
+
+        albumRepository.delete(album);
+
+        return new ResponseEntity<>("앨범 정보가 삭제되었습니다.", HttpStatus.OK);
+    }
 
     public boolean validateMember(Member member, Album album) {
 

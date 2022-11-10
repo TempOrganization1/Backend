@@ -41,4 +41,10 @@ public class AlbumController {
 
         return albumService.updateAlbum(albumId, albumRequestDto, memberDetails.getMember());
     }
+
+    @DeleteMapping("/album/{album_id}")
+    public ResponseEntity<?> deleteAlbum(@PathVariable(name = "album_id") Long albumId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return albumService.deleteAlbum(albumId, memberDetails.getMember());
+    }
 }
