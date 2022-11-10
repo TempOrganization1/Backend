@@ -18,10 +18,15 @@ public class Participant {
     @ManyToOne(fetch = FetchType.LAZY)
     private Schedule schedule;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Member member;
-//
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    private Party party;
+
+    public Participant(Schedule schedule, Member member){
+        this.schedule = schedule;
+        this.member = member;
+    }
 
 }

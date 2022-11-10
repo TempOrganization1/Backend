@@ -28,5 +28,6 @@ public class MemberParty {
         this.member = member;
         this.party = party;
     }
+
 }
 

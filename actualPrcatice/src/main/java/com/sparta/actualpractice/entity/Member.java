@@ -42,7 +42,7 @@ public class Member extends TimeStamped {
     @OneToMany(mappedBy = "member")
     private List<Comment> commentList;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<MemberParty> memberPartyList;
 
     @ManyToOne(fetch = FetchType.LAZY)
