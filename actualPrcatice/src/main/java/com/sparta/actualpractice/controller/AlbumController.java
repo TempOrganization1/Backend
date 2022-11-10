@@ -35,4 +35,10 @@ public class AlbumController {
 
         return albumService.getAlbumDetail(albumId);
     }
+
+    @PatchMapping("/album/{album_id}")
+    public ResponseEntity<?> updateAlbum(@PathVariable(name = "album_id") Long albumId, @RequestBody AlbumRequestDto albumRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
+
+        return albumService.updateAlbum(albumId, albumRequestDto, memberDetails.getMember());
+    }
 }

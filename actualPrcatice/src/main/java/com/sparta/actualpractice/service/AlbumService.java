@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +72,6 @@ public class AlbumService {
 
         Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
 
-
         return new ResponseEntity<>(AlbumResponseDto.builder()
                 .content(album.getContent())
                 .writer(album.getMember().getName())
@@ -82,6 +82,20 @@ public class AlbumService {
                 .build(), HttpStatus.OK);
     }
 
+
+    @Transactional
+    public ResponseEntity<?> updateAlbum(Long albumId, AlbumRequestDto albumRequestDto, Member member) {
+
+        Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
+
+        if(validateMember(member, album))
+            throw new IllegalArgumentException("앨범 작성자와 현재 사용자가 일치하지 않습니다.");
+
+
+        album.update(albumRequestDto);
+
+        return new ResponseEntity<>("앨범 정보가 수정되었습니다.", HttpStatus.OK);
+    }
 
 
     public boolean validateMember(Member member, Album album) {
