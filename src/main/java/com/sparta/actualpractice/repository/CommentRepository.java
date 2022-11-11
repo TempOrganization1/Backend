@@ -11,4 +11,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByAlbumOrderByCreatedAtDesc(Album album);
     Optional<Comment> findById(Long commentId);
+
 }

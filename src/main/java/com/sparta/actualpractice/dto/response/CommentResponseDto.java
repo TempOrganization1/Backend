@@ -8,11 +8,8 @@ import lombok.Getter;
 public class CommentResponseDto {
 
     private String content;
-
     private String writer;
-
     private String profileImageUrl;
-
     private String beforeTime;
 
 

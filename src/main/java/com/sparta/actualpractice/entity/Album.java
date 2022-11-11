@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Album extends TimeStamped {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

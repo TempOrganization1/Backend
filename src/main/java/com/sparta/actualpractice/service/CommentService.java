@@ -20,6 +20,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+
     public ResponseEntity<?> createComment(Long albumId, CommentRequestDto commentRequestDto, Member member) {
 
         Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));

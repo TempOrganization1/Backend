@@ -31,7 +31,6 @@ public class AlbumService {
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
     private final S3UploadService s3UploadService;
-
     private final CommentRepository commentRepository;
 
     public ResponseEntity<?> createAlbum(Long partyId, AlbumRequestDto albumRequestDto, Member member) throws IOException {

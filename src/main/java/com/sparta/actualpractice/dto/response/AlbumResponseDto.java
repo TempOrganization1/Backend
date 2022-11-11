@@ -26,5 +26,4 @@ public class AlbumResponseDto {
 
     private String beforeTime;
 
-
 }

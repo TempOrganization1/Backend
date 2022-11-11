@@ -32,4 +32,5 @@ public class ComentController {
 
         return commentService.deleteComment(commentId, memberDetails.getMember());
     }
+
 }
