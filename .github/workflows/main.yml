@@ -25,7 +25,7 @@ jobs:
         
         ## application.properties 파일 생성
     - name: make application.properties
-      run: |
+      run:
         ##mkdir -p ./src/main/resources  
         cd ./src/main/resources
         touch ./application.properties
