@@ -33,7 +33,7 @@ public class ScheduleService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if (!validateMember(member, party))
+        if (validateMember(member, party))
            throw new NullPointerException("해당 그룹에 포함되어 있지 않습니다.");
 
         Schedule schedule = new Schedule(member, scheduleRequestDto, party);
@@ -65,7 +65,7 @@ public class ScheduleService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if (!validateMember(member, party))
+        if (validateMember(member, party))
             throw new NullPointerException("해당 그룹에 포함되어 있지 않습니다.");
 
         List<Schedule> scheduleList = scheduleRepository.findAllByPartyOrderByTimeAsc(party);
@@ -107,6 +107,20 @@ public class ScheduleService {
         return new ResponseEntity<>("해당 일정이 수정되었습니다.", HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity<?> deleteSchedule(Long scheduleId, Member member) {
+
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
+
+        if (validateMember(member, schedule)){
+            throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
+        }
+
+        scheduleRepository.delete(schedule);
+
+        return new ResponseEntity<>("해당 일정이 삭제되었습니다.", HttpStatus.OK);
+    }
+
     public boolean validateMember(Member member, Schedule schedule){
 
         return !scheduleRepository.existsByIdAndMember(schedule.getId(), member);
@@ -115,8 +129,6 @@ public class ScheduleService {
     public boolean validateMember(Member member, Party party) {
 
         return !memberPartyRepository.existsByPartyAndMember(party, member);
+
     }
-
-
-
 }

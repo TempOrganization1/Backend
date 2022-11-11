@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> {
 
-
     List<MemberParty> findAllByMember_Id(Long memberId);
 
     List<MemberParty> findAllByMember(Member member);
@@ -19,4 +18,5 @@ public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> 
     boolean existsByPartyAndMember(Party party, Member member);
 
     void deleteByPartyAndMember(Party party, Member member);
+
 }
