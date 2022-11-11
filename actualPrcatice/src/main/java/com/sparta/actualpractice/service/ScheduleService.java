@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,8 +93,30 @@ public class ScheduleService {
         return new ResponseEntity<>(new ScheduleResponseDto(schedule, participantResponseDtoList),HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity<?> updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto, Member member) {
+
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
+
+        if (validateMember(member, schedule)){
+            throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
+        }
+
+        schedule.update(scheduleRequestDto);
+
+        return new ResponseEntity<>("해당 일정이 수정되었습니다.", HttpStatus.OK);
+    }
+
+    public boolean validateMember(Member member, Schedule schedule){
+
+        return !scheduleRepository.existsByIdAndMember(schedule.getId(), member);
+    }
+
     public boolean validateMember(Member member, Party party) {
 
-        return !partyRepository.existsByMemberAndParty(member, party);
+        return !memberPartyRepository.existsByPartyAndMember(party, member);
     }
+
+
+
 }

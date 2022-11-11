@@ -15,5 +15,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findAllByPartyOrderByTimeAsc(Party party);
 
-
+    boolean existsByIdAndMember(Long scheduleId, Member member);
 }

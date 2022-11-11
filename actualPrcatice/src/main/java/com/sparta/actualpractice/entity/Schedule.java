@@ -50,4 +50,12 @@ public class Schedule{
         this.member = member;
         this.party = party;
     }
+
+    public void update(ScheduleRequestDto scheduleRequestDto) {
+
+        this.title = scheduleRequestDto.getTitle();
+        this.content = scheduleRequestDto.getContent();
+        this.time = scheduleRequestDto.getDate() + " " + scheduleRequestDto.getMeetTime();
+        this.place = scheduleRequestDto.getPlace().getAddress() + "," + scheduleRequestDto.getPlace().getPlaceName();
+    }
 }
