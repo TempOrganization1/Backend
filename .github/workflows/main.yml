@@ -1,4 +1,4 @@
-name: wef chatRoom server CI/CD
+name: wef server CI/CD
 
 on:
   push:
