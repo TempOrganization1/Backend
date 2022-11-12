@@ -22,7 +22,7 @@ public class S3UploadService {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("i3e2-test-bucket")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {

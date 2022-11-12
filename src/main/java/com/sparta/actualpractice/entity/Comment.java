@@ -34,4 +34,9 @@ public class Comment extends TimeStamped {
         this.album = album;
         this.member = member;
     }
+
+    public void update(CommentRequestDto commentRequestDto) {
+
+        this.content = commentRequestDto.getContent();
+    }
 }
