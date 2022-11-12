@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 
 @Getter
 @Builder
@@ -18,7 +20,7 @@ public class AlbumResponseDto {
 
     private String profileImageUrl;
 
-    //private List<CommentResponseDto> commentList;
+    private List<CommentResponseDto> commentList;
 
     private String imageUrl;
 
