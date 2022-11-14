@@ -32,7 +32,7 @@ public class MemberService {
     public ResponseEntity<?> signup(MemberReqeustDto memberReqeustDto) {
 
         if(memberRepository.existsByEmail(memberReqeustDto.getEmail())){
-            throw new RuntimeException("이미 존재하는 이메일입니다.");
+            return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
         Member member = new Member(memberReqeustDto, passwordEncoder.encode(memberReqeustDto.getPassword()));
 
