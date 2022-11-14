@@ -2,6 +2,7 @@ package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.TokenDto;
 import com.sparta.actualpractice.dto.request.MemberReqeustDto;
+import com.sparta.actualpractice.dto.response.MemberResponseDto;
 import com.sparta.actualpractice.entity.Member;
 import com.sparta.actualpractice.entity.RefreshToken;
 import com.sparta.actualpractice.repository.MemberRepository;
@@ -76,4 +77,11 @@ public class MemberService {
         return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getMyInfo(Member member) {
+
+        Member member1 = memberRepository.findByEmail(member.getEmail()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
+
+        return new ResponseEntity<>(new MemberResponseDto(member1), HttpStatus.OK);
+
+    }
 }

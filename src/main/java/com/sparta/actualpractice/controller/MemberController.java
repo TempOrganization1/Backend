@@ -1,9 +1,11 @@
 package com.sparta.actualpractice.controller;
 
 import com.sparta.actualpractice.dto.request.MemberReqeustDto;
+import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,5 +33,10 @@ public class MemberController {
         return memberService.checkEmail(email);
     }
 
+    @GetMapping("/mypage")
+    public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return memberService.getMyInfo(memberDetails.getMember());
+    }
 
 }
