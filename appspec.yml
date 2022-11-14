@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ubuntu/app/
+  - source:  /
+    destination: /home/ubuntu/app
     overwrite: yes
 
 permissions:
@@ -10,6 +10,7 @@ permissions:
     pattern: "**"
     owner: ubuntu
     group: ubuntu
+    mode: 755
 
 hooks:
   ApplicationStart:
