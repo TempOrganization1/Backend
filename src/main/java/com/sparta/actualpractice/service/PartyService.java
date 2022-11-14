@@ -48,7 +48,7 @@ public class PartyService {
         List<Party> partyList = new ArrayList<>();
 
         for (MemberParty memberParty : memberPartyList) {
-            Party party = partyRepository.findById(memberParty.getId()).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
+            Party party = partyRepository.findById(memberParty.getParty().getId()).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
             partyList.add(party);
         }
 
