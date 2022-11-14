@@ -25,10 +25,13 @@ jobs:
         
         ## application.properties 파일 생성
     - name: make application.properties
-      run:
+      run: |
+        echo ">> mkdir & touch"
         mkdir -p ./src/main/resources
-        touch ./src/main/resources/application.properties 
-      shell: bash
+        cd ./src/main/resources
+        touch ./application.properties
+        echo ">> copy application.properties"
+        echo "${{ secrets.PROPERTIES }}" >> ./application.properties
         
     - name: deliver application.properties
       run: 
