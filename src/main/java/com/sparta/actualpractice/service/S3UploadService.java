@@ -22,7 +22,7 @@ public class S3UploadService {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("i3e2-test-bucket")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
@@ -49,7 +49,7 @@ public class S3UploadService {
 
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return "https://zero-to-one-bucket.s3.ap-northeast-2.amazonaws.com/" + fileName;
+        return "https://podomarket1.s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
