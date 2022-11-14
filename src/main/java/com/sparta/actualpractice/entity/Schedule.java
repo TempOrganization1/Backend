@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.entity;
 
+import com.sparta.actualpractice.dto.request.ScheduleRequestDto;
 import com.sparta.actualpractice.util.TimeStamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,9 @@ public class Schedule extends TimeStamped {
     @Column(nullable = false)
     private String place;
 
+    @Column(nullable = false)
+    private String time;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -33,7 +37,24 @@ public class Schedule extends TimeStamped {
     @JoinColumn(name = "PARTY_ID")
     private Party party;
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     private List<Participant> participantList;
 
+    public Schedule(Member member, ScheduleRequestDto scheduleRequestDto, Party party) {
+
+        this.title = scheduleRequestDto.getTitle();
+        this.content = scheduleRequestDto.getContent();
+        this.time = scheduleRequestDto.getDate() + " " + scheduleRequestDto.getMeetTime();
+        this.place = scheduleRequestDto.getPlace().getAddress() + "," + scheduleRequestDto.getPlace().getPlaceName();
+        this.member = member;
+        this.party = party;
+    }
+
+    public void update(ScheduleRequestDto scheduleRequestDto) {
+
+        this.title = scheduleRequestDto.getTitle();
+        this.content = scheduleRequestDto.getContent();
+        this.time = scheduleRequestDto.getDate() + " " + scheduleRequestDto.getMeetTime();
+        this.place = scheduleRequestDto.getPlace().getAddress() + "," + scheduleRequestDto.getPlace().getPlaceName();
+    }
 }

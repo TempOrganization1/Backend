@@ -1,6 +1,7 @@
 package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.AlbumRequestDto;
+import com.sparta.actualpractice.dto.response.AlbumCreationResponseDto;
 import com.sparta.actualpractice.dto.response.AlbumListResponseDto;
 import com.sparta.actualpractice.dto.response.AlbumResponseDto;
 import com.sparta.actualpractice.dto.response.CommentResponseDto;
@@ -50,7 +51,7 @@ public class AlbumService {
 
         albumRepository.save(album);
 
-        return new ResponseEntity<>("사진이 등록되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(new AlbumCreationResponseDto(album), HttpStatus.OK);
     }
 
 
