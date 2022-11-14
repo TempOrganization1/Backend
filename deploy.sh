@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ubuntu/app
+REPOSITORY=/home/ubuntu/app/build/libs
+JAR_REPOSITORY=/home/ubuntu/app/
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
@@ -18,7 +19,7 @@ fi
 
 echo "> 새 애플리케이션 배포"
 
-JAR_NAME=$(ls -tr $REPOSITORY/*SNAPSHOT.jar | tail -n 1)
+JAR_NAME=$(ls -tr $JAR_REPOSITORY/*SNAPSHOT.jar | tail -n 1)
 
 echo "> JAR NAME: $JAR_NAME"
 
