@@ -70,7 +70,7 @@ public class MemberService {
 
     public ResponseEntity<?> checkEmail(String email) {
 
-        if (!memberRepository.existsByEmail(email))
+        if (memberRepository.existsByEmail(email))
             return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);  // 추후에 커스텀 예외 처리 예정
 
         return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);

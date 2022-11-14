@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="mogumogu@springboot-database.c7osumx48z2o.ap-northeast-2.rds.amazonaws.com" uuid="1a92e3e8-9766-4e34-abfe-a4552e4a678c">
+    <data-source source="LOCAL" name="@springboot-database.c7osumx48z2o.ap-northeast-2.rds.amazonaws.com" uuid="1a92e3e8-9766-4e34-abfe-a4552e4a678c">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://springboot-database.c7osumx48z2o.ap-northeast-2.rds.amazonaws.com:3306/mogumogu</jdbc-url>
+      <jdbc-url>jdbc:mysql://springboot-database.c7osumx48z2o.ap-northeast-2.rds.amazonaws.com</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
