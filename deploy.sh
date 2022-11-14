@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ubuntu/app/build/libs
-JAR_REPOSITORY=/home/ubuntu/app/
+JAR_REPOSITORY=/home/ubuntu/app/build/libs
+REPOSITORY=/home/ubuntu/app/
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
