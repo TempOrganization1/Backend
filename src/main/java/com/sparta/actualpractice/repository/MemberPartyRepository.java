@@ -10,7 +10,6 @@ import java.util.List;
 public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> {
 
 
-    List<MemberParty> findAllByMember_Id(Long memberId);
-    MemberParty findByMemberAndParty(Member member, Party party);
+    List<MemberParty> findAllByMember(Member member);
     boolean existsByMemberAndParty(Member member, Party party);
 }

@@ -37,13 +37,13 @@ public class PartyService {
         adminRepository.save(admin);
         memberPartyRepository.save(memberParty);
 
-        return new ResponseEntity<>("그룹이 생성되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(new PartyResponseDto(party), HttpStatus.OK);
     }
 
 
     public ResponseEntity<?> getPartyList(Member member) {
 
-        List<MemberParty> memberPartyList = memberPartyRepository.findAllByMember_Id(member.getId());
+        List<MemberParty> memberPartyList = memberPartyRepository.findAllByMember(member);
         List<PartyResponseDto> partyResponseDtoList = new ArrayList<>();
         List<Party> partyList = new ArrayList<>();
 
