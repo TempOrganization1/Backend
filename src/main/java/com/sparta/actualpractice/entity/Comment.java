@@ -1,6 +1,7 @@
 package com.sparta.actualpractice.entity;
 
 
+import com.sparta.actualpractice.dto.request.CommentRequestDto;
 import com.sparta.actualpractice.util.TimeStamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,15 @@ public class Comment extends TimeStamped {
     @JoinColumn(name = "ALBUM_ID")
     private Album album;
 
+    public Comment(CommentRequestDto commentRequestDto, Album album, Member member){
+
+        this.content = commentRequestDto.getContent();
+        this.album = album;
+        this.member = member;
+    }
+
+    public void update(CommentRequestDto commentRequestDto) {
+
+        this.content = commentRequestDto.getContent();
+    }
 }

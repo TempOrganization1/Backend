@@ -39,7 +39,7 @@ public class Album extends TimeStamped {
     @JoinColumn(name = "PARTY_ID")
     private Party party;
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     private List<Comment> commentList;
 
 
