@@ -43,7 +43,7 @@ public class ScheduleService {
 
     public ResponseEntity<?> getScheduleList(Member member) {
 
-        List<MemberParty> memberPartyList = memberPartyRepository.findAllByMember_Id(member.getId());
+        List<MemberParty> memberPartyList = memberPartyRepository.findAllByMember(member);
         List<ScheduleListResponseDto> scheduleListResponseDtoList = new ArrayList<>();
 
         for (MemberParty memberParty : memberPartyList) {
