@@ -48,8 +48,8 @@ public class TokenProvider {
         Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + authentication.getName() ));;
 
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())       // payload "sub": "name"
-                .setAudience(member.getEmail())             // payload "aud": "Email"
+                .setSubject(authentication.getName())       // payload "sub": "Email"
+                .setAudience(member.getName())             // payload "aud": "name"
                 .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (예시)
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
                 .compact();
