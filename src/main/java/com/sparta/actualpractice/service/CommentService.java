@@ -1,6 +1,7 @@
 package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.CommentRequestDto;
+import com.sparta.actualpractice.dto.response.CommentResponseDto;
 import com.sparta.actualpractice.entity.Album;
 import com.sparta.actualpractice.entity.Comment;
 import com.sparta.actualpractice.entity.Member;
@@ -28,7 +29,7 @@ public class CommentService {
 
         commentRepository.save(comment);
 
-        return new ResponseEntity<>("댓글이 등록되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(new CommentResponseDto(comment), HttpStatus.OK);
     }
 
 
