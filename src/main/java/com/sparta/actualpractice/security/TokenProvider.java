@@ -73,7 +73,7 @@ public class TokenProvider {
 
         Claims claims = parseClaims(accessToken);
 
-        String email = claims.getAudience();
+        String email = claims.getSubject();
         Member member = memberRepository.findByEmail( email )
                 .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + email ));;
 
