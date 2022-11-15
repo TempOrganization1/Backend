@@ -25,10 +25,10 @@ public class Party {
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
     private List<MemberParty> memberPartyList;
 
-    @OneToMany(mappedBy = "party")
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<Schedule> scheduleList;
 
-    @OneToMany(mappedBy = "party")
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<Album> albumList;
 
     @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
