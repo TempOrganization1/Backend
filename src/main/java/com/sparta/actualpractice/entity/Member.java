@@ -1,9 +1,15 @@
 package com.sparta.actualpractice.entity;
 
+
+import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberReqeustDto;
+
+import com.sparta.actualpractice.service.S3UploadService;
 import com.sparta.actualpractice.util.TimeStamped;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,9 +31,6 @@ public class Member extends TimeStamped {
 
     @Column(nullable = false)
     private String password;
-
-    @Column
-    private String statusMessage;
 
     @Column
     private String imageUrl;
@@ -53,9 +56,15 @@ public class Member extends TimeStamped {
     private List<Admin> adminList;
 
     public Member(MemberReqeustDto memberReqeustDto, String password) {
+
         this.email = memberReqeustDto.getEmail();
         this.password = password;
         this.name = memberReqeustDto.getName();
+    }
+
+    public void update(String imageUrl) {
+
+        this.imageUrl = imageUrl;
     }
 
 }
