@@ -32,7 +32,9 @@ public class ScheduleService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        validateMember(member, party);
+        if(validateMemberAndParty(member, party)){
+            throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
+        }
 
         Schedule schedule = new Schedule(member, scheduleRequestDto, party);
 
@@ -63,7 +65,9 @@ public class ScheduleService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        validateMember(member, party);
+        if(validateMemberAndParty(member, party)){
+            throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
+        }
 
         List<Schedule> scheduleList = scheduleRepository.findAllByPartyOrderByTimeAsc(party);
         List<ScheduleListResponseDto> scheduleListResponseDtoList = new ArrayList<>();
@@ -95,7 +99,7 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
 
-        if(validateMember(member, schedule)){
+        if(validateMemberAndSchedule(member, schedule)){
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
         }
 
@@ -109,7 +113,7 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
 
-        if(validateMember(member, schedule)){
+        if(validateMemberAndSchedule(member, schedule)){
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
         }
 
@@ -118,15 +122,13 @@ public class ScheduleService {
         return new ResponseEntity<>("해당 일정이 삭제되었습니다.", HttpStatus.OK);
     }
 
-    public boolean validateMember(Member member, Schedule schedule){
+    public boolean validateMemberAndSchedule(Member member, Schedule schedule){
 
-        return !schedule.getMember().getEmail().equals(member.getEmail());
+        return !scheduleRepository.existsByIdAndMember(schedule.getId(), member);
     }
 
-    public void validateMember(Member member, Party party) {
+    public boolean validateMemberAndParty(Member member, Party party) {
 
-        if(!memberPartyRepository.existsByMemberAndParty(member, party))
-            throw new IllegalArgumentException("현재 사용자는 그룹에 접근 할 권한이 없습니다.");
-
+        return !memberPartyRepository.existsByMemberAndParty(member, party);
     }
 }
