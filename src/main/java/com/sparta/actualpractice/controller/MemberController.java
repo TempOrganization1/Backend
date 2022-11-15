@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.controller;
 
+import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberReqeustDto;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.service.MemberService;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,4 +42,9 @@ public class MemberController {
         return memberService.getMyInfo(memberDetails.getMember());
     }
 
+    @PatchMapping("/mypage")
+    public ResponseEntity<?> updateMyInfo(@ModelAttribute MemberInfoRequestDto memberInfoRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails) throws IOException {
+
+        return memberService.updateMyInfo(memberInfoRequestDto, memberDetails.getMember());
+    }
 }
