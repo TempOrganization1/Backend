@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class CommentResponseDto {
 
+    private Long id;
     private String content;
 
     private String writer;
@@ -19,6 +20,7 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment){
 
+        this.id = comment.getId();
         this.content = comment.getContent();
         this.writer = comment.getMember().getName();
         this.profileImageUrl = comment.getMember().getImageUrl();
