@@ -36,23 +36,23 @@ public class Member extends TimeStamped {
     private String imageUrl;
 
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Schedule> scheduleList;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Album> albumList;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberParty> memberPartyList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NOTIFICATION_ID")
     private Notification notification;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Admin> adminList;
 
     public Member(MemberReqeustDto memberReqeustDto, String password) {
