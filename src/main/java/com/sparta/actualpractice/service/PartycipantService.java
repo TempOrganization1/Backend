@@ -28,11 +28,11 @@ public class PartycipantService {
 
         if(participantRepository.existsByScheduleAndMember(schedule, member)){
             participantRepository.deleteByScheduleAndMember(schedule, member);
-            return new ResponseEntity<>("해당 일정에 취소하였습니다.", HttpStatus.OK);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
         else{
             participantRepository.save(new Participant(schedule, member));
-            return new ResponseEntity<>("해당 일정에 참가하였습니다.",HttpStatus.OK);
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
     }
 }
