@@ -34,6 +34,8 @@ public class Party {
     @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
     private Admin admin;
 
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
+    private List<Invitation> invitationList;
 
     public Party(PartyRequestDto partyRequestDto) {
 
