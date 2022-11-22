@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
     Optional<Invitation> findByMemberAndParty(Member member, Party party);
+
+    Optional<Invitation> findByCode(String code);
     boolean existsByCode(String code);
     boolean existsByMemberAndParty(Member member, Party party);
 

@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.service;
 
+import com.sparta.actualpractice.dto.request.InvitationCodeRequestDto;
 import com.sparta.actualpractice.dto.request.InvitationRequestDto;
 import com.sparta.actualpractice.dto.response.InvitationResponseDto;
 import com.sparta.actualpractice.entity.Invitation;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
@@ -37,6 +39,8 @@ public class InvitationService {
         // 초대받는 사람 (받은 이메일) 찾아서 member1에 저장
         Member member1 = memberRepository.findByEmail(invitationRequestDto.getEmail()).orElseThrow(() -> new NullPointerException("해당 유저가 존재하지 않습니다."));
 
+        if(member1.equals(member))
+            throw new IllegalArgumentException("자신을 초대할 수 없습니다.");
 
         Invitation invitation;
 
@@ -64,6 +68,19 @@ public class InvitationService {
     }
 
 
+    @Transactional
+    public ResponseEntity<?> registerCode(InvitationCodeRequestDto invitationCodeRequestDto, Member member) {
+
+        Invitation invitation = invitationRepository.findByCode(invitationCodeRequestDto.getCode()).orElseThrow(() -> new NullPointerException("유효하지 않은 코드입니다."));
+
+        MemberParty memberParty = new MemberParty(member, invitation.getParty());
+
+        memberPartyRepository.save(memberParty);
+        invitationRepository.delete(invitation);
+
+        return new ResponseEntity<>("그룹에 참여되었습니다.", HttpStatus.OK);
+    }
+
     public String createCode() {
 
         Random random = new Random();
@@ -81,6 +98,7 @@ public class InvitationService {
 
         return code.toString();
     }
+
 
 
 }
