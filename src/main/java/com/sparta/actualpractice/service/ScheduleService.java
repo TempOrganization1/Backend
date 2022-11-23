@@ -54,7 +54,7 @@ public class ScheduleService {
 
             for (Schedule schedule : scheduleList) {
 
-                scheduleListResponseDtoList.add(new ScheduleListResponseDto(schedule, schedule.getParty().getName()));
+                scheduleListResponseDtoList.add(new ScheduleListResponseDto(schedule));
             }
         }
 

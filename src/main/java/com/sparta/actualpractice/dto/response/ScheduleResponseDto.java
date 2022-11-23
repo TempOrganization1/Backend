@@ -19,6 +19,7 @@ public class ScheduleResponseDto {
     private String meetTime;
     private List<ParticipantReponseDto> participantResponseDtoList;
     private Boolean isParticipant;
+    private String memberEmail;
 
     public ScheduleResponseDto(Schedule schedule, List<ParticipantReponseDto> participantResponseDtoList, Boolean isParticipant) {
 
@@ -33,6 +34,7 @@ public class ScheduleResponseDto {
         this.meetTime = schedule.getTime().split(" ")[1];
         this.participantResponseDtoList = participantResponseDtoList;
         this.isParticipant = isParticipant;
+        this.memberEmail = schedule.getMember().getEmail();
     }
 
     public ScheduleResponseDto(Schedule schedule) {
@@ -44,7 +46,7 @@ public class ScheduleResponseDto {
         this.placeName = schedule.getPlace().split(",")[1];
         this.date = schedule.getTime().split(" ")[0];
         this.meetTime = schedule.getTime().split(" ")[1];
-
+        this.memberEmail = schedule.getMember().getEmail();
     }
 
 }
