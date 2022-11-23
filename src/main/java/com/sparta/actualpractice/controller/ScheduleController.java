@@ -36,9 +36,9 @@ public class ScheduleController {
 
     // 본인 일정 상세 조회
     @GetMapping("/schedules/{schedule_id}")
-    public ResponseEntity<?> getSchedule(@PathVariable(name = "schedule_id") Long scheduleId){
+    public ResponseEntity<?> getSchedule(@PathVariable(name = "schedule_id") Long scheduleId, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
 
-        return scheduleService.getSchedule(scheduleId);
+        return scheduleService.getSchedule(scheduleId, memberDetails.getMember());
     }
 
     // 일정 수정

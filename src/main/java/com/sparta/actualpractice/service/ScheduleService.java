@@ -78,9 +78,10 @@ public class ScheduleService {
         return new ResponseEntity<>(scheduleListResponseDtoList, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getSchedule(Long scheduleId) {
+    public ResponseEntity<?> getSchedule(Long scheduleId, Member member) {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
+        Boolean isParticipant = participantRepository.existsByScheduleAndMember(schedule, member);
 
         List<Participant> participantList = participantRepository.findAllBySchedule(schedule);
         List<ParticipantReponseDto> participantResponseDtoList = new ArrayList<>();
@@ -89,9 +90,11 @@ public class ScheduleService {
 
             if (scheduleId.equals(participant.getSchedule().getId()))
                 participantResponseDtoList.add(new ParticipantReponseDto(participant));
+
         }
 
-        return new ResponseEntity<>(new ScheduleResponseDto(schedule, participantResponseDtoList), HttpStatus.OK);
+
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule, participantResponseDtoList, isParticipant), HttpStatus.OK);
     }
 
     @Transactional
