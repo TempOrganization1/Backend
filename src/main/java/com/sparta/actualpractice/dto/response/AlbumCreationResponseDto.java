@@ -12,6 +12,7 @@ public class AlbumCreationResponseDto {
     private String place;
 
     private String imageUrl;
+    private String memberEmail;
 
     public AlbumCreationResponseDto(Album album) {
 
@@ -19,5 +20,6 @@ public class AlbumCreationResponseDto {
         this.content = album.getContent();
         this.place = album.getPlace();
         this.imageUrl = album.getImageUrl();
+        this.memberEmail = album.getMember().getEmail();
     }
 }
