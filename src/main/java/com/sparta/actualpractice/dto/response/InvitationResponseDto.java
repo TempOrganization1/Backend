@@ -9,7 +9,6 @@ public class InvitationResponseDto {
 
     private String code;
 
-
     public InvitationResponseDto(Invitation invitation) {
 
         this.code = invitation.getCode();

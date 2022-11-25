@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class MemberInfoRequestDto {
 
     private MultipartFile profileImageUrl;

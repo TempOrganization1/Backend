@@ -26,7 +26,6 @@ public class PartyService {
     private final AdminRepository adminRepository;
     private final MemberPartyRepository memberPartyRepository;
 
-
     public ResponseEntity<?> createParty(PartyRequestDto partyRequestDto, Member member) {
 
         Party party = new Party(partyRequestDto);
@@ -44,6 +43,7 @@ public class PartyService {
     public ResponseEntity<?> getPartyList(Member member) {
 
         List<MemberParty> memberPartyList = memberPartyRepository.findAllByMember(member);
+
         List<PartyResponseDto> partyResponseDtoList = new ArrayList<>();
         List<Party> partyList = new ArrayList<>();
 
@@ -52,20 +52,18 @@ public class PartyService {
             partyList.add(party);
         }
 
-        for (Party party : partyList) {
+        for (Party party : partyList)
             partyResponseDtoList.add(new PartyResponseDto(party, member));
-        }
 
         return new ResponseEntity<>(partyResponseDtoList, HttpStatus.OK);
     }
-
 
     @Transactional
     public ResponseEntity<?> updateParty(Long partyId, PartyRequestDto partyRequestDto, Member member) {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
 
-        if (validateMember(member, party))
+        if (validateAdmin(member, party))
             throw new IllegalArgumentException("그룹 정보를 수정할 수 있는 권한이 없습니다.");
 
         party.updateInformation(partyRequestDto);
@@ -73,13 +71,12 @@ public class PartyService {
         return new ResponseEntity<>("그룹 정보가 수정되었습니다", HttpStatus.OK);
     }
 
-
     @Transactional
     public ResponseEntity<?> deleteParty(Long partyId, Member member) {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
 
-        if (validateMember(member, party))
+        if (validateAdmin(member, party))
             throw new IllegalArgumentException("그룹 정보를 삭제할 수 있는 권한이 없습니다.");
 
         partyRepository.delete(party);
@@ -87,7 +84,7 @@ public class PartyService {
         return new ResponseEntity<>("그룹이 삭제되었습니다.", HttpStatus.OK);
     }
 
-    public boolean validateMember(Member member, Party party) {
+    public boolean validateAdmin(Member member, Party party) {
 
         return !adminRepository.existsByMemberAndParty(member, party);
     }

@@ -1,8 +1,5 @@
 package com.sparta.actualpractice.entity;
 
-
-import com.sparta.actualpractice.dto.request.InvitationRequestDto;
-import io.swagger.models.auth.In;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +24,6 @@ public class Invitation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-
 
     public Invitation(String code, Member member, Party party) {
 
