@@ -34,6 +34,11 @@ public class Party {
     @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
     private Admin admin;
 
+    public Party(String name, String introduction) {
+
+        this.name = name;
+        this.introduction = introduction;
+    }
 
     public Party(PartyRequestDto partyRequestDto) {
 
