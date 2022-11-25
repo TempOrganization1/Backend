@@ -39,6 +39,7 @@ public class ScheduleResponseDto {
 
     public ScheduleResponseDto(Schedule schedule) {
 
+        this.writer = schedule.getMember().getName();
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
         this.content = schedule.getContent();
