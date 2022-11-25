@@ -18,4 +18,5 @@ public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> 
 
     boolean existsByMember_EmailAndParty(String email, Party party);
     void deleteByPartyAndMember(Party party, Member member);
+    List<MemberParty> findAllByParty(Party party);
 }

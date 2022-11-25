@@ -91,6 +91,7 @@ public class AlbumService {
                 .imageUrl(album.getImageUrl())
                 .commentList(commentResponseDtoList)
                 .beforeTime(Time.calculateTime(album))
+                .memberEmail(album.getMember().getEmail())
                 .build(), HttpStatus.OK);
     }
 

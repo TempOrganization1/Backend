@@ -16,6 +16,7 @@ public class CommentResponseDto {
     private String profileImageUrl;
 
     private String beforeTime;
+    private String memberEmail;
 
 
     public CommentResponseDto(Comment comment){
@@ -25,5 +26,6 @@ public class CommentResponseDto {
         this.writer = comment.getMember().getName();
         this.profileImageUrl = comment.getMember().getImageUrl();
         this.beforeTime = Time.calculateTime(comment);
+        this.memberEmail = comment.getMember().getEmail();
     }
 }

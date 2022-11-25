@@ -55,6 +55,8 @@ public class Member extends TimeStamped {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Admin> adminList;
 
+
+
     public Member(MemberReqeustDto memberReqeustDto, String password) {
 
         this.email = memberReqeustDto.getEmail();
