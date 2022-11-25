@@ -34,11 +34,16 @@ public class Party {
     @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
     private Admin admin;
 
+
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
+    private List<Invitation> invitationList;
+
     public Party(String name, String introduction) {
 
         this.name = name;
         this.introduction = introduction;
     }
+
 
     public Party(PartyRequestDto partyRequestDto) {
 
