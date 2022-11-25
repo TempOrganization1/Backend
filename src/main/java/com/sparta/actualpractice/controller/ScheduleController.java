@@ -34,6 +34,13 @@ public class ScheduleController {
         return scheduleService.getPartyScheduleList(partyId, memberDetails.getMember());
     }
 
+    // 그룹 내 가장 인기 있는 일정 상세 조회
+    @GetMapping("/{party_id}/schedules/popular")
+    public ResponseEntity<?> getPopularSchedule(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
+
+        return scheduleService.getPopularSchedule(partyId, memberDetails.getMember());
+    }
+
     // 본인 일정 상세 조회
     @GetMapping("/schedules/{schedule_id}")
     public ResponseEntity<?> getSchedule(@PathVariable(name = "schedule_id") Long scheduleId, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
