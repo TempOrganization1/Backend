@@ -3,10 +3,11 @@
 # 🥳 위프, we are friend! 🎈 <br>
 
 
-바로가기 ⏩️ https://main.daegm2i4mn3we.amplifyapp.com 
+WeF 바로가기  ⏩️ https://main.daegm2i4mn3we.amplifyapp.com  <br>
+team Notion ⏩️ https://sumptuous-devourer-e77.notion.site/2-we-are-friends-bf4c7ed5ce7f4da88186c275c221bb2c
 
 ----
-# 📍 목차
+# 📍 table of contents
 
 1. team
 - taem member introduction
@@ -16,6 +17,7 @@
 - project introduction
 - major skill
 - project architecture
+- ERD
 - skill stack
 - skill stack & library cause of utilization
 - trouble shooting
@@ -54,11 +56,21 @@
 
 ## major skill
 
+✨ 그룹 생성 <br>
+✨ 일정 생성 <br>
+✨ 앨범 생성 <br>
+✨ 일정 참여 <br>
+✨ 댓글 달기 <br>
+
 ## project architecture
+<img src="https://velog.velcdn.com/images/resyve/post/df4a13ab-b696-4f2a-89a1-99a602487895/image.png">
+
+## ERD
+<img src="https://velog.velcdn.com/images/resyve/post/f636d45f-f7f2-4098-af99-9a830e73f107/image.png">
 
 ## skill stack
 
-FrontEnd <br>
+🧶 FrontEnd <br>
 <div>
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/> 
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/> 
@@ -71,9 +83,8 @@ FrontEnd <br>
 <img src="https://img.shields.io/badge/kakao login-FFCD00?style=flat-square&logo=kakao&logoColor=black">
  <img src="https://img.shields.io/badge/kakao map-FFCD00?style=flat-square&logo=kakao&logoColor=black">
 </div>
-------
 
-BackEnd<br>
+🧵 BackEnd <br>
 <div>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=SpringBoot&logoColor=white"/>
 <img src="https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=Gradle&logoColor=white"/>
@@ -87,14 +98,12 @@ BackEnd<br>
 <img src="https://img.shields.io/badge/codedeploy-6DB33F?style=flat-square&logo=codedeploy&logoColor=white">
 <img src="https://img.shields.io/badge/kakao login-FFCD00?style=flat-square&logo=kakao&logoColor=black">
 <img src="https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=Swagger&logoColor=white">
-
-
-
 </div>
 
-[사용 예정]<br>
-<img src="https://img.shields.io/badge/SockJS-010101?style=flat-square&logoColor=white"/>
-<img src="https://img.shields.io/badge/Stromp-353535?style=flat-square&logoColor=white">
+[사용 예정]<br/>
+
+
+<img src="https://img.shields.io/badge/SockJS-010101?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/Stromp-353535?style=flat-square&logoColor=white">
 <img src="https://img.shields.io/badge/google login-4285F4?style=flat-square&logo=google&logoColor=white">
 <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white">
 <img src="https://img.shields.io/badge/QueryDSL-0769AD?style=flat-square&logo=jQuery&logoColor=white">
