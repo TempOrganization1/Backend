@@ -13,4 +13,5 @@ public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> 
     List<MemberParty> findAllByMember(Member member);
     boolean existsByMemberAndParty(Member member, Party party);
     void deleteByPartyAndMember(Party party, Member member);
+    List<MemberParty> findAllByParty(Party party);
 }
