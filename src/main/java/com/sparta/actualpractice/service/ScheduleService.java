@@ -136,7 +136,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
         }
 
-        schedule.update(scheduleRequestDto);
+        schedule.updateInformation(scheduleRequestDto);
 
         return new ResponseEntity<>("해당 일정이 수정되었습니다.", HttpStatus.OK);
     }

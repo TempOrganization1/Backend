@@ -8,5 +8,4 @@ public class PartyRequestDto {
     private String partyName;
 
     private String partyIntroduction;
-
 }

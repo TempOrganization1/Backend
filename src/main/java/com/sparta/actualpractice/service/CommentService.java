@@ -41,7 +41,7 @@ public class CommentService {
         if (validateMember(member, comment))
             throw new IllegalArgumentException("댓글 작성자와 현재 사용자가 일치하지 않습니다.");
 
-        comment.update(commentRequestDto);
+        comment.updateContent(commentRequestDto);
 
         return new ResponseEntity<>("댓글이 수정되었습니다.", HttpStatus.OK);
     }

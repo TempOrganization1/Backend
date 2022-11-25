@@ -43,7 +43,7 @@ public class Album extends TimeStamped {
     private List<Comment> commentList;
 
 
-    public void update(AlbumRequestDto albumRequestDto) {
+    public void updateContent(AlbumRequestDto albumRequestDto) {
 
         this.content = albumRequestDto.getContent();
     }

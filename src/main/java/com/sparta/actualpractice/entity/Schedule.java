@@ -50,7 +50,7 @@ public class Schedule extends TimeStamped {
         this.party = party;
     }
 
-    public void update(ScheduleRequestDto scheduleRequestDto) {
+    public void updateInformation(ScheduleRequestDto scheduleRequestDto) {
 
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();

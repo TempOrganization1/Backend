@@ -68,7 +68,7 @@ public class PartyService {
         if (validateMember(member, party))
             throw new IllegalArgumentException("그룹 정보를 수정할 수 있는 권한이 없습니다.");
 
-        party.update(partyRequestDto);
+        party.updateInformation(partyRequestDto);
 
         return new ResponseEntity<>("그룹 정보가 수정되었습니다", HttpStatus.OK);
     }
