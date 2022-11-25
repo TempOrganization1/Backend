@@ -105,7 +105,7 @@ public class AlbumService {
             throw new IllegalArgumentException("앨범 작성자와 현재 사용자가 일치하지 않습니다.");
 
 
-        album.update(albumRequestDto);
+        album.updateContent(albumRequestDto);
 
         return new ResponseEntity<>("앨범 정보가 수정되었습니다.", HttpStatus.OK);
     }

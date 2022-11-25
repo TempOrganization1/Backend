@@ -1,7 +1,7 @@
 package com.sparta.actualpractice.controller;
 
 import com.sparta.actualpractice.security.MemberDetailsImpl;
-import com.sparta.actualpractice.service.PartycipantService;
+import com.sparta.actualpractice.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ParticipantController {
 
-    private final PartycipantService partycipantService;
+    private final ParticipantService partycipantService;
 
     @PostMapping("/{schedule_id}/participate")
     public ResponseEntity<?> createParticipant(@AuthenticationPrincipal MemberDetailsImpl memberDetails, @PathVariable(name = "schedule_id") Long scheduleId){

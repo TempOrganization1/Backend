@@ -15,5 +15,4 @@ public class ScheduleRequestDto {
     private String meetTime;
 
     private String date;
-
 }
