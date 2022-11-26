@@ -8,9 +8,7 @@ public class AlbumCreationResponseDto {
 
     private Long albumId;
     private String content;
-
     private String place;
-
     private String imageUrl;
     private String memberEmail;
 

@@ -11,13 +11,12 @@ import lombok.NoArgsConstructor;
 public class PartyResponseDto {
 
     private Long partyId;
-
     private String partyName;
-
     private String partyIntroduction;
     private String memberEmail;
 
-    public PartyResponseDto(Party party, Member member){
+    public PartyResponseDto(Party party, Member member) {
+
         this.partyId = party.getId();
         this.partyName = party.getName();
         this.partyIntroduction = party.getIntroduction();

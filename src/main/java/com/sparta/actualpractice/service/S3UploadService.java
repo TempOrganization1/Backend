@@ -28,6 +28,7 @@ public class S3UploadService {
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
 
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("Fail : Multipart File -> File Convert"));
+
         return upload(uploadFile, dirName);
     }
 
@@ -36,10 +37,12 @@ public class S3UploadService {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
+
         return uploadImageUrl;
     }
 
     private void removeNewFile(File targetFile) {
+
         if (targetFile.delete()) {
             log.info("File delete success");
             return;
@@ -48,18 +51,24 @@ public class S3UploadService {
     }
 
     private String putS3(File uploadFile, String fileName) {
+
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+
         return "https://podomarket1.s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
+
         File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
+
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             }
+
             return Optional.of(convertFile);
         }
+
         return Optional.empty();
     }
 }

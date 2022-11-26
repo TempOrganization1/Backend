@@ -2,7 +2,7 @@ package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.TokenDto;
 import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
-import com.sparta.actualpractice.dto.request.MemberReqeustDto;
+import com.sparta.actualpractice.dto.request.MemberRequestDto;
 import com.sparta.actualpractice.dto.response.MemberResponseDto;
 import com.sparta.actualpractice.entity.Member;
 import com.sparta.actualpractice.entity.MemberParty;
@@ -37,27 +37,22 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-
     private final S3UploadService s3UploadService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenRepository refreshTokenRepository;
-
     private final PartyRepository partyRepository;
-
     private final MemberPartyRepository memberPartyRepository;
 
-    public ResponseEntity<?> signup(MemberReqeustDto memberReqeustDto) {
+    public ResponseEntity<?> signup(MemberRequestDto memberRequestDto) {
 
-        if(memberRepository.existsByEmail(memberReqeustDto.getEmail())){
+        if(memberRepository.existsByEmail(memberRequestDto.getEmail()))
             return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
-        }
-        Member member = new Member(memberReqeustDto, passwordEncoder.encode(memberReqeustDto.getPassword()));
+
+        Member member = new Member(memberRequestDto, passwordEncoder.encode(memberRequestDto.getPassword()));
 
         memberRepository.save(member);
 
-
         // 기본 그룹 가입
-
         if(member.getId() == 1L) {
 
             String name = "위프";
@@ -76,19 +71,17 @@ public class MemberService {
 
         memberPartyRepository.save(memberParty);
 
-
         return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<?> login(MemberRequestDto memberRequestDto) {
 
-    public ResponseEntity<?> login(MemberReqeustDto memberReqeustDto) {
-
-        UsernamePasswordAuthenticationToken authenticationToken = memberReqeustDto.toAuthentication();
+        UsernamePasswordAuthenticationToken authenticationToken = memberRequestDto.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
 
-        if(!passwordEncoder.matches(memberReqeustDto.getPassword(), member.getPassword()))
+        if(!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword()))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다."); // 커스텀 예외 처리 예정
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
@@ -120,7 +113,6 @@ public class MemberService {
         Member member1 = memberRepository.findByEmail(member.getEmail()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
 
         return new ResponseEntity<>(new MemberResponseDto(member1), HttpStatus.OK);
-
     }
 
     @Transactional
@@ -134,6 +126,4 @@ public class MemberService {
 
         return new ResponseEntity<>(new MemberResponseDto(member1), HttpStatus.OK);
     }
-
-
 }

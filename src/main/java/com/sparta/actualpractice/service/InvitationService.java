@@ -28,7 +28,6 @@ public class InvitationService {
     private final MemberPartyRepository memberPartyRepository;
     private final MemberRepository memberRepository;
 
-
     public ResponseEntity<?> createCode(Long partyId, InvitationRequestDto invitationRequestDto, Member member) {
 
         // 받아온 partyId값 확인

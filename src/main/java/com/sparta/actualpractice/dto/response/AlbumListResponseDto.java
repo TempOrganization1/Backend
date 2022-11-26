@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class AlbumListResponseDto {
 
@@ -15,6 +14,7 @@ public class AlbumListResponseDto {
     private String imageUrl;
 
     public AlbumListResponseDto(Album album) {
+
         this.id = album.getId();
         this.imageUrl = album.getImageUrl();
     }

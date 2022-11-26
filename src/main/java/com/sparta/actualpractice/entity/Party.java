@@ -22,7 +22,7 @@ public class Party {
     @Column(nullable = false)
     private String introduction;
 
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<MemberParty> memberPartyList;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
@@ -31,7 +31,7 @@ public class Party {
     @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<Album> albumList;
 
-    @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "party", cascade = CascadeType.REMOVE)
     private Admin admin;
 
 

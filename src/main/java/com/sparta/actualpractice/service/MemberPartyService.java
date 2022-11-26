@@ -24,12 +24,14 @@ public class MemberPartyService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(()-> new NullPointerException("해당 그룹이 없습니다."));
 
-        if(memberPartyRepository.existsByMemberAndParty(member, party)){
+        if (memberPartyRepository.existsByMemberAndParty(member, party)) {
             memberPartyRepository.deleteByPartyAndMember(party, member);
+
             return new ResponseEntity<>("해당 그룹을 나왔습니다.", HttpStatus.OK);
         }
-        else{
+        else {
             memberPartyRepository.save(new MemberParty(member, party));
+
             return new ResponseEntity<>("해당 그룹에 참가하였습니다.", HttpStatus.OK);
         }
     }

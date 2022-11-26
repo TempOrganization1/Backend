@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final AlbumRepository albumRepository;
-
     private final CommentRepository commentRepository;
 
     public ResponseEntity<?> createComment(Long albumId, CommentRequestDto commentRequestDto, Member member) {
@@ -31,7 +30,6 @@ public class CommentService {
 
         return new ResponseEntity<>(new CommentResponseDto(comment), HttpStatus.OK);
     }
-
 
     @Transactional
     public ResponseEntity<?> updateComment(Long commentId, CommentRequestDto commentRequestDto, Member member) {
@@ -61,6 +59,7 @@ public class CommentService {
     }
 
     public boolean validateMember(Member member, Comment comment) {
+
         return !member.getEmail().equals(comment.getMember().getEmail());
     }
 }

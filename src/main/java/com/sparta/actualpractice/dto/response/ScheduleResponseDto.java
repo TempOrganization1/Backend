@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 public class ScheduleResponseDto {
-    private String partyName;
+
     private String profileImageUrl;
     private Long scheduleId;
     private String writer;
