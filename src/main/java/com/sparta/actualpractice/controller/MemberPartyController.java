@@ -15,8 +15,8 @@ public class MemberPartyController {
 
     private final MemberPartyService memberPartyService;
 
-    @PostMapping("{party_id}/attend")
-    public ResponseEntity<?> createMemberParty(@AuthenticationPrincipal MemberDetailsImpl memberDetails, @PathVariable(name = "party_id") Long partyId) {
+    @PostMapping("{party_id}/attendant")
+    public ResponseEntity<?> createMemberParty(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         return memberPartyService.createMemberParty(partyId, memberDetails.getMember());
     }

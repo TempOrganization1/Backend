@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ParticipantController {
 
-    private final ParticipantService partycipantService;
+    private final ParticipantService participantService;
 
     @PostMapping("/{schedule_id}/participate")
-    public ResponseEntity<?> createParticipant(@AuthenticationPrincipal MemberDetailsImpl memberDetails, @PathVariable(name = "schedule_id") Long scheduleId){
+    public ResponseEntity<?> createParticipant(@PathVariable(name = "schedule_id") Long scheduleId, @AuthenticationPrincipal MemberDetailsImpl memberDetails){
 
-        return partycipantService.createParticipant(scheduleId, memberDetails.getMember().getId());
+        return participantService.createParticipant(scheduleId, memberDetails.getMember().getId());
     }
 }
