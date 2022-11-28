@@ -20,6 +20,8 @@ public class PartyResponseDto {
         this.partyId = party.getId();
         this.partyName = party.getName();
         this.partyIntroduction = party.getIntroduction();
-        this.memberEmail = party.getAdmin().getMember().getEmail();
+
+        if (party.getAdmin() != null)
+            this.memberEmail = party.getAdmin().getMember().getEmail();
     }
 }
