@@ -9,7 +9,6 @@ public class ScheduleListResponseDto {
     private String partyName;
     private Long scheduleId;
     private String writer;
-
     private String title;
     private Long partyId;
 

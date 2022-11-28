@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class Time {
 
     private static class TIME_MAXIMUM {
+
         public static final int SEC = 60;
         public static final int MIN = 60;
         public static final int HOUR = 24;

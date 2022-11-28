@@ -10,16 +10,12 @@ public class CommentResponseDto {
 
     private Long id;
     private String content;
-
     private String writer;
-
     private String profileImageUrl;
-
     private String beforeTime;
     private String memberEmail;
 
-
-    public CommentResponseDto(Comment comment){
+    public CommentResponseDto(Comment comment) {
 
         this.id = comment.getId();
         this.content = comment.getContent();

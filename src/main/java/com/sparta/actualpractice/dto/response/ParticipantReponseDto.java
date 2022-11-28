@@ -7,7 +7,6 @@ import lombok.Getter;
 public class ParticipantReponseDto {
 
     private String memberName;
-
     private String profileImageUrl;
 
     public ParticipantReponseDto(Participant participant) {

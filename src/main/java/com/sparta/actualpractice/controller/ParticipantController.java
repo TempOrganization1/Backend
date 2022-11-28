@@ -15,7 +15,7 @@ public class ParticipantController {
 
     private final ParticipantService participantService;
 
-    @PostMapping("/{schedule_id}/participation")
+    @PostMapping("/{schedule_id}/participations")
     public ResponseEntity<?> createParticipant(@PathVariable(name = "schedule_id") Long scheduleId, @AuthenticationPrincipal MemberDetailsImpl memberDetails ){
 
         return participantService.createParticipant(scheduleId, memberDetails.getMember().getId());

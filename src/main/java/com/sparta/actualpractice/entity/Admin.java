@@ -22,11 +22,9 @@ public class Admin {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-
     public Admin(Member member, Party party) {
 
         this.party = party;
         this.member = member;
-
     }
 }

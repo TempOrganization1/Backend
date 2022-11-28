@@ -27,12 +27,10 @@ public class AlbumService {
 
     @Value("${cloud.aws.s3.bucket}")
     private String dir;
-
     private final AlbumRepository albumRepository;
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
     private final S3UploadService s3UploadService;
-
     private final CommentRepository commentRepository;
 
     public ResponseEntity<?> createAlbum(Long partyId, AlbumRequestDto albumRequestDto, Member member) throws IOException {
@@ -43,7 +41,7 @@ public class AlbumService {
 
         Album album = Album.builder()
                 .content(albumRequestDto.getContent())
-                .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(),dir))
+                .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(), dir))
                 .member(member)
                 .place(albumRequestDto.getPlace())
                 .party(party)

@@ -10,13 +10,15 @@ import java.util.Optional;
 
 public interface MemberPartyRepository extends JpaRepository<MemberParty, Long> {
 
-
     List<MemberParty> findAllByMember(Member member);
 
     Optional<MemberParty> findByMemberAndParty(Member member, Party party);
+
     boolean existsByMemberAndParty(Member member, Party party);
 
     boolean existsByMember_EmailAndParty(String email, Party party);
+
     void deleteByPartyAndMember(Party party, Member member);
+
     List<MemberParty> findAllByParty(Party party);
 }
