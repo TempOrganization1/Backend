@@ -84,7 +84,7 @@ public class ScheduleService {
         List<MemberResponseDto> memberResponseDtoList = new ArrayList<>();
 
         for (MemberParty memberParty : memberPartyList){
-            Member member1 = memberRepository.findById(memberParty.getId()).orElseThrow(() -> new IllegalArgumentException("맴버가 존재하지 않습니다."));
+            Member member1 = memberRepository.findById(memberParty.getMember().getId()).orElseThrow(() -> new IllegalArgumentException("맴버가 존재하지 않습니다."));
             memberResponseDtoList.add(new MemberResponseDto(member1));
         }
 
