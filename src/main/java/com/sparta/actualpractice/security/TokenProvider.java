@@ -74,7 +74,7 @@ public class TokenProvider {
 
         String email = claims.getSubject();
         Member member = memberRepository.findByEmail( email )
-                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + email ));;
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + email ));
 
         MemberDetailsImpl memberDetails = new MemberDetailsImpl(member);
 
@@ -106,4 +106,17 @@ public class TokenProvider {
             return e.getClaims();
         }
     }
+
+    public String decodedMemberName(String token) {
+
+        String jwtToken = token.substring(7);
+
+        if(!validateToken(jwtToken))
+            throw new IllegalArgumentException("토큰에 문제 있어!!");
+
+        Claims claims = parseClaims(jwtToken);
+
+        return claims.getSubject();
+    }
+
 }
