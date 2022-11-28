@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.dto.response;
 
+import com.sparta.actualpractice.entity.Party;
 import com.sparta.actualpractice.entity.Schedule;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 @Getter
 public class ScheduleResponseDto {
 
+    private String partyName;
     private String profileImageUrl;
     private Long scheduleId;
     private String writer;
@@ -37,8 +39,9 @@ public class ScheduleResponseDto {
         this.memberEmail = schedule.getMember().getEmail();
     }
 
-    public ScheduleResponseDto(Schedule schedule) {
+    public ScheduleResponseDto(Schedule schedule, Party party) {
 
+        this.partyName = party.getName();
         this.writer = schedule.getMember().getName();
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();

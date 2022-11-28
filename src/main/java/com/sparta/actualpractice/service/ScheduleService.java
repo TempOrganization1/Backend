@@ -35,7 +35,7 @@ public class ScheduleService {
 
         scheduleRepository.save(schedule);
 
-        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule, party), HttpStatus.OK);
     }
 
     public ResponseEntity<?> getScheduleList(Member member) {
