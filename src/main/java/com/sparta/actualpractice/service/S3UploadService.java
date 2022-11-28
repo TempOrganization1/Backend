@@ -54,7 +54,7 @@ public class S3UploadService {
 
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
 
-        return "https://podomarket1.s3.ap-northeast-2.amazonaws.com/" + fileName;
+        return "https://wef1.s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
