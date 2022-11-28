@@ -25,7 +25,7 @@ public class MessageController {
 //    @PostMapping("/chartrooms")
 //}
 
-    @MessageMapping(value = {"/chatrooms/{chatRoom_id"})
+    @MessageMapping(value = {"/chatrooms/{chatRoom_id}"})
     public void addMessage(@RequestBody MessageRequestDto messageRequestDto,
                            @DestinationVariable("chatRoom_id") Long chatRoomId, @Header("Authorization") String token) {
 
