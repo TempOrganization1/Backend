@@ -29,7 +29,7 @@ public class MessageController {
 //}
 
     @MessageMapping(value = {"/chatrooms/{chatRoom_id}"})
-    public void addMessage(@Payload MessageRequestDto messageRequestDto,
+    public void addMessage(MessageRequestDto messageRequestDto,
                            @PathVariable("chatRoom_id") Long chatRoomId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         System.out.println("2번");
