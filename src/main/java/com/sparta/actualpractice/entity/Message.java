@@ -1,6 +1,7 @@
-package com.sparta.actualpractice.chat;
+package com.sparta.actualpractice.entity;
 
-import com.sparta.actualpractice.entity.Party;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,8 +9,10 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
-public class ChatMessage {
+@AllArgsConstructor
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +22,12 @@ public class ChatMessage {
     @JoinColumn(name = "CHATROOM_ID")
     private ChatRoom chatRoom;
 
-    @Column(nullable = false)
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     @Column(nullable = false)
-    private String message;
+    private String content;
+
+    private String createdAt;
 }

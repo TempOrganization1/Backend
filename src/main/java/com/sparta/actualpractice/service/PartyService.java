@@ -2,11 +2,9 @@ package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.PartyRequestDto;
 import com.sparta.actualpractice.dto.response.PartyResponseDto;
-import com.sparta.actualpractice.entity.Admin;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.MemberParty;
-import com.sparta.actualpractice.entity.Party;
+import com.sparta.actualpractice.entity.*;
 import com.sparta.actualpractice.repository.AdminRepository;
+import com.sparta.actualpractice.repository.ChatRoomRepository;
 import com.sparta.actualpractice.repository.MemberPartyRepository;
 import com.sparta.actualpractice.repository.PartyRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,7 @@ public class PartyService {
     private final PartyRepository partyRepository;
     private final AdminRepository adminRepository;
     private final MemberPartyRepository memberPartyRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
 
     public ResponseEntity<?> createParty(PartyRequestDto partyRequestDto, Member member) {
@@ -32,10 +31,12 @@ public class PartyService {
         Party party = new Party(partyRequestDto);
         Admin admin = new Admin(member, party);
         MemberParty memberParty = new MemberParty(member, party);
+        ChatRoom chatRoom = new ChatRoom(party, party.getName() + "의 채팅방");
 
         partyRepository.save(party);
         adminRepository.save(admin);
         memberPartyRepository.save(memberParty);
+        chatRoomRepository.save(chatRoom);
 
         return new ResponseEntity<>(new PartyResponseDto(party), HttpStatus.OK);
     }
