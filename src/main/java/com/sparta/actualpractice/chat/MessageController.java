@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class MessageController {
 //}
 
     @MessageMapping(value = {"/chatrooms/{chatRoom_id}"})
-    public void addMessage(@RequestBody MessageRequestDto messageRequestDto,
+    public void addMessage(@Payload MessageRequestDto messageRequestDto,
                            @PathVariable("chatRoom_id") Long chatRoomId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         System.out.println("2번");
