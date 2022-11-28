@@ -36,7 +36,7 @@ public class PartyService {
         adminRepository.save(admin);
         memberPartyRepository.save(memberParty);
 
-        return new ResponseEntity<>(new PartyResponseDto(party, member), HttpStatus.OK);
+        return new ResponseEntity<>(new PartyResponseDto(party), HttpStatus.OK);
     }
 
 
@@ -53,7 +53,7 @@ public class PartyService {
         }
 
         for (Party party : partyList)
-            partyResponseDtoList.add(new PartyResponseDto(party, member));
+            partyResponseDtoList.add(new PartyResponseDto(party));
 
         return new ResponseEntity<>(partyResponseDtoList, HttpStatus.OK);
     }
