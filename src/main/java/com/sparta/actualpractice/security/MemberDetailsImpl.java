@@ -21,6 +21,7 @@ public class MemberDetailsImpl implements UserDetails {
     }
 
     public Member getMember() {return  member;}
+
     @Override
     public String getPassword() {
         return member.getPassword();
@@ -32,10 +33,6 @@ public class MemberDetailsImpl implements UserDetails {
     }
 
     public String getEmail() { return  member.getEmail(); }
-
-//    public String getNickname() {
-//        return member.getNickname();
-//    }
 
     public String getName() {
         return member.getName();

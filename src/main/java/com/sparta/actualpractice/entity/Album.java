@@ -14,8 +14,8 @@ import java.util.List;
 @Getter
 @Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Album extends TimeStamped {
 
     @Id
@@ -39,11 +39,10 @@ public class Album extends TimeStamped {
     @JoinColumn(name = "PARTY_ID")
     private Party party;
 
-    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "album", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
-
-    public void update(AlbumRequestDto albumRequestDto) {
+    public void updateContent(AlbumRequestDto albumRequestDto) {
 
         this.content = albumRequestDto.getContent();
     }

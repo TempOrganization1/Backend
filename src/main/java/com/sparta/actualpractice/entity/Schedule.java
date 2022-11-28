@@ -9,8 +9,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Schedule extends TimeStamped {
 
     @Id
@@ -37,7 +37,7 @@ public class Schedule extends TimeStamped {
     @JoinColumn(name = "PARTY_ID")
     private Party party;
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
     private List<Participant> participantList;
 
     public Schedule(Member member, ScheduleRequestDto scheduleRequestDto, Party party) {
@@ -50,7 +50,7 @@ public class Schedule extends TimeStamped {
         this.party = party;
     }
 
-    public void update(ScheduleRequestDto scheduleRequestDto) {
+    public void updateInformation(ScheduleRequestDto scheduleRequestDto) {
 
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();

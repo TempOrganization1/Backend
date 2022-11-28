@@ -1,7 +1,7 @@
 package com.sparta.actualpractice.controller;
 
 import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
-import com.sparta.actualpractice.dto.request.MemberReqeustDto;
+import com.sparta.actualpractice.dto.request.MemberRequestDto;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +19,15 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody MemberReqeustDto memberReqeustDto) {
+    public ResponseEntity<?> signup(@RequestBody MemberRequestDto memberRequestDto) {
 
-        return memberService.signup(memberReqeustDto);
+        return memberService.signup(memberRequestDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberReqeustDto memberReqeustDto) {
+    public ResponseEntity<?> login(@RequestBody MemberRequestDto memberRequestDto) {
 
-        return memberService.login(memberReqeustDto);
+        return memberService.login(memberRequestDto);
     }
 
     @GetMapping("/check-email")

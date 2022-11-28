@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PartycipantService {
+public class ParticipantService {
 
     private final ParticipantRepository participantRepository;
     private final MemberRepository memberRepository;
@@ -26,12 +26,14 @@ public class PartycipantService {
         Member member = memberRepository.findById(memberId).orElseThrow(()-> new NullPointerException("해당 유저가 없습니다."));
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new NullPointerException("해당 일정이 없습니다."));
 
-        if(participantRepository.existsByScheduleAndMember(schedule, member)){
+        if(participantRepository.existsByScheduleAndMember(schedule, member)) {
             participantRepository.deleteByScheduleAndMember(schedule, member);
+
             return new ResponseEntity<>(false, HttpStatus.OK);
         }
-        else{
+        else {
             participantRepository.save(new Participant(schedule, member));
+
             return new ResponseEntity<>(true,HttpStatus.OK);
         }
     }

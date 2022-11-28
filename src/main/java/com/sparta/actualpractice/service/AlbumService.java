@@ -27,12 +27,10 @@ public class AlbumService {
 
     @Value("${cloud.aws.s3.bucket}")
     private String dir;
-
     private final AlbumRepository albumRepository;
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
     private final S3UploadService s3UploadService;
-
     private final CommentRepository commentRepository;
 
     public ResponseEntity<?> createAlbum(Long partyId, AlbumRequestDto albumRequestDto, Member member) throws IOException {
@@ -43,7 +41,7 @@ public class AlbumService {
 
         Album album = Album.builder()
                 .content(albumRequestDto.getContent())
-                .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(),dir))
+                .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(), dir))
                 .member(member)
                 .place(albumRequestDto.getPlace())
                 .party(party)
@@ -91,6 +89,7 @@ public class AlbumService {
                 .imageUrl(album.getImageUrl())
                 .commentList(commentResponseDtoList)
                 .beforeTime(Time.calculateTime(album))
+                .memberEmail(album.getMember().getEmail())
                 .build(), HttpStatus.OK);
     }
 
@@ -104,7 +103,7 @@ public class AlbumService {
             throw new IllegalArgumentException("앨범 작성자와 현재 사용자가 일치하지 않습니다.");
 
 
-        album.update(albumRequestDto);
+        album.updateContent(albumRequestDto);
 
         return new ResponseEntity<>("앨범 정보가 수정되었습니다.", HttpStatus.OK);
     }

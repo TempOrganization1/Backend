@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final AlbumRepository albumRepository;
-
     private final CommentRepository commentRepository;
 
     public ResponseEntity<?> createComment(Long albumId, CommentRequestDto commentRequestDto, Member member) {
@@ -32,7 +31,6 @@ public class CommentService {
         return new ResponseEntity<>(new CommentResponseDto(comment), HttpStatus.OK);
     }
 
-
     @Transactional
     public ResponseEntity<?> updateComment(Long commentId, CommentRequestDto commentRequestDto, Member member) {
 
@@ -41,7 +39,7 @@ public class CommentService {
         if (validateMember(member, comment))
             throw new IllegalArgumentException("댓글 작성자와 현재 사용자가 일치하지 않습니다.");
 
-        comment.update(commentRequestDto);
+        comment.updateContent(commentRequestDto);
 
         return new ResponseEntity<>("댓글이 수정되었습니다.", HttpStatus.OK);
     }
@@ -61,6 +59,7 @@ public class CommentService {
     }
 
     public boolean validateMember(Member member, Comment comment) {
+
         return !member.getEmail().equals(comment.getMember().getEmail());
     }
 }

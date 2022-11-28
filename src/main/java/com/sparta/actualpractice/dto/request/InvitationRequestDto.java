@@ -1,9 +1,10 @@
 package com.sparta.actualpractice.dto.request;
 
+
 import lombok.Getter;
 
 @Getter
-public class CommentRequestDto {
+public class InvitationRequestDto {
 
-    private String content;
+    private String email;
 }

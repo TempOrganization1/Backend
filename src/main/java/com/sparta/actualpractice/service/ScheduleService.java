@@ -1,14 +1,9 @@
 package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.ScheduleRequestDto;
-import com.sparta.actualpractice.dto.response.ParticipantReponseDto;
-import com.sparta.actualpractice.dto.response.ScheduleListResponseDto;
-import com.sparta.actualpractice.dto.response.ScheduleResponseDto;
+import com.sparta.actualpractice.dto.response.*;
 import com.sparta.actualpractice.entity.*;
-import com.sparta.actualpractice.repository.MemberPartyRepository;
-import com.sparta.actualpractice.repository.ParticipantRepository;
-import com.sparta.actualpractice.repository.PartyRepository;
-import com.sparta.actualpractice.repository.ScheduleRepository;
+import com.sparta.actualpractice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +22,14 @@ public class ScheduleService {
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
     private final ParticipantRepository participantRepository;
+    private final MemberRepository memberRepository;
 
     public ResponseEntity<?> createSchedules(Long partyId, Member member, ScheduleRequestDto scheduleRequestDto) {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if(validateMemberAndParty(member, party)){
+        if(validateMemberAndParty(member, party))
             throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
-        }
 
         Schedule schedule = new Schedule(member, scheduleRequestDto, party);
 
@@ -52,24 +47,59 @@ public class ScheduleService {
 
             List<Schedule> scheduleList = scheduleRepository.findAllByParty(memberParty.getParty());
 
-            for (Schedule schedule : scheduleList) {
-
-                scheduleListResponseDtoList.add(new ScheduleListResponseDto(schedule, schedule.getParty().getName()));
-            }
+            for (Schedule schedule : scheduleList)
+                scheduleListResponseDtoList.add(new ScheduleListResponseDto(schedule));
         }
 
         return new ResponseEntity<>(scheduleListResponseDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getPopularSchedule(Long partyId, Member member) {
+
+        Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
+
+        if (validateMemberAndParty(member, party))
+            throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
+
+        List<Schedule> scheduleList = scheduleRepository.findAllByParty(party);
+
+        Long popularScheduleId = 0L;
+        int num = -1;
+
+        for (Schedule schedule : scheduleList) {
+
+            if(schedule.getParticipantList().size() > num) {
+
+                num = schedule.getParticipantList().size();
+                popularScheduleId = schedule.getId();
+            }
+        }
+
+        Schedule schedule = scheduleRepository.findById(popularScheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
+
+        Boolean isParticipant = participantRepository.existsByScheduleAndMember(schedule, member);
+
+        List<MemberParty> memberPartyList = memberPartyRepository.findAllByParty(party);
+
+        List<MemberResponseDto> memberResponseDtoList = new ArrayList<>();
+
+        for (MemberParty memberParty : memberPartyList){
+            Member member1 = memberRepository.findById(memberParty.getMember().getId()).orElseThrow(() -> new IllegalArgumentException("맴버가 존재하지 않습니다."));
+            memberResponseDtoList.add(new MemberResponseDto(member1));
+        }
+
+        return new ResponseEntity<>(new SchedulePartyResponseDto(schedule, isParticipant, party, memberResponseDtoList) , HttpStatus.OK);
     }
 
     public ResponseEntity<?> getPartyScheduleList(Long partyId, Member member) {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if(validateMemberAndParty(member, party)){
+        if(validateMemberAndParty(member, party))
             throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
-        }
 
         List<Schedule> scheduleList = scheduleRepository.findAllByPartyOrderByTimeAsc(party);
+
         List<ScheduleListResponseDto> scheduleListResponseDtoList = new ArrayList<>();
 
         for (Schedule schedule : scheduleList)
@@ -78,9 +108,10 @@ public class ScheduleService {
         return new ResponseEntity<>(scheduleListResponseDtoList, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getSchedule(Long scheduleId) {
+    public ResponseEntity<?> getSchedule(Long scheduleId, Member member) {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
+        Boolean isParticipant = participantRepository.existsByScheduleAndMember(schedule, member);
 
         List<Participant> participantList = participantRepository.findAllBySchedule(schedule);
         List<ParticipantReponseDto> participantResponseDtoList = new ArrayList<>();
@@ -91,7 +122,7 @@ public class ScheduleService {
                 participantResponseDtoList.add(new ParticipantReponseDto(participant));
         }
 
-        return new ResponseEntity<>(new ScheduleResponseDto(schedule, participantResponseDtoList), HttpStatus.OK);
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule, participantResponseDtoList, isParticipant), HttpStatus.OK);
     }
 
     @Transactional
@@ -99,11 +130,10 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
 
-        if(validateMemberAndSchedule(member, schedule)){
+        if(validateMemberAndSchedule(member, schedule))
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
-        }
 
-        schedule.update(scheduleRequestDto);
+        schedule.updateInformation(scheduleRequestDto);
 
         return new ResponseEntity<>("해당 일정이 수정되었습니다.", HttpStatus.OK);
     }
@@ -113,9 +143,8 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
 
-        if(validateMemberAndSchedule(member, schedule)){
+        if(validateMemberAndSchedule(member, schedule))
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
-        }
 
         scheduleRepository.delete(schedule);
 

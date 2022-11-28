@@ -5,7 +5,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class MemberReqeustDto {
+public class MemberRequestDto {
+
     @NotBlank
 //    @Pattern(regexp = "^(?=.*[a-zA-Z])[-a-zA-Z0-9]{0,4}$")  // ㅈ정규식 바꿔야됌
     private String name;
@@ -18,6 +19,7 @@ public class MemberReqeustDto {
     private String email;
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
+
         return new UsernamePasswordAuthenticationToken(email, password);
     }
 

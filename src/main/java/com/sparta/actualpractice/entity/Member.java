@@ -1,15 +1,12 @@
 package com.sparta.actualpractice.entity;
 
 
-import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
-import com.sparta.actualpractice.dto.request.MemberReqeustDto;
+import com.sparta.actualpractice.dto.request.MemberRequestDto;
 
-import com.sparta.actualpractice.service.S3UploadService;
 import com.sparta.actualpractice.util.TimeStamped;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,7 +32,6 @@ public class Member extends TimeStamped {
     @Column
     private String imageUrl;
 
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Schedule> scheduleList;
 
@@ -55,16 +51,15 @@ public class Member extends TimeStamped {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Admin> adminList;
 
-    public Member(MemberReqeustDto memberReqeustDto, String password) {
+    public Member(MemberRequestDto memberRequestDto, String password) {
 
-        this.email = memberReqeustDto.getEmail();
+        this.email = memberRequestDto.getEmail();
         this.password = password;
-        this.name = memberReqeustDto.getName();
+        this.name = memberRequestDto.getName();
     }
 
-    public void update(String imageUrl) {
+    public void updateImage(String imageUrl) {
 
         this.imageUrl = imageUrl;
     }
-
 }

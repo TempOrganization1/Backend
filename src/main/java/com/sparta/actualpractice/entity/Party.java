@@ -22,7 +22,7 @@ public class Party {
     @Column(nullable = false)
     private String introduction;
 
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<MemberParty> memberPartyList;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
@@ -31,8 +31,18 @@ public class Party {
     @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<Album> albumList;
 
-    @OneToOne(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "party", cascade = CascadeType.REMOVE)
     private Admin admin;
+
+
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
+    private List<Invitation> invitationList;
+
+    public Party(String name, String introduction) {
+
+        this.name = name;
+        this.introduction = introduction;
+    }
 
 
     public Party(PartyRequestDto partyRequestDto) {
@@ -41,7 +51,7 @@ public class Party {
         this.introduction = partyRequestDto.getPartyIntroduction();
     }
 
-    public void update(PartyRequestDto partyRequestDto) {
+    public void updateInformation(PartyRequestDto partyRequestDto) {
 
         this.name = partyRequestDto.getPartyName();
         this.introduction = partyRequestDto.getPartyIntroduction();
