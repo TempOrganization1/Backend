@@ -81,9 +81,6 @@ public class SecurityConfig{
                 .antMatchers(HttpMethod.DELETE).authenticated()
                 .antMatchers(HttpMethod.PUT).authenticated()
                 .antMatchers("/mypage/**").authenticated()
-                .antMatchers("/sub/*").authenticated()
-                .antMatchers("/socket/*").authenticated()
-                .antMatchers("/pub/*").authenticated()
                 .anyRequest()
                 .permitAll()
 

@@ -108,7 +108,7 @@ public class TokenProvider {
         }
     }
 
-    public String decodedMemberName(String token) {
+    public String decodedEmail(String token) {
 
         String jwtToken = token.substring(7);
 

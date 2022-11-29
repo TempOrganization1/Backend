@@ -36,6 +36,7 @@ public class MessageService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<?> readMessages(Long chatRoomId) {
+
         System.out.println("3번");
 
         List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(chatRoomId).stream()
@@ -45,10 +46,12 @@ public class MessageService {
     }
 
     @Transactional
-    public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, Member member) {
+    public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, String token) {
 
-        String email = member.getEmail();
+        String email = tokenProvider.decodedEmail(token);
         System.out.println("email = " + email);
+
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("멤버를 찾을 수 없습니다."));
 
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new NullPointerException("채팅룸을 찾을 수 없습니다."));
 
@@ -58,6 +61,7 @@ public class MessageService {
         Date date = calendar.getTime();
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         String dateResult = simpleDateFormat.format(date);
+
         System.out.println("chatRoomId = " + chatRoomId);
 
         Message message = Message.builder()
