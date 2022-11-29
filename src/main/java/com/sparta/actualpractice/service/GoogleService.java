@@ -34,28 +34,16 @@ public class GoogleService {
 
     public ResponseEntity<?> googleLogin(String code) throws JsonProcessingException {
 
-        // 1. "인가 코드"로 "액세스 토큰" 요청
-        System.out.println(1);
         String accessToken = getAccessToken(code);
 
-        // 2. 엑세스토큰으로 유저정보 가져오기
-        System.out.println(2);
         OAuth2memberInfoDto googleUserInfo = getGoogleUserInfo(accessToken);
 
-        // 3. 유저 확인 & 등록 처리
-        System.out.println(3);
         Member googleUser = registerGoogleUserIfNeeded(googleUserInfo);
 
-        // 4. 강제 로그인 처리
-        System.out.println(4);
         oauthUtil.forceLogin(googleUser);
 
-        // 5. 토큰 생성.
-        System.out.println(5);
         TokenDto tokenDto = oauthUtil.generateTokenDto(googleUser);
 
-        // 6. 토큰 해더에 담기.
-        System.out.println(6);
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
         return new ResponseEntity<>("구글 로그인에 성공하였습니다.",  HttpStatus.OK);
