@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
+import com.sparta.actualpractice.service.GoogleService;
 import com.sparta.actualpractice.service.KakaoService;
 import com.sparta.actualpractice.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ import java.io.IOException;
 public class MemberController {
 
     private final MemberService memberService;
-
     private final KakaoService kakaoService;
+    private final GoogleService googleService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberRequestDto memberRequestDto) {
@@ -55,6 +56,13 @@ public class MemberController {
 
     @GetMapping("/kakao/callback")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+
         return kakaoService.kakaoLogin(code);
+    }
+
+    @GetMapping( "/google/callback")
+    public ResponseEntity<?> googleLogin(@RequestParam String code) throws JsonProcessingException {
+
+        return googleService.googleLogin(code);
     }
 }
