@@ -6,38 +6,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.actualpractice.dto.TokenDto;
 import com.sparta.actualpractice.dto.response.OAuth2memberInfoDto;
 import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.RefreshToken;
 import com.sparta.actualpractice.repository.MemberRepository;
-import com.sparta.actualpractice.repository.RefreshTokenRepository;
-import com.sparta.actualpractice.security.JwtFilter;
-import com.sparta.actualpractice.security.MemberDetailsImpl;
-import com.sparta.actualpractice.security.TokenProvider;
+import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
 import javax.transaction.Transactional;
-import java.util.UUID;
-
 
 @Service
 @RequiredArgsConstructor
 public class KakaoService {
 
-    private final TokenProvider tokenProvider;
-    private final PasswordEncoder passwordEncoder;
+    @Value("${kakao.client.id}")
+    private String kakaoClinetId;
+    @Value("${kakao.redirect.uri}")
+    private String kakaoRedirectUrl;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final OauthUtil oauthUtil;
 
     public ResponseEntity<?> kakaoLogin(String code) throws JsonProcessingException {
+
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
@@ -48,23 +40,18 @@ public class KakaoService {
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         // 4. 강제 로그인 처리
-        Authentication authentication = forceLogin(kakaoUser);
+        oauthUtil.forceLogin(kakaoUser);
 
-        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        // 5. 토큰 생성.
+        TokenDto tokenDto = oauthUtil.generateTokenDto(kakaoUser);
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
+        // 6. 토큰 해더에 담기.
+        HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
-        refreshTokenRepository.save(refreshToken);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
-        headers.set("Refresh-Token", tokenDto.getRefreshToken());
+        // 4,5,6은 어떠한 oauth든 공통으로 쓰일듯 (따로 클래스 만들어서 묶을까.) // 5번 잘 보면 파라미터 Member kakaouser로 할 수 있을듯 한데.
+        // tokenProvider.generateTokenDto의 파라미터를 Member로 하면 될듯? 중복성이 줄어들듯 한번?
 
         return new ResponseEntity<>("카카오 로그인에 성공했습니다.", headers, HttpStatus.OK);
-
     }
 
     private String getAccessToken(String code) throws JsonProcessingException {
@@ -75,8 +62,8 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "e19d1426333e06b682ab242673374c0f");
-        body.add("redirect_uri", "http://localhost:3000/members/kakao/callback"); //카카오 login 창으로 롤백
+        body.add("client_id", kakaoClinetId);
+        body.add("redirect_uri", kakaoRedirectUrl);
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -133,26 +120,20 @@ public class KakaoService {
     @Transactional
     public Member registerKakaoUserIfNeeded(OAuth2memberInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
-        Long kakaoId = kakaoUserInfo.getId();
-        Member kakaoMember = memberRepository.findByKakaoId(kakaoId).orElse(null);
+        Member kakaoMember = memberRepository.findByKakaoId(kakaoUserInfo.getId()).orElse(null);
 
         if (kakaoMember == null) {
             // 회원가입
-            String password = passwordEncoder.encode(UUID.randomUUID().toString());
-            kakaoMember = new Member(kakaoUserInfo, password);
+            kakaoMember = Member.builder()
+                    .kakaoId(kakaoUserInfo.getId())
+                    .email(kakaoUserInfo.getEmail())
+                    .name(kakaoUserInfo.getNickname())
+                    .imageUrl(kakaoUserInfo.getImageUrl())
+                    .build();
+
             memberRepository.save(kakaoMember);
         }
 
         return kakaoMember;
     }
-
-    private Authentication forceLogin(Member kakaoUser) {
-        UserDetails userDetails = new MemberDetailsImpl(kakaoUser);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return authentication;
-    }
 }
-
-
