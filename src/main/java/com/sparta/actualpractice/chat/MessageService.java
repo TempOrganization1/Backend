@@ -46,12 +46,14 @@ public class MessageService {
     }
 
     @Transactional
-    public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, String token) {
+    public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, String jwtToken) {
 
-        String email = tokenProvider.decodedEmail(token);
+        String email = tokenProvider.decodedEmail(jwtToken);
         System.out.println("email = " + email);
 
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("멤버를 찾을 수 없습니다."));
+
+        System.out.println("chatRoomId = " + chatRoomId);
 
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new NullPointerException("채팅룸을 찾을 수 없습니다."));
 
@@ -62,7 +64,6 @@ public class MessageService {
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         String dateResult = simpleDateFormat.format(date);
 
-        System.out.println("chatRoomId = " + chatRoomId);
 
         Message message = Message.builder()
                 .chatRoom(chatRoom)
@@ -73,6 +74,6 @@ public class MessageService {
 
         messageRepository.save(message);
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
-        template.convertAndSend("/sub/chatrooms/" + messageResponseDto.getChatRoomId(), messageResponseDto);
+        template.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
     }
 }

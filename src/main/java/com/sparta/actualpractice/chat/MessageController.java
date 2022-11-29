@@ -30,10 +30,12 @@ public class MessageController {
 //}
 
     @MessageMapping(value = {"/chatrooms/{chatRoom_id}"})
-    public void addMessage(MessageRequestDto messageRequestDto,
-                           @PathVariable("chatRoom_id") Long chatRoomId, @Header("Authorization") String token) {
+    public void addMessage(@RequestBody MessageRequestDto messageRequestDto,
+                           @DestinationVariable("chatRoom_id") Long chatRoomId,
+                           @Header("Authorization") String token) {
 
-
+        System.out.println("chatRoomId = " + chatRoomId);
+        System.out.println("messageRequestDto = " + messageRequestDto.getContent());
         messageService.sendMessage(messageRequestDto, chatRoomId, token);
     }
 

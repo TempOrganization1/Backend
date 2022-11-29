@@ -22,13 +22,12 @@ public class WebSocketHandler implements ChannelInterceptor {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
-        if (StompCommand.CONNECT.equals(accessor.getCommand()) || StompCommand.SEND.equals(accessor.getCommand())) {
+        System.out.println("message = " + message);
+        System.out.println("message.getHeaders() = " + message.getHeaders());
+        System.out.println("accessor.getNativeHeader(\"Authorization\") = " + accessor.getNativeHeader("Authorization"));
 
-            String token = Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7);
-
-            if (!tokenProvider.validateToken(token))
-                throw new IllegalArgumentException("멤버를 찾을 수 없습니다.");
-        }
+        if (StompCommand.CONNECT.equals(accessor.getCommand()))
+            tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7));
 
         return message;
     }
