@@ -74,6 +74,6 @@ public class MessageService {
 
         messageRepository.save(message);
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
-        template.convertAndSend("/sub/chatrooms/" + chatRoomId, new ResponseEntity<>(messageResponseDto, HttpStatus.OK));
+        template.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
     }
 }
