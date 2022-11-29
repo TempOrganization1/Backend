@@ -57,7 +57,7 @@ public class MessageService {
 
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new NullPointerException("채팅룸을 찾을 수 없습니다."));
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -74,6 +74,6 @@ public class MessageService {
 
         messageRepository.save(message);
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
-        template.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
+        template.convertAndSend("/sub/chatrooms/" + chatRoomId, new ResponseEntity<>(messageResponseDto, HttpStatus.OK));
     }
 }
