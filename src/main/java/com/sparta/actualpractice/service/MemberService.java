@@ -58,8 +58,8 @@ public class MemberService {
             Party party = new Party(name, introduction);
             ChatRoom chatRoom = new ChatRoom(party, party.getName() + "의 채팅방");
 
-            chatRoomRepository.save(chatRoom);
             partyRepository.save(party);
+            chatRoomRepository.save(chatRoom);
         }
 
         Party party = partyRepository.findById(1L).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
