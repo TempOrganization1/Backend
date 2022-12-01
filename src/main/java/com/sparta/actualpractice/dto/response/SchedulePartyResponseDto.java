@@ -22,7 +22,8 @@ public class SchedulePartyResponseDto {
     private String partyIntroduction;
     private Boolean isParticipant;
     private int participantSize;
-    private List<MemberResponseDto> memberList;
+    private List<MemberResponseDto> participantList;
+    private Long chatRoomId;
 
     public SchedulePartyResponseDto(Schedule schedule, Boolean isParticipant, Party party, List<MemberResponseDto> memberResponseDtoList) {
 
@@ -39,13 +40,7 @@ public class SchedulePartyResponseDto {
         this.isParticipant = isParticipant;
         this.partyName = party.getName();
         this.partyIntroduction = party.getIntroduction();
-        this.memberList = memberResponseDtoList;
-    }
-
-    public SchedulePartyResponseDto(Party party, List<MemberResponseDto> memberResponseDtoList) {
-
-        this.partyName = party.getName();
-        this.partyIntroduction = party.getIntroduction();
-        this.memberList = memberResponseDtoList;
+        this.participantList = memberResponseDtoList;
+        this.chatRoomId = party.getChatRoom().getId();
     }
 }

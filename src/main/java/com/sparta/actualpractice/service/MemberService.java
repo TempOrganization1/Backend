@@ -4,16 +4,11 @@ import com.sparta.actualpractice.dto.TokenDto;
 import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
 import com.sparta.actualpractice.dto.response.MemberResponseDto;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.MemberParty;
-import com.sparta.actualpractice.entity.Party;
-import com.sparta.actualpractice.entity.RefreshToken;
-import com.sparta.actualpractice.repository.MemberPartyRepository;
-import com.sparta.actualpractice.repository.MemberRepository;
-import com.sparta.actualpractice.repository.PartyRepository;
-import com.sparta.actualpractice.repository.RefreshTokenRepository;
+import com.sparta.actualpractice.entity.*;
+import com.sparta.actualpractice.repository.*;
 import com.sparta.actualpractice.security.JwtFilter;
 import com.sparta.actualpractice.security.TokenProvider;
+import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -36,12 +31,12 @@ public class MemberService {
     private String dir;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
     private final S3UploadService s3UploadService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
+    private final OauthUtil oauthUtil;
+    private final ChatRoomRepository chatRoomRepository;
 
     public ResponseEntity<?> signup(MemberRequestDto memberRequestDto) {
 
@@ -61,8 +56,10 @@ public class MemberService {
                     "\uD83D\uDE46\uD83C\uDFFB\u200D♀️ 새로운 그룹을 만들면 초대 코드를 통해 친구들과 소중한 추억을 공유하실 수 있습니다 !";
 
             Party party = new Party(name, introduction);
+            ChatRoom chatRoom = new ChatRoom(party, party.getName() + "의 채팅방");
 
             partyRepository.save(party);
+            chatRoomRepository.save(chatRoom);
         }
 
         Party party = partyRepository.findById(1L).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
@@ -84,18 +81,9 @@ public class MemberService {
         if(!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword()))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다."); // 커스텀 예외 처리 예정
 
-        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        TokenDto tokenDto = oauthUtil.generateTokenDto(member);
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
-
-        refreshTokenRepository.save(refreshToken);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
-        headers.set("Refresh-Token", tokenDto.getRefreshToken());
+        HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
         return new ResponseEntity<>("로그인에 성공했습니다.", headers, HttpStatus.OK);
     }

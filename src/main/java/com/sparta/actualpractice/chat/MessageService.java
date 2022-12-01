@@ -37,6 +37,8 @@ public class MessageService {
     @Transactional(readOnly = true)
     public ResponseEntity<?> readMessages(Long chatRoomId) {
 
+        System.out.println("3번");
+
         List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(chatRoomId).stream()
                 .map(MessageResponseDto::new).collect(Collectors.toList());
 
@@ -44,20 +46,24 @@ public class MessageService {
     }
 
     @Transactional
-    public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, String token) {
+    public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, String jwtToken) {
 
-        String email = tokenProvider.decodedMemberName(token);
+        String email = tokenProvider.decodedEmail(jwtToken);
         System.out.println("email = " + email);
 
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("멤버를 찾을 수 없습니다."));
+
+        System.out.println("chatRoomId = " + chatRoomId);
+
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new NullPointerException("채팅룸을 찾을 수 없습니다."));
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         String dateResult = simpleDateFormat.format(date);
+
 
         Message message = Message.builder()
                 .chatRoom(chatRoom)
@@ -68,6 +74,6 @@ public class MessageService {
 
         messageRepository.save(message);
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
-        template.convertAndSend("/sub/chatrooms/" + messageResponseDto.getChatRoomId(), messageResponseDto);
+        template.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
     }
 }
