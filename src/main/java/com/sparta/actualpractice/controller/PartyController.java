@@ -19,7 +19,7 @@ public class PartyController {
     @PostMapping
     public ResponseEntity<?> createParty(@RequestBody PartyRequestDto partyRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return partyService.createParty(partyRequestDto,memberDetails.getMember());
+        return partyService.createParty(partyRequestDto, memberDetails.getMember());
     }
 
      // 그룹 전체 조회

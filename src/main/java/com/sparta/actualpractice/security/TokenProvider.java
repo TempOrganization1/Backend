@@ -77,6 +77,7 @@ public class TokenProvider {
                 .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + email ));
 
         MemberDetailsImpl memberDetails = new MemberDetailsImpl(member);
+        System.out.println("memberDetails.getMember().getEmail() = " + memberDetails.getMember().getEmail());
 
         return new UsernamePasswordAuthenticationToken(memberDetails, null, memberDetails.getAuthorities());
     }
@@ -107,7 +108,7 @@ public class TokenProvider {
         }
     }
 
-    public String decodedMemberName(String token) {
+    public String decodedEmail(String token) {
 
         String jwtToken = token.substring(7);
 
