@@ -2,6 +2,8 @@ package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.CommentRequestDto;
 import com.sparta.actualpractice.dto.response.CommentResponseDto;
+import com.sparta.actualpractice.dto.response.NotificationResponseDto;
+import com.sparta.actualpractice.entity.AlarmType;
 import com.sparta.actualpractice.entity.Album;
 import com.sparta.actualpractice.entity.Comment;
 import com.sparta.actualpractice.entity.Member;
@@ -19,6 +21,7 @@ public class CommentService {
 
     private final AlbumRepository albumRepository;
     private final CommentRepository commentRepository;
+    private final NotificationService notificationService;
 
     public ResponseEntity<?> createComment(Long albumId, CommentRequestDto commentRequestDto, Member member) {
 
@@ -27,6 +30,9 @@ public class CommentService {
         Comment comment = new Comment(commentRequestDto, album, member);
 
         commentRepository.save(comment);
+
+        if(!album.getMember().getId().equals(member.getId()))
+            notificationService.send(album.getMember(), new NotificationResponseDto(album, comment, AlarmType.comment));
 
         return new ResponseEntity<>(new CommentResponseDto(comment), HttpStatus.OK);
     }

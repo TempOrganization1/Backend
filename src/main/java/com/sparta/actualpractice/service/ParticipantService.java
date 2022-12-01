@@ -1,5 +1,7 @@
 package com.sparta.actualpractice.service;
 
+import com.sparta.actualpractice.dto.response.NotificationResponseDto;
+import com.sparta.actualpractice.entity.AlarmType;
 import com.sparta.actualpractice.entity.Member;
 import com.sparta.actualpractice.entity.Participant;
 import com.sparta.actualpractice.entity.Schedule;
@@ -19,6 +21,7 @@ public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public ResponseEntity<?> createParticipant(Long scheduleId, Long memberId) {
@@ -33,6 +36,9 @@ public class ParticipantService {
         }
         else {
             participantRepository.save(new Participant(schedule, member));
+
+            if(!schedule.getMember().getId().equals(memberId))
+                notificationService.send(schedule.getMember(), new NotificationResponseDto(schedule, member, AlarmType.schedule));
 
             return new ResponseEntity<>(true,HttpStatus.OK);
         }

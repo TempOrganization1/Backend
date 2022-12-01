@@ -44,9 +44,8 @@ public class Member extends TimeStamped {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberParty> memberPartyList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NOTIFICATION_ID")
-    private Notification notification;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Notification> notificationList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Admin> adminList;
