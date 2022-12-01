@@ -8,6 +8,7 @@ import com.sparta.actualpractice.entity.*;
 import com.sparta.actualpractice.repository.*;
 import com.sparta.actualpractice.security.JwtFilter;
 import com.sparta.actualpractice.security.TokenProvider;
+import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -30,12 +31,11 @@ public class MemberService {
     private String dir;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
     private final S3UploadService s3UploadService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
+    private final OauthUtil oauthUtil;
     private final ChatRoomRepository chatRoomRepository;
 
     public ResponseEntity<?> signup(MemberRequestDto memberRequestDto) {
@@ -81,18 +81,9 @@ public class MemberService {
         if(!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword()))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다."); // 커스텀 예외 처리 예정
 
-        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        TokenDto tokenDto = oauthUtil.generateTokenDto(member);
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
-
-        refreshTokenRepository.save(refreshToken);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
-        headers.set("Refresh-Token", tokenDto.getRefreshToken());
+        HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
         return new ResponseEntity<>("로그인에 성공했습니다.", headers, HttpStatus.OK);
     }

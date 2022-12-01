@@ -26,7 +26,6 @@ public class TokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
     private final MemberRepository memberRepository;
-
     private final Key key;
 
     @Autowired
@@ -37,15 +36,13 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto generateTokenDto(Authentication authentication) {
+    public TokenDto generateTokenDto(Member member) {
         // 권한들 가져오기
 
         long now = (new Date()).getTime();
 
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-
-        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 찾을 수 없습니다 : " + authentication.getName() ));;
 
         String accessToken = Jwts.builder()
                 .setSubject(member.getEmail())       // payload "sub": "Email"
@@ -121,3 +118,4 @@ public class TokenProvider {
     }
 
 }
+

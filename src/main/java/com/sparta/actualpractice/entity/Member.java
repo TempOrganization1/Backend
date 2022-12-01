@@ -3,8 +3,11 @@ package com.sparta.actualpractice.entity;
 
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
 
+import com.sparta.actualpractice.dto.response.OAuth2memberInfoDto;
 import com.sparta.actualpractice.util.TimeStamped;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,12 +16,17 @@ import java.util.List;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = true)
+    private Long kakaoId;
 
     @Column(nullable = false)
     private String email;
@@ -26,10 +34,10 @@ public class Member extends TimeStamped {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
-    @Column
+    @Column(nullable = true)
     private String imageUrl;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
