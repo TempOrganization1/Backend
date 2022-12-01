@@ -1,12 +1,12 @@
 package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.PartyRequestDto;
+import com.sparta.actualpractice.dto.response.MemberResponseDto;
 import com.sparta.actualpractice.dto.response.PartyResponseDto;
+import com.sparta.actualpractice.dto.response.SchedulePartyResponseDto;
+import com.sparta.actualpractice.dto.response.ScheduleNullResponseDto;
 import com.sparta.actualpractice.entity.*;
-import com.sparta.actualpractice.repository.AdminRepository;
-import com.sparta.actualpractice.repository.ChatRoomRepository;
-import com.sparta.actualpractice.repository.MemberPartyRepository;
-import com.sparta.actualpractice.repository.PartyRepository;
+import com.sparta.actualpractice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +24,9 @@ public class PartyService {
     private final AdminRepository adminRepository;
     private final MemberPartyRepository memberPartyRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final MemberRepository memberRepository;
+    private final ParticipantRepository participantRepository;
 
     public ResponseEntity<?> createParty(PartyRequestDto partyRequestDto, Member member) {
 
@@ -57,6 +60,47 @@ public class PartyService {
             partyResponseDtoList.add(new PartyResponseDto(party));
 
         return new ResponseEntity<>(partyResponseDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getPartyInfo(Long partyId, Member member) {
+
+        Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
+
+        if (!memberPartyRepository.existsByMemberAndParty(member, party))
+            throw new IllegalArgumentException("사용자는 해당 그룹에 대한 회원이 아닙니다.");
+
+        List<Schedule> scheduleList = scheduleRepository.findAllByParty(party);
+
+        Long popularScheduleId = 0L;
+        int num = -1;
+
+        for (Schedule schedule : scheduleList) {
+
+            if (schedule.getParticipantList().size() > num) {
+
+                num = schedule.getParticipantList().size();
+                popularScheduleId = schedule.getId();
+            }
+        }
+
+        List<MemberParty> memberPartyList = memberPartyRepository.findAllByParty(party);
+
+        List<MemberResponseDto> memberResponseDtoList = new ArrayList<>();
+
+        for (MemberParty memberParty : memberPartyList) {
+
+            Member member1 = memberRepository.findById(memberParty.getMember().getId()).orElseThrow(() -> new IllegalArgumentException("맴버가 존재하지 않습니다."));
+            memberResponseDtoList.add(new MemberResponseDto(member1));
+        }
+
+        Schedule schedule = scheduleRepository.findById(popularScheduleId).orElse(null);
+
+        if (schedule == null)
+            return new ResponseEntity<>(new ScheduleNullResponseDto(party, memberResponseDtoList), HttpStatus.OK);
+
+        Boolean isParticipant = participantRepository.existsByScheduleAndMember(schedule, member);
+
+        return new ResponseEntity<>(new SchedulePartyResponseDto(schedule, isParticipant, party, memberResponseDtoList) , HttpStatus.OK);
     }
 
     @Transactional
