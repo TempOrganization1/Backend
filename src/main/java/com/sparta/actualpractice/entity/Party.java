@@ -34,6 +34,9 @@ public class Party {
     @OneToOne(mappedBy = "party", cascade = CascadeType.REMOVE)
     private Admin admin;
 
+    @OneToOne(mappedBy = "party", cascade = CascadeType.REMOVE)
+    private ChatRoom chatRoom;
+
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<Invitation> invitationList;

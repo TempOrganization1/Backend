@@ -47,8 +47,10 @@ public class SecurityConfig{
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-// CSRF 설정 Disable
+
         http.cors();
+
+//        http.headers().frameOptions().sameOrigin();
 
         http.csrf().disable()
 
@@ -75,7 +77,6 @@ public class SecurityConfig{
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/members/**").permitAll()
-                .antMatchers("/boards/**/images").permitAll()
                 .antMatchers(HttpMethod.POST).authenticated()
                 .antMatchers(HttpMethod.DELETE).authenticated()
                 .antMatchers(HttpMethod.PUT).authenticated()
