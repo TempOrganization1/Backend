@@ -22,6 +22,9 @@ public class Party {
     @Column(nullable = false)
     private String introduction;
 
+    @Column(nullable = true)
+    private String code;
+
     @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     private List<MemberParty> memberPartyList;
 
@@ -38,9 +41,6 @@ public class Party {
     private ChatRoom chatRoom;
 
 
-    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
-    private List<Invitation> invitationList;
-
     public Party(String name, String introduction) {
 
         this.name = name;
@@ -48,15 +48,21 @@ public class Party {
     }
 
 
-    public Party(PartyRequestDto partyRequestDto) {
+    public Party(PartyRequestDto partyRequestDto, String code) {
 
         this.name = partyRequestDto.getPartyName();
         this.introduction = partyRequestDto.getPartyIntroduction();
+        this.code = code;
     }
 
     public void updateInformation(PartyRequestDto partyRequestDto) {
 
         this.name = partyRequestDto.getPartyName();
         this.introduction = partyRequestDto.getPartyIntroduction();
+    }
+
+    public void updateCode(String code) {
+
+        this.code = code;
     }
 }

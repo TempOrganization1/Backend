@@ -49,4 +49,10 @@ public class PartyController {
 
         return partyService.deleteParty(partyId, memberDetails.getMember());
     }
+
+    @GetMapping("/{party_id}/invitations")
+    public ResponseEntity<?> getCode(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return partyService.getCode(partyId, memberDetails.getMember());
+    }
 }
