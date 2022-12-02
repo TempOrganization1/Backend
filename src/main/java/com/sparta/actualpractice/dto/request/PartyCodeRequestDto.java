@@ -1,10 +1,9 @@
 package com.sparta.actualpractice.dto.request;
 
-
 import lombok.Getter;
 
 @Getter
-public class InvitationRequestDto {
+public class PartyCodeRequestDto {
 
-    private String email;
+    private String code;
 }
