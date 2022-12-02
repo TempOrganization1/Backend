@@ -33,12 +33,20 @@ public class PartyService {
         Party party = new Party(partyRequestDto, createCode());
         Admin admin = new Admin(member, party);
         MemberParty memberParty = new MemberParty(member, party);
-        ChatRoom chatRoom = new ChatRoom(party, party.getName() + "의 채팅방");
-
+        ChatRoom chatRoom = new ChatRoom(party);
+        
         partyRepository.save(party);
         adminRepository.save(admin);
         memberPartyRepository.save(memberParty);
         chatRoomRepository.save(chatRoom);
+
+        party.updateChatRoom(chatRoom);
+        party.updateAdmin(admin);
+
+        partyRepository.save(party);
+
+        System.out.println("party.getChatRoom().getId() = " + party.getChatRoom().getId());
+        System.out.println("party.getAdmin().getMember().getEmail() = " + party.getAdmin().getMember().getEmail());
 
         return new ResponseEntity<>(new PartyResponseDto(party), HttpStatus.OK);
     }

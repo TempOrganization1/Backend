@@ -65,4 +65,13 @@ public class Party {
 
         this.code = code;
     }
+
+    public void updateAdmin(Admin admin) {
+
+        this.admin = admin;
+    }
+
+    public void updateChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+    }
 }

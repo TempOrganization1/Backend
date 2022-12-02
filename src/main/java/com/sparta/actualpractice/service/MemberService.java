@@ -56,10 +56,13 @@ public class MemberService {
                     "\uD83D\uDE46\uD83C\uDFFB\u200D♀️ 새로운 그룹을 만들면 초대 코드를 통해 친구들과 소중한 추억을 공유하실 수 있습니다 !";
 
             Party party = new Party(name, introduction);
-            ChatRoom chatRoom = new ChatRoom(party, party.getName() + "의 채팅방");
+            ChatRoom chatRoom = new ChatRoom(party);
 
             partyRepository.save(party);
             chatRoomRepository.save(chatRoom);
+
+            party.updateChatRoom(chatRoom);
+            partyRepository.save(party);
         }
 
         Party party = partyRepository.findById(1L).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));

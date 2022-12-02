@@ -21,8 +21,8 @@ public class ChatRoom {
 
     private String chatRoomName;
 
-    public ChatRoom(Party party, String chatRoomName) {
+    public ChatRoom(Party party) {
         this.party = party;
-        this.chatRoomName = chatRoomName;
+        this.chatRoomName = party.getName() + " 의 채팅방";
     }
 }
