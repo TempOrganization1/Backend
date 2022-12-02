@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.service;
 
+import com.sparta.actualpractice.dto.request.PartyCodeRequestDto;
 import com.sparta.actualpractice.dto.request.PartyRequestDto;
 import com.sparta.actualpractice.dto.response.*;
 import com.sparta.actualpractice.entity.*;
@@ -135,6 +136,20 @@ public class PartyService {
         memberPartyRepository.findByMemberAndParty(member, party).orElseThrow(() -> new NullPointerException("해당 그룹에 초대할 수 있는 권한이 없습니다."));
 
         return new ResponseEntity<>(new PartyCodeResponseDto(party), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> joinGroup(PartyCodeRequestDto partyCodeRequestDto, Member member) {
+
+        Party party = partyRepository.findByCode(partyCodeRequestDto.getCode()).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
+
+        if (memberPartyRepository.existsByMemberAndParty(member,party))
+            throw new IllegalArgumentException("해당 그룹에 이미 가입된 유저입니다.");
+
+        MemberParty memberParty = new MemberParty(member, party);
+
+        memberPartyRepository.save(memberParty);
+
+        return new ResponseEntity<>("그룹에 참여되었습니다.", HttpStatus.OK);
     }
 
     public boolean validateAdmin(Member member, Party party) {

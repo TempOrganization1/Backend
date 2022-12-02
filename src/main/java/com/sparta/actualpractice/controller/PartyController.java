@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.controller;
 
+import com.sparta.actualpractice.dto.request.PartyCodeRequestDto;
 import com.sparta.actualpractice.dto.request.PartyRequestDto;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.service.PartyService;
@@ -54,5 +55,11 @@ public class PartyController {
     public ResponseEntity<?> getCode(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         return partyService.getCode(partyId, memberDetails.getMember());
+    }
+
+    @PostMapping("/invitations")
+    public ResponseEntity<?> joinGroup(@RequestBody PartyCodeRequestDto partyCodeRequestDto, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return partyService.joinGroup(partyCodeRequestDto, memberDetails.getMember());
     }
 }
