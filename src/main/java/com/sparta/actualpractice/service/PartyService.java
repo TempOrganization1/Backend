@@ -45,9 +45,6 @@ public class PartyService {
 
         partyRepository.save(party);
 
-        System.out.println("party.getChatRoom().getId() = " + party.getChatRoom().getId());
-        System.out.println("party.getAdmin().getMember().getEmail() = " + party.getAdmin().getMember().getEmail());
-
         return new ResponseEntity<>(new PartyResponseDto(party), HttpStatus.OK);
     }
 
