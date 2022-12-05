@@ -39,7 +39,7 @@ public class MessageService {
 
         System.out.println("3번");
 
-        List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(chatRoomId).stream()
+        List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop100ByChatRoomIdOrderByCreatedAtAsc(chatRoomId).stream()
                 .map(MessageResponseDto::new).collect(Collectors.toList());
 
         return new ResponseEntity<>(messageResponseDtoList, HttpStatus.OK);
