@@ -3,6 +3,7 @@ package com.sparta.actualpractice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
+import com.sparta.actualpractice.dto.request.TokenRequestDto;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.service.KakaoService;
 import com.sparta.actualpractice.service.MemberService;
@@ -33,6 +34,12 @@ public class MemberController {
     public ResponseEntity<?> login(@RequestBody MemberRequestDto memberRequestDto) {
 
         return memberService.login(memberRequestDto);
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@RequestBody TokenRequestDto tokenRequestDto){
+
+        return memberService.reissue(tokenRequestDto);
     }
 
     @GetMapping("/check-email")
