@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
@@ -18,6 +19,9 @@ public class ChatRoom {
     @OneToOne
     @JoinColumn
     private Party party;
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
+    private List<Message> messageList;
 
     private String chatRoomName;
 
