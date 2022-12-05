@@ -47,7 +47,6 @@ public class OauthUtil {
         HttpHeaders headers = new HttpHeaders();
         headers.set(JwtFilter.AUTHORIZATION_HEADER, JwtFilter.BEARER_PREFIX + tokenDto.getAccessToken());
         headers.set("Refresh-Token", tokenDto.getRefreshToken());
-        headers.set("Access-Token-Expires", tokenDto.getAccessTokenExpireIn().toString());
 
         return headers;
     }
