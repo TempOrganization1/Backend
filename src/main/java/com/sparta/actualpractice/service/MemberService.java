@@ -3,6 +3,7 @@ package com.sparta.actualpractice.service;
 import com.sparta.actualpractice.dto.TokenDto;
 import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
+import com.sparta.actualpractice.dto.request.TokenRequestDto;
 import com.sparta.actualpractice.dto.response.MemberResponseDto;
 import com.sparta.actualpractice.entity.*;
 import com.sparta.actualpractice.repository.*;
@@ -11,6 +12,7 @@ import com.sparta.actualpractice.security.TokenProvider;
 import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,8 @@ public class MemberService {
     private final MemberPartyRepository memberPartyRepository;
     private final OauthUtil oauthUtil;
     private final ChatRoomRepository chatRoomRepository;
+    private final TokenProvider tokenProvider;
+    private final RedisTemplate redisTemplate;
 
     public ResponseEntity<?> signup(MemberRequestDto memberRequestDto) {
 
@@ -116,5 +120,28 @@ public class MemberService {
         member1.updateImage(imageUrl);
 
         return new ResponseEntity<>(new MemberResponseDto(member1), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> reissue(TokenRequestDto tokenRequestDto) {
+
+        if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken()))
+            throw new IllegalArgumentException("RefreshToken에 문제가 있습니다.");
+
+        Member member = memberRepository.findByEmail(tokenProvider.decodeMemberEmail(tokenRequestDto.getAccessToken()))
+                .orElseThrow(() -> new NullPointerException("존재 하지 않는 회원입니다."));
+
+        String refreshToken = (String) redisTemplate.opsForValue().get("RefreshToken:" + member.getEmail());
+
+        if (refreshToken == null)
+            throw new NullPointerException("토큰이 존재하지 않습니다.");
+
+        if (!refreshToken.equals(tokenRequestDto.getRefreshToken()))
+            throw new IllegalArgumentException("RefreshToken의 정보가 일치 하지 않습니다.");
+
+        TokenDto tokenDto = oauthUtil.generateTokenDto(member);
+
+        HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
+
+        return new ResponseEntity<>("토큰 재발급에 성공했습니다.", headers, HttpStatus.OK);
     }
 }

@@ -32,6 +32,9 @@ dependencies {
     implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
 // org.springdoc:springdoc-openapi-ui:1.6.8
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+// redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    implementation 'it.ozimov:embedded-redis:0.7.2'
 }
 
 tasks.named('test') {

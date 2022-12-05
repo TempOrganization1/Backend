@@ -22,8 +22,13 @@ import java.util.Date;
 public class TokenProvider {
 
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 300;            // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 1;            // 30분
+
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 30;            // 30분
+
+    //    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 1;  // 7일
+        private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 30 ;  // 7일
+
 
     private final MemberRepository memberRepository;
     private final Key key;
@@ -117,5 +122,20 @@ public class TokenProvider {
         return claims.getSubject();
     }
 
-}
+    public String decodeMemberEmail(String token) {
 
+        String jwtToken = token.substring(7);
+
+        Claims claims = parseClaims(jwtToken);
+
+        return claims.getSubject();
+    }
+
+    public Long decodeRefreshTokenExpiration(String token) {
+
+        Claims claims = parseClaims(token);
+
+        return claims.getExpiration().getTime();
+    }
+
+}
