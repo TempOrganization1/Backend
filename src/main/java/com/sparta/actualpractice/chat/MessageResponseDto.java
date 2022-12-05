@@ -9,9 +9,10 @@ import java.io.Serializable;
 public class MessageResponseDto implements Serializable {
 
     private Long chatRoomId;
+    private Long messageId;
     private String content;
     private String createdAt;
-    private Long memberId;
+    private String memberEmail;
     private String memberName;
     private String profileImg;
 
@@ -20,8 +21,9 @@ public class MessageResponseDto implements Serializable {
         this.chatRoomId = message.getChatRoom().getId();
         this.content = message.getContent();
         this.createdAt = message.getCreatedAt();
-        this.memberId = message.getMember().getId();
+        this.memberEmail = message.getMember().getEmail();
         this.memberName = message.getMember().getName();
         this.profileImg = message.getMember().getImageUrl();
+        this.messageId = message.getId();
     }
 }
