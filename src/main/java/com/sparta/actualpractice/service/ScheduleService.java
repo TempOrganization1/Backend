@@ -27,7 +27,7 @@ public class ScheduleService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if(validateAndParty(member, party))
+        if (validateAndParty(member, party))
             throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
 
         Schedule schedule = new Schedule(member, scheduleRequestDto, party);
@@ -57,7 +57,7 @@ public class ScheduleService {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        if(validateAndParty(member, party))
+        if (validateAndParty(member, party))
             throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
 
         List<Schedule> scheduleList = scheduleRepository.findAllByPartyOrderByTimeAsc(party);
@@ -92,7 +92,7 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
 
-        if(validateSchedule(member, schedule))
+        if (validateSchedule(member, schedule))
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
 
         schedule.updateInformation(scheduleRequestDto);
@@ -105,7 +105,7 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new NullPointerException("해당 일정이 존재하지 않습니다."));
 
-        if(validateSchedule(member, schedule))
+        if (validateSchedule(member, schedule))
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
 
         scheduleRepository.delete(schedule);
@@ -113,7 +113,7 @@ public class ScheduleService {
         return new ResponseEntity<>("해당 일정이 삭제되었습니다.", HttpStatus.OK);
     }
 
-    public boolean validateSchedule(Member member, Schedule schedule){
+    public boolean validateSchedule(Member member, Schedule schedule) {
 
         return !scheduleRepository.existsByIdAndMember(schedule.getId(), member);
     }

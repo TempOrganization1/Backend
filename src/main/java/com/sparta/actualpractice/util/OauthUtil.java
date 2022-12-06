@@ -62,8 +62,11 @@ public class OauthUtil {
 
         Party party = partyRepository.findById(1L).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
 
-        MemberParty memberParty = new MemberParty(member, party);
+        if (!memberPartyRepository.existsByMemberAndParty(member, party)) {
 
-        memberPartyRepository.save(memberParty);
+            MemberParty memberParty = new MemberParty(member, party);
+
+            memberPartyRepository.save(memberParty);
+        }
     }
 }

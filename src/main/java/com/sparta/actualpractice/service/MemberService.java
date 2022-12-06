@@ -7,7 +7,6 @@ import com.sparta.actualpractice.dto.request.TokenRequestDto;
 import com.sparta.actualpractice.dto.response.MemberResponseDto;
 import com.sparta.actualpractice.entity.*;
 import com.sparta.actualpractice.repository.*;
-import com.sparta.actualpractice.security.JwtFilter;
 import com.sparta.actualpractice.security.TokenProvider;
 import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,6 @@ public class MemberService {
     private final S3UploadService s3UploadService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PartyRepository partyRepository;
-    private final MemberPartyRepository memberPartyRepository;
     private final OauthUtil oauthUtil;
     private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
