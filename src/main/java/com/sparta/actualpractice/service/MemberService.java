@@ -69,11 +69,7 @@ public class MemberService {
             partyRepository.save(party);
         }
 
-        Party party = partyRepository.findById(1L).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
-
-        MemberParty memberParty = new MemberParty(member, party);
-
-        memberPartyRepository.save(memberParty);
+        oauthUtil.basicParty(member);
 
         return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
     }
