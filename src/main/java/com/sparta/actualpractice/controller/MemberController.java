@@ -61,6 +61,7 @@ public class MemberController {
 
     @GetMapping("/kakao/callback")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+
         return kakaoService.kakaoLogin(code);
     }
 }

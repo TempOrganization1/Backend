@@ -36,6 +36,9 @@ public class KakaoService {
         // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         OAuth2memberInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
+        if (memberRepository.existsByEmail(kakaoUserInfo.getEmail()))
+            return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
+
         // 3. "카카오 사용자 정보"로 필요시 회원가입
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
