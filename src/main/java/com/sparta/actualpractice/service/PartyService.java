@@ -134,6 +134,20 @@ public class PartyService {
         return new ResponseEntity<>("그룹이 삭제되었습니다.", HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity<?> withdrawParty(Long partyId, Member member) {
+
+        Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
+
+        if(adminRepository.existsByMemberAndParty(member, party))
+            throw new IllegalArgumentException("그룹장은 그룹 나가기를 할 수 없습니다.");
+
+        memberPartyRepository.delete(memberPartyRepository.findByMemberAndParty(member, party).orElseThrow(() -> new NullPointerException("해당 유저는 그룹의 멤버가 아닙니다.")));
+
+        return new ResponseEntity<>("그룹에서 나가기 되었습니다.", HttpStatus.OK);
+
+    }
+
     public ResponseEntity<?> getCode(Long partyId, Member member) {
 
         Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));

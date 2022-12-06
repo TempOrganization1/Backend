@@ -27,4 +27,5 @@ public class Admin {
         this.party = party;
         this.member = member;
     }
+
 }
