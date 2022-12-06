@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.entity;
 
+import com.sparta.actualpractice.util.TimeStamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
