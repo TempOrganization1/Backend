@@ -52,7 +52,7 @@ public class PartyController {
     }
 
     //그룹 나가기
-    @DeleteMapping("/party_id/withdrawals")
+    @DeleteMapping("/{party_id}/withdrawals")
     public ResponseEntity<?> withdrawParty(@PathVariable(name = "party_id") Long partyId, @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
         return partyService.withdrawParty(partyId, memberDetails.getMember());
