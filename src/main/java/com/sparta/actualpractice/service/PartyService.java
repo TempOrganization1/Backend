@@ -168,7 +168,7 @@ public class PartyService {
 
         memberPartyRepository.save(memberParty);
 
-        return new ResponseEntity<>("그룹에 참여되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(new PartyResponseDto(party), HttpStatus.OK);
     }
 
     public boolean validateAdmin(Member member, Party party) {
