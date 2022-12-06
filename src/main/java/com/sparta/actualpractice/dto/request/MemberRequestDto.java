@@ -13,7 +13,7 @@ public class MemberRequestDto {
     private String name;
 
     @NotBlank
-    @Pattern(regexp = "^[a-zA-z0-9]{4,12}$")
+    @Pattern(regexp = "^[0-9a-zA-Z!@#$%^&*]{4,12}$")
     private String password;
 
     @NotBlank
