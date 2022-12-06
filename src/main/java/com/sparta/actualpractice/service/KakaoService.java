@@ -39,6 +39,9 @@ public class KakaoService {
         // 3. "카카오 사용자 정보"로 필요시 회원가입
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
+        // 3.5 기본 그룹 가입하기
+        oauthUtil.basicParty(kakaoUser);
+
         // 4. 강제 로그인 처리
         oauthUtil.forceLogin(kakaoUser);
 
@@ -47,9 +50,6 @@ public class KakaoService {
 
         // 6. 토큰 해더에 담기.
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
-
-        // 4,5,6은 어떠한 oauth든 공통으로 쓰일듯 (따로 클래스 만들어서 묶을까.) // 5번 잘 보면 파라미터 Member kakaouser로 할 수 있을듯 한데.
-        // tokenProvider.generateTokenDto의 파라미터를 Member로 하면 될듯? 중복성이 줄어들듯 한번?
 
         return new ResponseEntity<>("카카오 로그인에 성공했습니다.", headers, HttpStatus.OK);
     }

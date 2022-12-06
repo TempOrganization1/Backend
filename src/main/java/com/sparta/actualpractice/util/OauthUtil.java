@@ -2,6 +2,10 @@ package com.sparta.actualpractice.util;
 
 import com.sparta.actualpractice.dto.TokenDto;
 import com.sparta.actualpractice.entity.Member;
+import com.sparta.actualpractice.entity.MemberParty;
+import com.sparta.actualpractice.entity.Party;
+import com.sparta.actualpractice.repository.MemberPartyRepository;
+import com.sparta.actualpractice.repository.PartyRepository;
 import com.sparta.actualpractice.security.JwtFilter;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.security.TokenProvider;
@@ -23,6 +27,9 @@ public class OauthUtil {
 
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
+
+    private final PartyRepository partyRepository;
+    private final MemberPartyRepository memberPartyRepository;
 
     public void forceLogin(Member kakaoUser) {
 
@@ -49,5 +56,14 @@ public class OauthUtil {
         headers.set("Refresh-Token", tokenDto.getRefreshToken());
 
         return headers;
+    }
+
+    public void basicParty(Member member) {
+
+        Party party = partyRepository.findById(1L).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
+
+        MemberParty memberParty = new MemberParty(member, party);
+
+        memberPartyRepository.save(memberParty);
     }
 }
