@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -25,7 +24,7 @@ public class MemberController {
     private final KakaoService kakaoService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseEntity<?> signup(@Valid @RequestBody MemberRequestDto memberRequestDto) {
 
         return memberService.signup(memberRequestDto);
     }
