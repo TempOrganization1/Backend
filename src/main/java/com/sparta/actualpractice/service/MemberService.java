@@ -49,24 +49,6 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        // 기본 그룹 가입
-        if(member.getId() == 1L) {
-
-            String name = "위프";
-            String introduction = "모두와 함께 다양한 기능들을 경험해보세요!\n" +
-                    "\n" +
-                    "\uD83D\uDE46\uD83C\uDFFB\u200D♀️ 새로운 그룹을 만들면 초대 코드를 통해 친구들과 소중한 추억을 공유하실 수 있습니다 !";
-
-            Party party = new Party(name, introduction);
-            ChatRoom chatRoom = new ChatRoom(party);
-
-            partyRepository.save(party);
-            chatRoomRepository.save(chatRoom);
-
-            party.updateChatRoom(chatRoom);
-            partyRepository.save(party);
-        }
-
         oauthUtil.basicParty(member);
 
         return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
