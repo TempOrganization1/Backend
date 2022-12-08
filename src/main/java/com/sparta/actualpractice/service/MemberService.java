@@ -93,7 +93,7 @@ public class MemberService {
 
         String imageUrl = s3UploadService.upload(memberInfoRequestDto.getProfileImageUrl(), dir);
 
-        member1.updateImage(imageUrl);
+        member1.updateInfomation(imageUrl, memberInfoRequestDto.getMemberName());
 
         return new ResponseEntity<>(new MemberResponseDto(member1), HttpStatus.OK);
     }

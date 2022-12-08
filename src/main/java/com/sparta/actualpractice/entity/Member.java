@@ -1,6 +1,7 @@
 package com.sparta.actualpractice.entity;
 
 
+import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
 
 import com.sparta.actualpractice.dto.response.OAuth2memberInfoDto;
@@ -65,8 +66,9 @@ public class Member extends TimeStamped {
         this.name = memberRequestDto.getName();
     }
 
-    public void updateImage(String imageUrl) {
+    public void updateInfomation(String imageUrl, String name) {
 
         this.imageUrl = imageUrl;
+        this.name = name;
     }
 }
