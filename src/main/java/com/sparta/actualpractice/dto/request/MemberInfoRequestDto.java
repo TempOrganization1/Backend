@@ -8,5 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class MemberInfoRequestDto {
 
+    private String memberName;
     private MultipartFile profileImageUrl;
 }
