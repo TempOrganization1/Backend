@@ -12,15 +12,15 @@ import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
@@ -119,5 +119,32 @@ public class MemberService {
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
         return new ResponseEntity<>("토큰 재발급에 성공했습니다.", headers, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> delete(Member member) {
+
+        if (member.getKakaoId() != null){
+
+            String accessToken = (String) redisTemplate.opsForValue().get("kakaoAccessToken:" + member.getEmail());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + accessToken);
+            headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+            HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+            RestTemplate rt = new RestTemplate();
+            ResponseEntity<String> response = rt.exchange(
+                    "https://kapi.kakao.com/v1/user/unlink",
+                    HttpMethod.POST,
+                    kakaoUserInfoRequest,
+                    String.class
+            );
+        }
+
+        memberRepository.delete(member);
+        redisTemplate.delete("RefreshToken:" + member.getEmail());
+        redisTemplate.delete("kakaoAccessToken:" + member.getEmail());
+
+        return new ResponseEntity<>("회원탈퇴가 완료되었습니다.", HttpStatus.OK);
     }
 }

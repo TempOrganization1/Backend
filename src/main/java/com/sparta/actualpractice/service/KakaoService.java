@@ -11,6 +11,7 @@ import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -27,6 +28,7 @@ public class KakaoService {
     private String kakaoRedirectUrl;
     private final MemberRepository memberRepository;
     private final OauthUtil oauthUtil;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> kakaoLogin(String code) throws JsonProcessingException {
 
@@ -53,6 +55,9 @@ public class KakaoService {
 
         // 6. 토큰 해더에 담기.
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
+
+        // 6.5 카카오 "엑세스 토큰" 레디스 저장
+        oauthUtil.OauthAceessTokenToRedisSave(accessToken, kakaoUser);
 
         return new ResponseEntity<>("카카오 로그인에 성공했습니다.", headers, HttpStatus.OK);
     }
@@ -132,6 +137,7 @@ public class KakaoService {
                     .email(kakaoUserInfo.getEmail())
                     .name(kakaoUserInfo.getNickname())
                     .imageUrl(kakaoUserInfo.getImageUrl())
+                    .password(passwordEncoder.encode("test1234"))
                     .build();
 
             memberRepository.save(kakaoMember);

@@ -24,10 +24,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class OauthUtil {
-
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 ;            // 1일
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
-
     private final PartyRepository partyRepository;
     private final MemberPartyRepository memberPartyRepository;
 
@@ -68,5 +67,12 @@ public class OauthUtil {
 
             memberPartyRepository.save(memberParty);
         }
+    }
+
+    public void OauthAceessTokenToRedisSave(String accessToken, Member kakaoUser) {
+
+        redisTemplate.opsForValue()
+                .set("kakaoAccessToken:" + kakaoUser.getEmail(), accessToken,
+                        ACCESS_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
     }
 }
