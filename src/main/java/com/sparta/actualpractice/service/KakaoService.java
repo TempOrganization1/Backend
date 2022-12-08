@@ -28,7 +28,6 @@ public class KakaoService {
     private String kakaoRedirectUrl;
     private final MemberRepository memberRepository;
     private final OauthUtil oauthUtil;
-    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> kakaoLogin(String code) throws JsonProcessingException {
 
@@ -137,7 +136,6 @@ public class KakaoService {
                     .email(kakaoUserInfo.getEmail())
                     .name(kakaoUserInfo.getNickname())
                     .imageUrl(kakaoUserInfo.getImageUrl())
-                    .password(passwordEncoder.encode("test1234"))
                     .build();
 
             memberRepository.save(kakaoMember);

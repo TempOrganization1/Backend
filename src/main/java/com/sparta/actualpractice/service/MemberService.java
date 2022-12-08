@@ -123,7 +123,7 @@ public class MemberService {
 
     public ResponseEntity<?> delete(Member member) {
 
-        if (member.getKakaoId() != null){
+        if (member.getKakaoId() != null) {
 
             String accessToken = (String) redisTemplate.opsForValue().get("kakaoAccessToken:" + member.getEmail());
 
