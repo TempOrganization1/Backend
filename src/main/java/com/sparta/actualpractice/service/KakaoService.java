@@ -113,9 +113,8 @@ public class KakaoService {
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
-        String imageUrl = jsonNode.get("kakao_account")
-                .get("profile")
-                .get("profile_image_url").asText();
+        String imageUrl = jsonNode.get("kakao_account").get("profile").get("profile_image_url") != null ?
+                jsonNode.get("kakao_account").get("profile").get("profile_image_url").asText() : null;
 
         return new OAuth2memberInfoDto(id, nickname, email, imageUrl);
     }
