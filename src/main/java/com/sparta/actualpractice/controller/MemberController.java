@@ -47,6 +47,12 @@ public class MemberController {
         return memberService.checkEmail(email);
     }
 
+    @DeleteMapping("withdrawal")
+    public ResponseEntity<?> delete(@AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+
+        return memberService.delete(memberDetails.getMember());
+    }
+
     @GetMapping("/mypage")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
