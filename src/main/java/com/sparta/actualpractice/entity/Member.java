@@ -66,9 +66,13 @@ public class Member extends TimeStamped {
         this.name = memberRequestDto.getName();
     }
 
-    public void updateInfomation(String imageUrl, String name) {
+    public void updateImage(String imageUrl) {
 
         this.imageUrl = imageUrl;
+    }
+
+    public void updateName(String name) {
+
         this.name = name;
     }
 }
