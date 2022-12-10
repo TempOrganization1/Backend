@@ -25,8 +25,8 @@ public class Album extends TimeStamped {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private String imageUrl;
+//    @Column(nullable = false)
+//    private String imageUrl;
 
     @Column(nullable = false)
     private String place;
@@ -42,8 +42,23 @@ public class Album extends TimeStamped {
     @OneToMany(mappedBy = "album", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
+    @OneToMany(mappedBy = "album", cascade = CascadeType.REMOVE)
+    private List<Image> imageList;
+
+    public Album(AlbumRequestDto albumRequestDto, Member member, Party party) {
+
+        this.content = albumRequestDto.getContent();
+        this.place = albumRequestDto.getPlace();
+        this.member = member;
+        this.party = party;
+    }
     public void updateContent(AlbumRequestDto albumRequestDto) {
 
         this.content = albumRequestDto.getContent();
+    }
+
+    public void updateImageList(List<Image> imageList) {
+
+        this.imageList = imageList;
     }
 }

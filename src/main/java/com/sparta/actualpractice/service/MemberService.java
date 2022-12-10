@@ -91,9 +91,9 @@ public class MemberService {
 
         Member member1 = memberRepository.findByEmail(member.getEmail()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
 
-        if (memberInfoRequestDto.getProfileImageUrl() != null) {
+        if (memberInfoRequestDto.getProfileImage() != null) {
 
-            String imageUrl = s3UploadService.upload(memberInfoRequestDto.getProfileImageUrl(), dir);
+            String imageUrl = s3UploadService.upload(memberInfoRequestDto.getProfileImage(), dir);
 
             member1.updateImage(imageUrl);
         }

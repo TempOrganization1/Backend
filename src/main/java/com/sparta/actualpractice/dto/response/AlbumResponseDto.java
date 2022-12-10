@@ -1,5 +1,6 @@
 package com.sparta.actualpractice.dto.response;
 
+import com.sparta.actualpractice.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class AlbumResponseDto {
     private String place;
     private String profileImageUrl;
     private List<CommentResponseDto> commentList;
-    private String imageUrl;
+    private List<ImageResponseDto> imageList;
     private String beforeTime;
     private String memberEmail;
 }

@@ -1,15 +1,9 @@
 package com.sparta.actualpractice.service;
 
 import com.sparta.actualpractice.dto.request.AlbumRequestDto;
-import com.sparta.actualpractice.dto.response.AlbumCreationResponseDto;
-import com.sparta.actualpractice.dto.response.AlbumListResponseDto;
-import com.sparta.actualpractice.dto.response.AlbumResponseDto;
-import com.sparta.actualpractice.dto.response.CommentResponseDto;
+import com.sparta.actualpractice.dto.response.*;
 import com.sparta.actualpractice.entity.*;
-import com.sparta.actualpractice.repository.AlbumRepository;
-import com.sparta.actualpractice.repository.CommentRepository;
-import com.sparta.actualpractice.repository.MemberPartyRepository;
-import com.sparta.actualpractice.repository.PartyRepository;
+import com.sparta.actualpractice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -32,6 +26,7 @@ public class AlbumService {
     private final MemberPartyRepository memberPartyRepository;
     private final S3UploadService s3UploadService;
     private final CommentRepository commentRepository;
+    private final ImageRepository imageRepository;
 
     public ResponseEntity<?> createAlbum(Long partyId, AlbumRequestDto albumRequestDto, Member member) throws IOException {
 
@@ -39,15 +34,22 @@ public class AlbumService {
 
         checkAuthority(member, party);
 
-        Album album = Album.builder()
-                .content(albumRequestDto.getContent())
-                .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(), dir))
-                .member(member)
-                .place(albumRequestDto.getPlace())
-                .party(party)
-                .build();
+        Album album = new Album(albumRequestDto, member, party);
 
         albumRepository.save(album);
+
+        List<Image> imageList = new ArrayList<>();
+
+        for(int i = 0; i < albumRequestDto.getImageList().size(); i++) {
+
+            Image image = new Image(album, s3UploadService.upload(albumRequestDto.getImageList().get(i), dir));
+
+            imageRepository.save(image);
+
+            imageList.add(image);
+        }
+
+        album.updateImageList(imageList);
 
         return new ResponseEntity<>(new AlbumCreationResponseDto(album), HttpStatus.OK);
     }
@@ -63,7 +65,13 @@ public class AlbumService {
         List<AlbumListResponseDto> albumListResponseDtoList = new ArrayList<>();
 
         for(Album album : albumList) {
-            albumListResponseDtoList.add(new AlbumListResponseDto(album));
+
+            List<Image> imageList = imageRepository.findAllByAlbumOrderById(album);
+            List<ImageResponseDto> imageResponseDtoList = new ArrayList<>();
+
+            Image image = imageRepository.findTopByAlbumOrderById(album);
+
+            albumListResponseDtoList.add(new AlbumListResponseDto(album, image));
         }
 
         return new ResponseEntity<>(albumListResponseDtoList, HttpStatus.OK);
@@ -74,6 +82,9 @@ public class AlbumService {
 
         Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
 
+        List<Image> imageList = imageRepository.findAllByAlbumOrderById(album);
+        List<ImageResponseDto> imageResponseDtoList = new ArrayList<>();
+
         List<Comment> commentList = commentRepository.findAllByAlbumOrderByCreatedAtDesc(album);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
@@ -81,12 +92,16 @@ public class AlbumService {
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
 
+        for(Image image : imageList) {
+            imageResponseDtoList.add(new ImageResponseDto(image));
+        }
+
         return new ResponseEntity<>(AlbumResponseDto.builder()
                 .content(album.getContent())
                 .writer(album.getMember().getName())
                 .place(album.getPlace())
                 .profileImageUrl(album.getMember().getImageUrl())
-                .imageUrl(album.getImageUrl())
+                .imageList(imageResponseDtoList)
                 .commentList(commentResponseDtoList)
                 .beforeTime(Time.calculateTime(album))
                 .memberEmail(album.getMember().getEmail())

@@ -17,7 +17,7 @@ public class AlbumCreationResponseDto {
         this.albumId = album.getId();
         this.content = album.getContent();
         this.place = album.getPlace();
-        this.imageUrl = album.getImageUrl();
+        //this.imageUrl = album.getImageUrl();
         this.memberEmail = album.getMember().getEmail();
     }
 }
