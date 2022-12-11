@@ -1,6 +1,13 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'java'
 }
 
@@ -32,7 +39,9 @@ dependencies {
     implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
 // org.springdoc:springdoc-openapi-ui:1.6.8
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-// redis
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 //    implementation 'it.ozimov:embedded-redis:0.7.2'
 }
@@ -40,3 +49,27 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+
+

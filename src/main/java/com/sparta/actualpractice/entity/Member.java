@@ -1,10 +1,7 @@
 package com.sparta.actualpractice.entity;
 
 
-import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
 import com.sparta.actualpractice.dto.request.MemberRequestDto;
-
-import com.sparta.actualpractice.dto.response.OAuth2memberInfoDto;
 import com.sparta.actualpractice.util.TimeStamped;
 
 import lombok.AllArgsConstructor;
