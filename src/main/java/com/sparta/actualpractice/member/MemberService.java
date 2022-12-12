@@ -41,7 +41,12 @@ public class MemberService {
         if(memberRepository.existsByEmail(memberRequestDto.getEmail()))
             return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
 
-        Member member = new Member(memberRequestDto, passwordEncoder.encode(memberRequestDto.getPassword()));
+        Member member = Member.builder()
+                        .email(memberRequestDto.getEmail())
+                        .name(memberRequestDto.getName())
+                        .password(passwordEncoder.encode(memberRequestDto.getPassword()))
+                        .build();
+
 
         memberRepository.save(member);
 

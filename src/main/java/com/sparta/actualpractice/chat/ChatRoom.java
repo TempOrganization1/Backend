@@ -1,6 +1,5 @@
 package com.sparta.actualpractice.chat;
 
-import com.sparta.actualpractice.chat.Message;
 import com.sparta.actualpractice.party.Party;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

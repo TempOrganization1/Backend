@@ -62,11 +62,11 @@ public class Member extends TimeStamped {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Admin> adminList;
 
-    public Member(MemberRequestDto memberRequestDto, String password) {
+    public Member(String email, String name, String password) {
 
-        this.email = memberRequestDto.getEmail();
+        this.email = email;
         this.password = password;
-        this.name = memberRequestDto.getName();
+        this.name = name;
     }
 
     public void updateImage(String imageUrl) {

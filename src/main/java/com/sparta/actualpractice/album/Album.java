@@ -43,8 +43,8 @@ public class Album extends TimeStamped {
     @OneToMany(mappedBy = "album", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
-    public void updateContent(AlbumRequestDto albumRequestDto) {
+    public void updateContent(String content) {
 
-        this.content = albumRequestDto.getContent();
+        this.content = content;
     }
 }

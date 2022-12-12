@@ -24,7 +24,7 @@ public class CommentService {
 
         Album album = albumRepository.findById(albumId).orElseThrow(() -> new NullPointerException("해당 사진이 존재하지 않습니다."));
 
-        Comment comment = new Comment(commentRequestDto, album, member);
+        Comment comment = new Comment(commentRequestDto.getContent(), album, member);
 
         commentRepository.save(comment);
 
@@ -42,7 +42,7 @@ public class CommentService {
         if (validateMember(member, comment))
             throw new IllegalArgumentException("댓글 작성자와 현재 사용자가 일치하지 않습니다.");
 
-        comment.updateContent(commentRequestDto);
+        comment.updateContent(commentRequestDto.getContent());
 
         return new ResponseEntity<>("댓글이 수정되었습니다.", HttpStatus.OK);
     }

@@ -29,15 +29,15 @@ public class Comment extends TimeStamped {
     @JoinColumn(name = "ALBUM_ID")
     private Album album;
 
-    public Comment(CommentRequestDto commentRequestDto, Album album, Member member){
+    public Comment(String content, Album album, Member member){
 
-        this.content = commentRequestDto.getContent();
+        this.content = content;
         this.album = album;
         this.member = member;
     }
 
-    public void updateContent(CommentRequestDto commentRequestDto) {
+    public void updateContent(String content) {
 
-        this.content = commentRequestDto.getContent();
+        this.content = content;
     }
 }
