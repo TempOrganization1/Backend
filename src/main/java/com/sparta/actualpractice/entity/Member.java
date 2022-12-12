@@ -29,6 +29,9 @@ public class Member extends TimeStamped {
     @Column(nullable = true)
     private Long kakaoId;
 
+    @Column(nullable = true)
+    private Long googleId;
+
     @Column(nullable = false)
     private String email;
 
