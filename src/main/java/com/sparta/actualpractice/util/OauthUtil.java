@@ -1,11 +1,11 @@
 package com.sparta.actualpractice.util;
 
-import com.sparta.actualpractice.dto.TokenDto;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.MemberParty;
-import com.sparta.actualpractice.entity.Party;
-import com.sparta.actualpractice.repository.MemberPartyRepository;
-import com.sparta.actualpractice.repository.PartyRepository;
+import com.sparta.actualpractice.member.TokenDto;
+import com.sparta.actualpractice.member.Member;
+import com.sparta.actualpractice.memberParty.MemberParty;
+import com.sparta.actualpractice.party.Party;
+import com.sparta.actualpractice.memberParty.MemberPartyRepository;
+import com.sparta.actualpractice.party.PartyRepository;
 import com.sparta.actualpractice.security.JwtFilter;
 import com.sparta.actualpractice.security.MemberDetailsImpl;
 import com.sparta.actualpractice.security.TokenProvider;

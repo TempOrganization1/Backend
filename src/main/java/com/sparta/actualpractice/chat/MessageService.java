@@ -1,11 +1,7 @@
 package com.sparta.actualpractice.chat;
 
-import com.sparta.actualpractice.entity.ChatRoom;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.Message;
-import com.sparta.actualpractice.repository.MessageRepository;
-import com.sparta.actualpractice.repository.ChatRoomRepository;
-import com.sparta.actualpractice.repository.MemberRepository;
+import com.sparta.actualpractice.member.Member;
+import com.sparta.actualpractice.member.MemberRepository;
 import com.sparta.actualpractice.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +33,6 @@ public class MessageService {
     @Transactional(readOnly = true)
     public ResponseEntity<?> readMessages(Long chatRoomId) {
 
-        System.out.println("3번");
-
         List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop100ByChatRoomIdOrderByCreatedAtAsc(chatRoomId).stream()
                 .map(MessageResponseDto::new).collect(Collectors.toList());
 
@@ -49,11 +43,8 @@ public class MessageService {
     public void sendMessage(MessageRequestDto messageRequestDto, Long chatRoomId, String jwtToken) {
 
         String email = tokenProvider.decodedEmail(jwtToken);
-        System.out.println("email = " + email);
 
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("멤버를 찾을 수 없습니다."));
-
-        System.out.println("chatRoomId = " + chatRoomId);
 
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new NullPointerException("채팅룸을 찾을 수 없습니다."));
 

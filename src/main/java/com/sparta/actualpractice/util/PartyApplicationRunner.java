@@ -1,11 +1,11 @@
 package com.sparta.actualpractice.util;
 
-import com.sparta.actualpractice.entity.ChatRoom;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.entity.Party;
-import com.sparta.actualpractice.repository.ChatRoomRepository;
-import com.sparta.actualpractice.repository.MemberRepository;
-import com.sparta.actualpractice.repository.PartyRepository;
+import com.sparta.actualpractice.chat.ChatRoom;
+import com.sparta.actualpractice.member.Member;
+import com.sparta.actualpractice.party.Party;
+import com.sparta.actualpractice.chat.ChatRoomRepository;
+import com.sparta.actualpractice.member.MemberRepository;
+import com.sparta.actualpractice.party.PartyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
