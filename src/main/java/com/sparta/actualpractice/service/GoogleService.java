@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
 @Service
 @RequiredArgsConstructor
 public class GoogleService {
@@ -34,30 +33,45 @@ public class GoogleService {
 
     public ResponseEntity<?> googleLogin(String code) throws JsonProcessingException {
 
+        // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
+        // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         OAuth2memberInfoDto googleUserInfo = getGoogleUserInfo(accessToken);
 
+        // 3. "카카오 사용자 정보"로 필요시 회원가입
         Member googleUser = registerGoogleUserIfNeeded(googleUserInfo);
 
+        if (googleUser == null)
+            return new ResponseEntity<>("이미 존재하는 이미지입니다.", HttpStatus.BAD_REQUEST);
+
+        // 3.5 기본 그룹 가입하기
+        oauthUtil.basicParty(googleUser);
+
+        // 4. 강제 로그인 처리
         oauthUtil.forceLogin(googleUser);
 
+        // 5. 토큰 생성
         TokenDto tokenDto = oauthUtil.generateTokenDto(googleUser);
 
+        // 6. 톸큰 해더에 담기
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
-        return new ResponseEntity<>("구글 로그인에 성공하였습니다.",  HttpStatus.OK);
+        // 6.5 카카오 "엑세스 토큰" 레디스 저장
+        oauthUtil.OauthAceessTokenToRedisSave(accessToken, googleUser);
+
+        return new ResponseEntity<>("구글 로그인에 성공하였습니다.", headers, HttpStatus.OK);
     }
 
 
     private String getAccessToken(String code) throws JsonProcessingException {
 
+        // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         headers.add("User-Agent","PostmanRuntime/7.15.0");
 
-        System.out.println(code);
-
+        // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", googleClientId);
@@ -65,7 +79,7 @@ public class GoogleService {
         body.add("redirect_uri", googleRedirectUrl);
         body.add("code", code);
 
-
+        // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> googleTokenRequest = new HttpEntity<>(body, headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
@@ -75,6 +89,7 @@ public class GoogleService {
                 String.class
         );
 
+        // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -85,10 +100,12 @@ public class GoogleService {
 
     private OAuth2memberInfoDto getGoogleUserInfo(String accessToken) throws JsonProcessingException {
 
+        // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
+        // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> googleUserInfoRequest = new HttpEntity<>(headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
