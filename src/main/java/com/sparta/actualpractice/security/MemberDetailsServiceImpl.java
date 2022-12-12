@@ -1,8 +1,8 @@
 package com.sparta.actualpractice.security;
 
 
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.repository.MemberRepository;
+import com.sparta.actualpractice.member.Member;
+import com.sparta.actualpractice.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

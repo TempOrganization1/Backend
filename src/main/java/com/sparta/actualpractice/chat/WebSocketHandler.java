@@ -22,10 +22,6 @@ public class WebSocketHandler implements ChannelInterceptor {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
-        System.out.println("message = " + message);
-        System.out.println("message.getHeaders() = " + message.getHeaders());
-        System.out.println("accessor.getNativeHeader(\"Authorization\") = " + accessor.getNativeHeader("Authorization"));
-
         if (StompCommand.CONNECT.equals(accessor.getCommand()))
             tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7));
 

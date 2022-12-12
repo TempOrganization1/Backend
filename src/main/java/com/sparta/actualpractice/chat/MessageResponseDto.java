@@ -1,6 +1,5 @@
 package com.sparta.actualpractice.chat;
 
-import com.sparta.actualpractice.entity.Message;
 import lombok.Getter;
 
 import java.io.Serializable;

@@ -21,7 +21,6 @@ public class MessageController {
     @GetMapping("/chatrooms/{chatRoom_id}")
     public ResponseEntity<?> readMessages(@PathVariable("chatRoom_id") Long chatRoomId) {
 
-        System.out.println(" 1번");
         return messageService.readMessages(chatRoomId);
     }
 
@@ -34,8 +33,6 @@ public class MessageController {
                            @DestinationVariable("chatRoom_id") Long chatRoomId,
                            @Header("Authorization") String token) {
 
-        System.out.println("chatRoomId = " + chatRoomId);
-        System.out.println("messageRequestDto = " + messageRequestDto.getContent());
         messageService.sendMessage(messageRequestDto, chatRoomId, token);
     }
 

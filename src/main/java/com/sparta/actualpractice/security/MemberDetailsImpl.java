@@ -1,6 +1,6 @@
 package com.sparta.actualpractice.security;
 
-import com.sparta.actualpractice.entity.Member;
+import com.sparta.actualpractice.member.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

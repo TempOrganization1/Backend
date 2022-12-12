@@ -1,8 +1,8 @@
 package com.sparta.actualpractice.security;
 
-import com.sparta.actualpractice.dto.TokenDto;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.repository.MemberRepository;
+import com.sparta.actualpractice.member.TokenDto;
+import com.sparta.actualpractice.member.Member;
+import com.sparta.actualpractice.member.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
