@@ -11,10 +11,4 @@ public class AlbumRequestDto {
     private String content;
     private String place;
     private MultipartFile imageUrl;
-
-    public Album createAlbum() {
-
-        return new Album(content);
-    }
-
 }

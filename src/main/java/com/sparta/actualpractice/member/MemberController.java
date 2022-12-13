@@ -1,13 +1,8 @@
-package com.sparta.actualpractice.controller;
+package com.sparta.actualpractice.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sparta.actualpractice.dto.request.MemberInfoRequestDto;
-import com.sparta.actualpractice.dto.request.MemberRequestDto;
-import com.sparta.actualpractice.dto.request.TokenRequestDto;
+
 import com.sparta.actualpractice.security.MemberDetailsImpl;
-import com.sparta.actualpractice.service.GoogleService;
-import com.sparta.actualpractice.service.KakaoService;
-import com.sparta.actualpractice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
