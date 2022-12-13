@@ -1,12 +1,9 @@
-package com.sparta.actualpractice.service;
+package com.sparta.actualpractice.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.actualpractice.dto.TokenDto;
-import com.sparta.actualpractice.dto.response.OAuth2memberInfoDto;
-import com.sparta.actualpractice.entity.Member;
-import com.sparta.actualpractice.repository.MemberRepository;
+
 import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
