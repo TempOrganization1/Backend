@@ -3,6 +3,8 @@ package com.sparta.actualpractice.participant;
 
 import com.sparta.actualpractice.schedule.Schedule;
 import com.sparta.actualpractice.member.Member;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,9 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Participant {
 
     @Id
@@ -23,10 +27,4 @@ public class Participant {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    public Participant(Schedule schedule, Member member) {
-
-        this.schedule = schedule;
-        this.member = member;
-    }
 }
-

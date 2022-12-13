@@ -3,6 +3,8 @@ package com.sparta.actualpractice.notification;
 
 import com.sparta.actualpractice.member.Member;
 import com.sparta.actualpractice.util.TimeStamped;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,9 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Notification extends TimeStamped {
 
     @Id
@@ -29,6 +33,7 @@ public class Notification extends TimeStamped {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;
+
     private String partyName;
 
     private String title;
@@ -37,26 +42,11 @@ public class Notification extends TimeStamped {
 
     private String content;
 
-    private String ProfileUrl;
+    private String profileUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-
-    public Notification(Member member, NotificationResponseDto notificationResponseDto) {
-
-
-        this.member = member;
-        this.isRead = false;
-        this.partyName = notificationResponseDto.getPartyName();
-        this.title = notificationResponseDto.getTitle();
-        this.writer = notificationResponseDto.getWriter();
-        this.content = notificationResponseDto.getContent();
-        this.ProfileUrl = notificationResponseDto.getProfileUrl();
-        this.message = notificationResponseDto.getMessage();
-        this.url = notificationResponseDto.getUrl();
-        this.alarmType = notificationResponseDto.getAlarmType();
-    }
 
     public void read() {
 
