@@ -76,15 +76,18 @@ public class SecurityConfig{
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/members/**").permitAll()
+                .antMatchers("/members/signup").permitAll()
+                .antMatchers("/members/login").permitAll()
+                .antMatchers("/members/check-email").permitAll()
+                .antMatchers("/members/kakao/callback").permitAll()
+                .antMatchers("/members/google/callback").permitAll()
+                .antMatchers(HttpMethod.GET).authenticated()
                 .antMatchers(HttpMethod.POST).authenticated()
-                .antMatchers(HttpMethod.DELETE).authenticated()
                 .antMatchers(HttpMethod.PUT).authenticated()
-                .antMatchers("/mypage/**").authenticated()
+                .antMatchers(HttpMethod.DELETE).authenticated()
+                .antMatchers(HttpMethod.PATCH).authenticated()
                 .anyRequest()
                 .permitAll()
-
-
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
