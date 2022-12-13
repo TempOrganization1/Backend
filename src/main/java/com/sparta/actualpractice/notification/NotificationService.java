@@ -150,6 +150,4 @@ public class NotificationService {
 
         return !notificationRepository.existsByMemberAndId(member, notificationId);
     }
-
-
 }
