@@ -11,7 +11,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-
 public class NotificationResponseDto {
 
     private Long id;
