@@ -29,15 +29,19 @@ public class ParticipantService {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new NullPointerException("해당 일정이 없습니다."));
 
         if(participantRepository.existsByScheduleAndMember(schedule, member)) {
+
             participantRepository.deleteByScheduleAndMember(schedule, member);
 
             return new ResponseEntity<>(false, HttpStatus.OK);
         }
         else {
-            participantRepository.save(new Participant(schedule, member));
+            participantRepository.save(Participant.builder()
+                            .schedule(schedule)
+                            .member(member)
+                            .build());
 
             if(!schedule.getMember().getId().equals(memberId))
-                notificationService.send(schedule.getMember(), new NotificationResponseDto(schedule, member, AlarmType.schedule));
+                notificationService.send(schedule.getMember(), new NotificationResponseDto(schedule, member, AlarmType.SCHEDULE));
 
             return new ResponseEntity<>(true,HttpStatus.OK);
         }

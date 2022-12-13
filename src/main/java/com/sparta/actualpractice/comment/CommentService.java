@@ -29,7 +29,7 @@ public class CommentService {
         commentRepository.save(comment);
 
         if(!album.getMember().getId().equals(member.getId()))
-            notificationService.send(album.getMember(), new NotificationResponseDto(album, comment, AlarmType.comment));
+            notificationService.send(album.getMember(), new NotificationResponseDto(album, comment, AlarmType.COMMENT));
 
         return new ResponseEntity<>(new CommentResponseDto(comment), HttpStatus.OK);
     }

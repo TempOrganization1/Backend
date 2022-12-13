@@ -119,7 +119,19 @@ public class NotificationService {
     @Async
     public void send(Member member, NotificationResponseDto notificationResponseDto) {
 
-        Notification notification = new Notification(member, notificationResponseDto);
+        Notification notification = Notification.builder()
+                .member(member)
+                .isRead(false)
+                .partyName(notificationResponseDto.getPartyName())
+                .title(notificationResponseDto.getTitle())
+                .writer(notificationResponseDto.getWriter())
+                .content(notificationResponseDto.getContent())
+                .profileUrl(notificationResponseDto.getProfileUrl())
+                .message(notificationResponseDto.getMessage())
+                .url(notificationResponseDto.getUrl())
+                .alarmType(notificationResponseDto.getAlarmType())
+                .build();
+
         notificationRepository.save(notification);
 
         String receiverId = String.valueOf(member.getId());
