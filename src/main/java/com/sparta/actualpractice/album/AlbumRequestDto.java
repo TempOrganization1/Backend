@@ -10,5 +10,5 @@ public class AlbumRequestDto {
 
     private String content;
     private String place;
-    private MultipartFile imageUrl;
+    private MultipartFile image;
 }

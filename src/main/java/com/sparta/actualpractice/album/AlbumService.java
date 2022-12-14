@@ -40,7 +40,7 @@ public class AlbumService {
 
         Album album = Album.builder()
                 .content(albumRequestDto.getContent())
-                .imageUrl(s3UploadService.upload(albumRequestDto.getImageUrl(), dir))
+                .imageUrl(s3UploadService.upload(albumRequestDto.getImage(), dir))
                 .member(member)
                 .place(albumRequestDto.getPlace())
                 .party(party)
