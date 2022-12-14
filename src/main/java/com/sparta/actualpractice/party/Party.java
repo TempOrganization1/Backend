@@ -4,6 +4,8 @@ import com.sparta.actualpractice.album.Album;
 import com.sparta.actualpractice.chat.ChatRoom;
 import com.sparta.actualpractice.memberParty.MemberParty;
 import com.sparta.actualpractice.schedule.Schedule;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,18 +52,17 @@ public class Party {
         this.introduction = introduction;
     }
 
+    public Party(String name, String introduction, String code) {
 
-    public Party(PartyRequestDto partyRequestDto, String code) {
-
-        this.name = partyRequestDto.getPartyName();
-        this.introduction = partyRequestDto.getPartyIntroduction();
+        this.name = name;
+        this.introduction = introduction;
         this.code = code;
     }
 
-    public void updateInformation(PartyRequestDto partyRequestDto) {
+    public void updateInformation(String name, String introduction) {
 
-        this.name = partyRequestDto.getPartyName();
-        this.introduction = partyRequestDto.getPartyIntroduction();
+        this.name = name;
+        this.introduction = introduction;
     }
 
     public void updateCode(String code) {
@@ -75,6 +76,7 @@ public class Party {
     }
 
     public void updateChatRoom(ChatRoom chatRoom) {
+
         this.chatRoom = chatRoom;
     }
 }

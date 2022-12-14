@@ -2,6 +2,8 @@ package com.sparta.actualpractice.party;
 
 import com.sparta.actualpractice.chat.ChatRoom;
 import com.sparta.actualpractice.chat.ChatRoomRepository;
+import com.sparta.actualpractice.exception.ErrorCode;
+import com.sparta.actualpractice.exception.WefExceptions;
 import com.sparta.actualpractice.member.Member;
 import com.sparta.actualpractice.member.MemberRepository;
 import com.sparta.actualpractice.member.MemberResponseDto;
@@ -37,7 +39,7 @@ public class PartyService {
 
     public ResponseEntity<?> createParty(PartyRequestDto partyRequestDto, Member member) {
 
-        Party party = new Party(partyRequestDto, createCode());
+        Party party = new Party(partyRequestDto.getPartyName(),partyRequestDto.getPartyIntroduction(), createCode());
         Admin admin = new Admin(member, party);
         MemberParty memberParty = new MemberParty(member, party);
         ChatRoom chatRoom = new ChatRoom(party);
@@ -64,7 +66,7 @@ public class PartyService {
         List<Party> partyList = new ArrayList<>();
 
         for (MemberParty memberParty : memberPartyList) {
-            Party party = partyRepository.findById(memberParty.getParty().getId()).orElseThrow(() -> new NullPointerException("해당 그룹이 없습니다"));
+            Party party = partyRepository.findById(memberParty.getParty().getId()).orElseThrow(() -> new WefExceptions(ErrorCode.NOT_FOUND_PARTY));
             partyList.add(party);
         }
 
@@ -76,7 +78,7 @@ public class PartyService {
 
     public ResponseEntity<?> getPartyInfo(Long partyId, Member member) {
 
-        Party party = partyRepository.findById(partyId).orElseThrow(() -> new NullPointerException("해당 그룹이 존재하지 않습니다."));
+        Party party = partyRepository.findById(partyId).orElseThrow(() -> new WefExceptions(ErrorCode.NOT_FOUND_PARTY));
 
         if (!memberPartyRepository.existsByMemberAndParty(member, party))
             throw new IllegalArgumentException("사용자는 해당 그룹에 대한 회원이 아닙니다.");
@@ -123,7 +125,7 @@ public class PartyService {
         if (validateAdmin(member, party))
             throw new IllegalArgumentException("그룹 정보를 수정할 수 있는 권한이 없습니다.");
 
-        party.updateInformation(partyRequestDto);
+        party.updateInformation(partyRequestDto.getPartyName(), partyRequestDto.getPartyIntroduction());
 
         return new ResponseEntity<>("그룹 정보가 수정되었습니다", HttpStatus.OK);
     }
