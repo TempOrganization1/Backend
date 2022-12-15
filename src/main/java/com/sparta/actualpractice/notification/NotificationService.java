@@ -95,10 +95,12 @@ public class NotificationService {
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
 
         try {
+
             emitter.send(SseEmitter.event()
                     .id(emitterId)
                     .name("sse")
                     .data(data));
+
             log.info(" 알림 전송 완료 {}", emitterId);
         } catch (IOException exception) {
 

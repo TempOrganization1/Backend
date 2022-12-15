@@ -30,16 +30,14 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final S3UploadService s3UploadService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final PartyRepository partyRepository;
     private final OauthUtil oauthUtil;
-    private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
 
     public ResponseEntity<?> signup(MemberRequestDto memberRequestDto) {
 
         if(memberRepository.existsByEmail(memberRequestDto.getEmail()))
-            return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 
         Member member = Member.builder()
                         .email(memberRequestDto.getEmail())
@@ -63,7 +61,7 @@ public class MemberService {
         Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
 
         if(!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword()))
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다."); // 커스텀 예외 처리 예정
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
 
         TokenDto tokenDto = oauthUtil.generateTokenDto(member);
 
@@ -75,7 +73,7 @@ public class MemberService {
     public ResponseEntity<?> checkEmail(String email) {
 
         if (memberRepository.existsByEmail(email))
-            return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);  // 추후에 커스텀 예외 처리 예정
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 
         return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);
     }
@@ -115,7 +113,7 @@ public class MemberService {
         String refreshToken = (String) redisTemplate.opsForValue().get("RefreshToken:" + member.getEmail());
 
         if (refreshToken == null)
-            throw new NullPointerException("토큰이 존재하지 않습니다.");
+            throw new NullPointerException("Refresh 토큰이 존재하지 않습니다.");
 
         if (!refreshToken.equals(tokenRequestDto.getRefreshToken()))
             throw new IllegalArgumentException("RefreshToken의 정보가 일치 하지 않습니다.");
