@@ -82,6 +82,8 @@ public class SecurityConfig{
                 .antMatchers("/members/kakao/callback").permitAll()
                 .antMatchers("/members/google/callback").permitAll()
                 .antMatchers(HttpMethod.GET).authenticated()
+                .antMatchers("/members/**").permitAll()
+                .antMatchers("/socket/**").permitAll()
                 .antMatchers(HttpMethod.POST).authenticated()
                 .antMatchers(HttpMethod.PUT).authenticated()
                 .antMatchers(HttpMethod.DELETE).authenticated()
