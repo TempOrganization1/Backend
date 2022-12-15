@@ -34,7 +34,15 @@ public class ScheduleService {
         if (validateAndParty(member, party))
             throw new IllegalArgumentException("사용자는 해당 그룹에 대한 접근 할 권한이 없습니다. ");
 
-        Schedule schedule = new Schedule(member, scheduleRequestDto, party);
+        Schedule schedule = Schedule.builder()
+                .title(scheduleRequestDto.getTitle())
+                .content(scheduleRequestDto.getContent())
+                .time(scheduleRequestDto.getDate() + " " + scheduleRequestDto.getMeetTime())
+                .place(scheduleRequestDto.getPlace().getAddress() + "," + scheduleRequestDto.getPlace().getPlaceName())
+                .member(member)
+                .party(party)
+                .build();
+
 
         scheduleRepository.save(schedule);
 
@@ -99,7 +107,10 @@ public class ScheduleService {
         if (validateSchedule(member, schedule))
             throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
 
-        schedule.updateInformation(scheduleRequestDto);
+        schedule.updateTitle(scheduleRequestDto.getTitle());
+        schedule.updateContent(scheduleRequestDto.getContent());
+        schedule.updateTime(scheduleRequestDto.getDate(), scheduleRequestDto.getMeetTime());
+        schedule.updatePlace(scheduleRequestDto.getPlace().getAddress(), scheduleRequestDto.getPlace().getPlaceName());
 
         return new ResponseEntity<>("해당 일정이 수정되었습니다.", HttpStatus.OK);
     }
