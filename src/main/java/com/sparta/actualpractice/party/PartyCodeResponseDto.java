@@ -1,6 +1,5 @@
 package com.sparta.actualpractice.party;
 
-import com.sparta.actualpractice.party.Party;
 import lombok.Getter;
 
 @Getter

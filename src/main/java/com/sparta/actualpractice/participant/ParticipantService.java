@@ -25,8 +25,8 @@ public class ParticipantService {
     @Transactional
     public ResponseEntity<?> createParticipant(Long scheduleId, Long memberId) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(()-> new NullPointerException("해당 유저가 없습니다."));
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new NullPointerException("해당 일정이 없습니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new NullPointerException("해당 일정을 찾을 수 없습니다."));
 
         if(participantRepository.existsByScheduleAndMember(schedule, member)) {
 

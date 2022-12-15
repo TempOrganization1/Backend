@@ -33,7 +33,7 @@ class MemberControllerTest {
                 .build();
 
         Assertions.assertThat(member.getEmail()).isEqualTo("1234@gmail.com");
-        Assertions.assertThat(member.getName()).isEqualTo("다르게");
+        Assertions.assertThat(member.getName()).isEqualTo("테스트");
 
         memberRepository.save(member);
     }
