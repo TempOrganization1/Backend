@@ -33,14 +33,14 @@ public class GoogleService {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
-        // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
+        // 2. "액세스 토큰"으로 "구글 사용자 정보" 가져오기
         OAuth2memberInfoDto googleUserInfo = getGoogleUserInfo(accessToken);
 
-        // 3. "카카오 사용자 정보"로 필요시 회원가입
+        // 3. "구글 사용자 정보"로 필요시 회원가입
         Member googleUser = registerGoogleUserIfNeeded(googleUserInfo);
 
         if (googleUser == null)
-            return new ResponseEntity<>("이미 존재하는 이미지입니다.", HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 
         // 3.5 기본 그룹 가입하기
         oauthUtil.basicParty(googleUser);
@@ -54,7 +54,7 @@ public class GoogleService {
         // 6. 톸큰 해더에 담기
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
-        // 6.5 카카오 "엑세스 토큰" 레디스 저장
+        // 6.5 구글 "엑세스 토큰" 레디스 저장
         oauthUtil.OauthAceessTokenToRedisSave(accessToken, googleUser);
 
         return new ResponseEntity<>("구글 로그인에 성공하였습니다.", headers, HttpStatus.OK);
@@ -129,8 +129,7 @@ public class GoogleService {
 
     private Member registerGoogleUserIfNeeded(OAuth2memberInfoDto googleUserInfo) {
 
-        Member googleMember = memberRepository.findByKakaoId(googleUserInfo.getId()).orElse(null);
-
+        Member googleMember = memberRepository.findByGoogleId(googleUserInfo.getId()).orElse(null);
 
         if (googleMember == null) {
             // 회원가입
@@ -143,6 +142,7 @@ public class GoogleService {
 
             memberRepository.save(googleMember);
         }
+
         return googleMember;
     }
 }
