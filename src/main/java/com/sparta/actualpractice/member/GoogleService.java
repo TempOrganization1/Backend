@@ -115,7 +115,7 @@ public class GoogleService {
 
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-        Long id = Long.parseLong(jsonNode.get("sub").asText());
+        String id = jsonNode.get("sub").asText();
 
         String nickname = jsonNode.get("name").asText();
         String email = jsonNode.get("email").asText();

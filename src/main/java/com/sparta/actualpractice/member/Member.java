@@ -30,10 +30,10 @@ public class Member extends TimeStamped {
     private Long id;
 
     @Column(nullable = true)
-    private Long kakaoId;
+    private String kakaoId;
 
     @Column(nullable = true)
-    private Long googleId;
+    private String googleId;
 
     @Column(nullable = false)
     private String email;
