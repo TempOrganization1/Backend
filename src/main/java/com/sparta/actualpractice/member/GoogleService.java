@@ -40,7 +40,7 @@ public class GoogleService {
         Member googleUser = registerGoogleUserIfNeeded(googleUserInfo);
 
         if (googleUser == null)
-            return new ResponseEntity<>("이미 존재하는 이미지입니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
 
         // 3.5 기본 그룹 가입하기
         oauthUtil.basicParty(googleUser);
@@ -55,8 +55,8 @@ public class GoogleService {
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
         // 6.5 카카오 "엑세스 토큰" 레디스 저장
-
         oauthUtil.OauthAceessTokenToRedisSave(accessToken, googleUser, "google");
+
         return new ResponseEntity<>("구글 로그인에 성공하였습니다.", headers, HttpStatus.OK);
     }
 
@@ -114,8 +114,6 @@ public class GoogleService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-
-        System.out.println("여기는 사람이 산다 : "+ jsonNode);
 
         String id = jsonNode.get("sub").asText();
         String nickname = jsonNode.get("name").asText();
