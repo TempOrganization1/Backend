@@ -69,10 +69,10 @@ public class OauthUtil {
         }
     }
 
-    public void OauthAceessTokenToRedisSave(String accessToken, Member kakaoUser) {
+    public void OauthAceessTokenToRedisSave(String accessToken, Member OauthUser, String OauthName) {
 
         redisTemplate.opsForValue()
-                .set("kakaoAccessToken:" + kakaoUser.getEmail(), accessToken,
+                .set(OauthName + "AccessToken:" + OauthUser.getEmail(), accessToken,
                         ACCESS_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
     }
 }

@@ -51,7 +51,7 @@ public class KakaoService {
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
         // 6.5 카카오 "엑세스 토큰" 레디스 저장
-        oauthUtil.OauthAceessTokenToRedisSave(accessToken, kakaoUser);
+        oauthUtil.OauthAceessTokenToRedisSave(accessToken, kakaoUser, "kakao");
 
         return new ResponseEntity<>("카카오 로그인에 성공했습니다.", headers, HttpStatus.OK);
     }
@@ -106,9 +106,9 @@ public class KakaoService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
 
-       JsonNode jsonNode = objectMapper.readTree(responseBody);
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-        Long id = jsonNode.get("id").asLong();
+        String id = jsonNode.get("id").asText();
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
@@ -122,8 +122,7 @@ public class KakaoService {
     @Transactional
     public Member registerKakaoUserIfNeeded(OAuth2memberInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
-        Member kakaoMember = memberRepository.findByKakaoId(kakaoUserInfo.getId()).orElse(null); // 이메일로 했다고
-
+        Member kakaoMember = memberRepository.findByKakaoId(kakaoUserInfo.getId()).orElse(null);
 
         if (kakaoMember == null && !memberRepository.existsByEmail(kakaoUserInfo.getEmail())) {
             // 회원가입
