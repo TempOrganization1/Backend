@@ -3,7 +3,6 @@ package com.sparta.actualpractice.member;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 @Service
 @RequiredArgsConstructor
 public class GoogleService {
@@ -33,14 +33,14 @@ public class GoogleService {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
-        // 2. "액세스 토큰"으로 "구글 사용자 정보" 가져오기
+        // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         OAuth2memberInfoDto googleUserInfo = getGoogleUserInfo(accessToken);
 
-        // 3. "구글 사용자 정보"로 필요시 회원가입
+        // 3. "카카오 사용자 정보"로 필요시 회원가입
         Member googleUser = registerGoogleUserIfNeeded(googleUserInfo);
 
         if (googleUser == null)
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            return new ResponseEntity<>("이미 존재하는 이미지입니다.", HttpStatus.BAD_REQUEST);
 
         // 3.5 기본 그룹 가입하기
         oauthUtil.basicParty(googleUser);
@@ -54,26 +54,25 @@ public class GoogleService {
         // 6. 톸큰 해더에 담기
         HttpHeaders headers = oauthUtil.setHeaders(tokenDto);
 
-        // 6.5 구글 "엑세스 토큰" 레디스 저장
-        oauthUtil.OauthAceessTokenToRedisSave(accessToken, googleUser);
+        // 6.5 카카오 "엑세스 토큰" 레디스 저장
 
+        oauthUtil.OauthAceessTokenToRedisSave(accessToken, googleUser, "google");
         return new ResponseEntity<>("구글 로그인에 성공하였습니다.", headers, HttpStatus.OK);
     }
-
 
     private String getAccessToken(String code) throws JsonProcessingException {
 
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        headers.add("User-Agent","PostmanRuntime/7.15.0");
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", googleClientId);
-        body.add("client_secret", googleClientSecret);
         body.add("redirect_uri", googleRedirectUrl);
+        body.add("client_secret", googleClientSecret);
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -89,7 +88,6 @@ public class GoogleService {
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
-
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
         return jsonNode.get("access_token").asText();
@@ -117,9 +115,9 @@ public class GoogleService {
 
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-        System.out.println(jsonNode);
+        System.out.println("여기는 사람이 산다 : "+ jsonNode);
 
-        Long id = jsonNode.get("sub").asLong();
+        String id = jsonNode.get("sub").asText();
         String nickname = jsonNode.get("name").asText();
         String email = jsonNode.get("email").asText();
         String imageUrl = jsonNode.get("picture").asText();
@@ -131,7 +129,7 @@ public class GoogleService {
 
         Member googleMember = memberRepository.findByGoogleId(googleUserInfo.getId()).orElse(null);
 
-        if (googleMember == null) {
+        if (googleMember == null && !memberRepository.existsByEmail(googleUserInfo.getEmail())) {
             // 회원가입
             googleMember = Member.builder()
                     .googleId(googleUserInfo.getId())
@@ -142,7 +140,6 @@ public class GoogleService {
 
             memberRepository.save(googleMember);
         }
-
         return googleMember;
     }
 }
