@@ -37,7 +37,7 @@ public class PartyService {
 
     public ResponseEntity<?> createParty(PartyRequestDto partyRequestDto, Member member) {
 
-        Party party = new Party(partyRequestDto, createCode());
+        Party party = new Party(partyRequestDto.getPartyName(), partyRequestDto.getPartyIntroduction(), createCode());
         Admin admin = new Admin(member, party);
         MemberParty memberParty = new MemberParty(member, party);
         ChatRoom chatRoom = new ChatRoom(party);
@@ -123,7 +123,7 @@ public class PartyService {
         if (validateAdmin(member, party))
             throw new IllegalArgumentException("그룹 정보를 수정할 수 있는 권한이 없습니다.");
 
-        party.updateInformation(partyRequestDto);
+        party.updateInformation(partyRequestDto.getPartyName(), partyRequestDto.getPartyIntroduction());
 
         return new ResponseEntity<>("그룹 정보가 수정되었습니다", HttpStatus.OK);
     }

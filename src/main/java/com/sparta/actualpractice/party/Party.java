@@ -51,17 +51,17 @@ public class Party {
     }
 
 
-    public Party(PartyRequestDto partyRequestDto, String code) {
+    public Party(String partyName, String partyInformation, String code) {
 
-        this.name = partyRequestDto.getPartyName();
-        this.introduction = partyRequestDto.getPartyIntroduction();
+        this.name = partyName;
+        this.introduction = partyInformation;
         this.code = code;
     }
 
-    public void updateInformation(PartyRequestDto partyRequestDto) {
+    public void updateInformation(String partyName, String partyInformation) {
 
-        this.name = partyRequestDto.getPartyName();
-        this.introduction = partyRequestDto.getPartyIntroduction();
+        this.name = partyName;
+        this.introduction = partyInformation;
     }
 
     public void updateCode(String code) {
