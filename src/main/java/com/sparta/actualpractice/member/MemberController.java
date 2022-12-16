@@ -3,6 +3,7 @@ package com.sparta.actualpractice.member;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.sparta.actualpractice.security.MemberDetailsImpl;
+import com.sparta.actualpractice.util.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +19,7 @@ public class MemberController {
     private final MemberService memberService;
     private final KakaoService kakaoService;
     private final GoogleService googleService;
+    private final EmailService emailService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody MemberRequestDto memberRequestDto) {
@@ -37,10 +39,16 @@ public class MemberController {
         return memberService.reissue(tokenRequestDto);
     }
 
-    @GetMapping("/check-email")
-    public ResponseEntity<?> checkEmail(@RequestParam String email) {
+    @PostMapping("/send-email")
+    public ResponseEntity<?> sendEmail(@RequestParam String email) throws Exception {
 
-        return memberService.checkEmail(email);
+        return emailService.sendSimpleMessage(email);
+    }
+
+    @GetMapping("/authenticate-email")
+    public ResponseEntity<?> authenticateEamil(@RequestParam String email) {
+
+        return emailService.authenticateEmail(String email);
     }
 
     @DeleteMapping("withdrawal")
