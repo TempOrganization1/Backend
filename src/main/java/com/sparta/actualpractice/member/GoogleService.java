@@ -40,7 +40,7 @@ public class GoogleService {
         Member googleUser = registerGoogleUserIfNeeded(googleUserInfo);
 
         if (googleUser == null)
-            return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 
         // 3.5 기본 그룹 가입하기
         oauthUtil.basicParty(googleUser);
@@ -115,7 +115,7 @@ public class GoogleService {
 
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-        Long id = Long.parseLong(jsonNode.get("sub").asText());
+        String id = jsonNode.get("sub").asText();
 
         String nickname = jsonNode.get("name").asText();
         String email = jsonNode.get("email").asText();
