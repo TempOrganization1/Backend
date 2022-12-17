@@ -81,14 +81,17 @@ public class EmailService {
             throw new IllegalArgumentException();
         }
 
-        redisUtil.setDataExpire(ePw, to, 60 * 5L);
+        if(redisUtil.getData(to) != null)
+            redisUtil.deleteData(to);
+
+        redisUtil.setDataExpire(to, ePw, 60 * 5L);
 
         return new ResponseEntity<>("인증 메일을 전송했습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<?> authenticateEmail(String email, String code) {
 
-        if (!redisUtil.getData(code).equals(email))
+        if (!redisUtil.getData(email).equals(code))
             throw new IllegalArgumentException("인증 코드가 일치하지 않습니다.");
 
         return new ResponseEntity<>("인증 코드가 일치합니다.", HttpStatus.OK);
