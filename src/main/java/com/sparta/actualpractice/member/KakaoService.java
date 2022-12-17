@@ -108,8 +108,7 @@ public class KakaoService {
 
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-        Long id = Long.parseLong(jsonNode.get("id").asText());
-
+        String id = jsonNode.get("id").asText();
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")

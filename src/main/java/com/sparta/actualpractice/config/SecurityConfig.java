@@ -83,6 +83,7 @@ public class SecurityConfig{
                 .antMatchers("/members/google/callback").permitAll()
                 .antMatchers("/members/**").permitAll()
                 .antMatchers("/socket/**").permitAll()
+                .antMatchers(HttpMethod.GET).authenticated()
                 .antMatchers(HttpMethod.POST).authenticated()
                 .antMatchers(HttpMethod.PUT).authenticated()
                 .antMatchers(HttpMethod.DELETE).authenticated()

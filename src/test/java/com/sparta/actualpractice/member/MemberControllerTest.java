@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class MemberControllerTest {
@@ -23,6 +24,7 @@ class MemberControllerTest {
 
     @Test
     @Rollback
+    @Transactional
     @DisplayName("회원가입 테스트")
     void signup() {
 
@@ -35,7 +37,8 @@ class MemberControllerTest {
         Assertions.assertThat(member.getEmail()).isEqualTo("1234@gmail.com");
         Assertions.assertThat(member.getName()).isEqualTo("테스트");
 
-        memberRepository.save(member);
+        if (!memberRepository.existsByEmail("1234@gmail.com"))
+            memberRepository.save(member);
     }
 
     @Test
