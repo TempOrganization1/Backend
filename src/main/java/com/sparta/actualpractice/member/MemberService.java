@@ -3,6 +3,7 @@ package com.sparta.actualpractice.member;
 import com.sparta.actualpractice.chat.ChatRoomRepository;
 import com.sparta.actualpractice.party.PartyRepository;
 import com.sparta.actualpractice.security.TokenProvider;
+import com.sparta.actualpractice.util.EmailService;
 import com.sparta.actualpractice.util.S3UploadService;
 import com.sparta.actualpractice.util.OauthUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class MemberService {
     private final OauthUtil oauthUtil;
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
-
+    private final EmailService emailService;
     public ResponseEntity<?> signup(MemberRequestDto memberRequestDto) {
 
         if(memberRepository.existsByEmail(memberRequestDto.getEmail()))
@@ -70,12 +71,10 @@ public class MemberService {
         return new ResponseEntity<>("로그인에 성공했습니다.", headers, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> checkEmail(String email) {
+    public ResponseEntity<?> sendEmail(String email) {
 
-        if (memberRepository.existsByEmail(email))
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 
-        return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);
+        return new ResponseEntity<>("인증 메일을 발송했습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<?> getMyInfo(Member member) {
