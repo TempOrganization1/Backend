@@ -40,15 +40,15 @@ public class MemberController {
     }
 
     @PostMapping("/send-email")
-    public ResponseEntity<?> sendEmail(@RequestBody EmailAuthenticationRequestDto emailAuthenticationRequestDto) throws Exception {
+    public ResponseEntity<?> sendEmail(@RequestBody EmailRequestDto emailRequestDto) throws Exception {
 
-        return emailService.sendSimpleMessage(emailAuthenticationRequestDto.getEmail());
+        return emailService.sendSimpleMessage(emailRequestDto.getEmail());
     }
 
     @GetMapping("/authenticate-email")
-    public ResponseEntity<?> authenticateEmail(@RequestBody EmailAuthenticationRequestDto emailAuthenticationRequestDto) {
+    public ResponseEntity<?> authenticateEmail(@RequestParam("email") String email, @RequestParam("code") String code) {
 
-        return emailService.authenticateEmail(emailAuthenticationRequestDto.getEmail(), emailAuthenticationRequestDto.getCode());
+        return emailService.authenticateEmail(email, code);
     }
 
     @DeleteMapping("withdrawal")

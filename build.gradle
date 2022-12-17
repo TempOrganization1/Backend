@@ -35,7 +35,6 @@ dependencies {
 // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'com.navercorp.lucy:lucy-xss-servlet:2.0.1'
 }
 
 tasks.named('test') {

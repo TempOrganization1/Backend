@@ -24,7 +24,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final RedisUtil redisUtil;
-    private final String ePw = createKey();
+    private String ePw;
     private final MemberRepository memberRepository;
 
     @Value("${naver.username}")
@@ -33,6 +33,7 @@ public class EmailService {
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
 
         log.info("대상 : " + to);
+        ePw = createKey();
         log.info("인증 번호 : " + ePw);
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -54,7 +55,7 @@ public class EmailService {
         return message;
     }
 
-    public static String createKey() {
+    public String createKey() {
 
         StringBuilder key = new StringBuilder();
         Random ran = new Random();
