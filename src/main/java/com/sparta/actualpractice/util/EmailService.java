@@ -24,7 +24,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final RedisUtil redisUtil;
-    private final String ePw = createKey();
+    private String ePw;
     private final MemberRepository memberRepository;
 
     @Value("${naver.username}")
@@ -33,6 +33,7 @@ public class EmailService {
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
 
         log.info("대상 : " + to);
+        ePw = createKey();
         log.info("인증 번호 : " + ePw);
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -54,7 +55,7 @@ public class EmailService {
         return message;
     }
 
-    public static String createKey() {
+    public String createKey() {
 
         StringBuilder key = new StringBuilder();
         Random ran = new Random();
@@ -80,14 +81,17 @@ public class EmailService {
             throw new IllegalArgumentException();
         }
 
-        redisUtil.setDataExpire(ePw, to, 60 * 5L);
+        if(redisUtil.getData(to) != null)
+            redisUtil.deleteData(to);
+
+        redisUtil.setDataExpire(to, ePw, 60 * 5L);
 
         return new ResponseEntity<>("인증 메일을 전송했습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<?> authenticateEmail(String email, String code) {
 
-        if (!redisUtil.getData(code).equals(email))
+        if (!redisUtil.getData(email).equals(code))
             throw new IllegalArgumentException("인증 코드가 일치하지 않습니다.");
 
         return new ResponseEntity<>("인증 코드가 일치합니다.", HttpStatus.OK);

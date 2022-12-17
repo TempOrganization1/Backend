@@ -40,13 +40,13 @@ public class MemberController {
     }
 
     @PostMapping("/send-email")
-    public ResponseEntity<?> sendEmail(@RequestParam String email) throws Exception {
+    public ResponseEntity<?> sendEmail(@RequestBody EmailRequestDto emailRequestDto) throws Exception {
 
-        return emailService.sendSimpleMessage(email);
+        return emailService.sendSimpleMessage(emailRequestDto.getEmail());
     }
 
     @GetMapping("/authenticate-email")
-    public ResponseEntity<?> authenticateEamil(@RequestParam("email") String email, @RequestParam("code") String code) {
+    public ResponseEntity<?> authenticateEmail(@RequestParam("email") String email, @RequestParam("code") String code) {
 
         return emailService.authenticateEmail(email, code);
     }
