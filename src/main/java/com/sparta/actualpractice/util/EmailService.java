@@ -85,8 +85,11 @@ public class EmailService {
         return new ResponseEntity<>("인증 메일을 전송했습니다.", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> authenticateEmail(String to) {
+    public ResponseEntity<?> authenticateEmail(String email, String code) {
 
-        if (redisUtil.getData(to).equals())
+        if (!redisUtil.getData(code).equals(email))
+            throw new IllegalArgumentException("인증 코드가 일치하지 않습니다.");
+
+        return new ResponseEntity<>("인증 코드가 일치합니다.", HttpStatus.OK);
     }
 }

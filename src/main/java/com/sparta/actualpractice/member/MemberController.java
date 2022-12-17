@@ -46,9 +46,9 @@ public class MemberController {
     }
 
     @GetMapping("/authenticate-email")
-    public ResponseEntity<?> authenticateEamil(@RequestParam String email) {
+    public ResponseEntity<?> authenticateEamil(@RequestParam("email") String email, @RequestParam("code") String code) {
 
-        return emailService.authenticateEmail(String email);
+        return emailService.authenticateEmail(email, code);
     }
 
     @DeleteMapping("withdrawal")

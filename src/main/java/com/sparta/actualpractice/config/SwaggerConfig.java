@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sparta.actualpractice.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sparta.actualpractice"))
                 .paths(PathSelectors.any())
                 .build()
                 ;
