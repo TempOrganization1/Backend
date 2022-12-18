@@ -31,7 +31,7 @@ public class MessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final RedisTemplate<String, String> stringRedisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional(readOnly = true)
     public ResponseEntity<?> readMessages(Long chatRoomId) {
@@ -39,7 +39,7 @@ public class MessageService {
 //        List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop500ByChatRoomIdOrderByCreatedAtAsc(chatRoomId).stream()
 //                .map(MessageResponseDto::new).collect(Collectors.toList());
 
-        HashOperations<String, String, List<MessageResponseDto>> operations = stringRedisTemplate.opsForHash();
+        HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
         List<MessageResponseDto> messageResponseDtoList = new ArrayList<>();
         List<MessageResponseDto> tempDto1 = operations.get(MESSAGE, String.valueOf(chatRoomId));
@@ -81,11 +81,11 @@ public class MessageService {
 
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
 
-        stringRedisTemplate.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
+        redisTemplate.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
 
-        HashOperations<String, String, List<MessageResponseDto>> operations = stringRedisTemplate.opsForHash();
+        HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
-        stringRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(MessageResponseDto.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(MessageResponseDto.class));
 
         List<MessageResponseDto> messageResponseDtoList = operations.get(MESSAGE, chatRoomId);
 
@@ -102,7 +102,7 @@ public class MessageService {
 
     private void redisToMysql(String chatRoomId, List<MessageResponseDto> messageResponseDtoList) {
 
-        HashOperations<String, String, List<MessageResponseDto>> operations = stringRedisTemplate.opsForHash();
+        HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
         ChatRoom chatRoom = chatRoomRepository.findById(Long.parseLong(chatRoomId)).orElseThrow(() -> new NullPointerException("해당 채팅룸을 찾을 수 없습니다."));
 

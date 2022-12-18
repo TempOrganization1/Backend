@@ -28,18 +28,8 @@ public class RedisRepositoryConfig {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+
         return redisTemplate;
-    }
-
-    @Bean
-    public RedisTemplate<String, String> stringRedisTemplate() {
-
-        RedisTemplate<String, String> stringRedisTemplate = new RedisTemplate<>();
-        stringRedisTemplate.setConnectionFactory(redisConnectionFactory());
-        stringRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        stringRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
-
-        return stringRedisTemplate;
     }
 }
