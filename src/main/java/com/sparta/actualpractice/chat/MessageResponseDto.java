@@ -1,10 +1,14 @@
 package com.sparta.actualpractice.chat;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class MessageResponseDto implements Serializable {
 
     private Long chatRoomId;
@@ -14,6 +18,7 @@ public class MessageResponseDto implements Serializable {
     private String memberEmail;
     private String memberName;
     private String profileImg;
+    private Long memberId;
 
     public MessageResponseDto(Message message) {
 
@@ -24,5 +29,6 @@ public class MessageResponseDto implements Serializable {
         this.memberName = message.getMember().getName();
         this.profileImg = message.getMember().getImageUrl();
         this.messageId = message.getId();
+        this.memberId = message.getMember().getId();
     }
 }
