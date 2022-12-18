@@ -81,19 +81,24 @@ public class MessageService {
 
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
 
+        log.info("0");
         redisTemplate.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
 
+        log.info("1");
         HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
+        log.info("2");
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(MessageResponseDto.class));
 
+        log.info("3");
         List<MessageResponseDto> messageResponseDtoList = operations.get(MESSAGE, chatRoomId);
 
+        log.info("4");
         if (messageResponseDtoList == null)
             messageResponseDtoList = new ArrayList<>();
 
         messageResponseDtoList.add(0, messageResponseDto);
-
+        log.info("5");
         operations.put(MESSAGE, String.valueOf(chatRoomId), messageResponseDtoList);
 
         if (messageResponseDtoList.size() >= 500)
