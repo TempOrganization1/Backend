@@ -111,7 +111,7 @@ public class MessageService {
 
         for (MessageResponseDto messageResponseDto : messageResponseDtoList) {
 
-            Member member = memberRepository.findById(messageResponseDto.getMemberId()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
+            Member member = memberRepository.findByName(messageResponseDto.getMemberName()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
 
             messageRepository.save(Message.builder()
                     .chatRoom(chatRoom)
