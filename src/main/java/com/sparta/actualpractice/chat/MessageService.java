@@ -3,8 +3,13 @@ package com.sparta.actualpractice.chat;
 import com.sparta.actualpractice.member.Member;
 import com.sparta.actualpractice.member.MemberRepository;
 import com.sparta.actualpractice.security.TokenProvider;
+import com.sparta.actualpractice.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -12,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,17 +26,31 @@ import java.util.stream.Collectors;
 public class MessageService {
 
     private static final String MESSAGE = "MESSAGE";
-    private final SimpMessagingTemplate template;
+//    private final SimpMessagingTemplate template;
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
     public ResponseEntity<?> readMessages(Long chatRoomId) {
 
-        List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop100ByChatRoomIdOrderByCreatedAtAsc(chatRoomId).stream()
-                .map(MessageResponseDto::new).collect(Collectors.toList());
+//        List<MessageResponseDto> messageResponseDtoList = messageRepository.findTop500ByChatRoomIdOrderByCreatedAtAsc(chatRoomId).stream()
+//                .map(MessageResponseDto::new).collect(Collectors.toList());
+
+        HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
+
+        List<MessageResponseDto> messageResponseDtoList = new ArrayList<>();
+        List<MessageResponseDto> tempDto1 = operations.get(MESSAGE, String.valueOf(chatRoomId));
+        List<MessageResponseDto> tempDto2 = messageRepository.findTop500ByChatRoomIdOrderByCreatedAtAsc(chatRoomId).stream().map(MessageResponseDto::new)
+                .collect(Collectors.toList());
+
+        if (tempDto1 != null) {
+            messageResponseDtoList.addAll(tempDto1);
+        }
+
+        messageResponseDtoList.addAll(tempDto2);
 
         return new ResponseEntity<>(messageResponseDtoList, HttpStatus.OK);
     }
@@ -63,8 +79,54 @@ public class MessageService {
                 .member(member)
                 .build();
 
-        messageRepository.save(message);
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
-        template.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
+
+        log.info("0");
+        redisTemplate.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
+
+        log.info("1");
+        HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
+
+        log.info("2");
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(MessageResponseDto.class));
+
+        log.info("3");
+        List<MessageResponseDto> messageResponseDtoList = operations.get(MESSAGE, chatRoomId);
+
+        log.info("4");
+        if (messageResponseDtoList == null)
+            messageResponseDtoList = new ArrayList<>();
+
+        messageResponseDtoList.add(0, messageResponseDto);
+        log.info("5");
+        operations.put(MESSAGE, String.valueOf(chatRoomId), messageResponseDtoList);
+
+        if (messageResponseDtoList.size() >= 500)
+            redisToMysql(String.valueOf(chatRoomId), messageResponseDtoList);
+    }
+
+    private void redisToMysql(String chatRoomId, List<MessageResponseDto> messageResponseDtoList) {
+
+        HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
+
+        ChatRoom chatRoom = chatRoomRepository.findById(Long.parseLong(chatRoomId)).orElseThrow(() -> new NullPointerException("해당 채팅룸을 찾을 수 없습니다."));
+
+        log.info("data num : " + messageResponseDtoList.size());
+
+        messageResponseDtoList.sort(Comparator.comparing(MessageResponseDto::getCreatedAt));
+
+        for (MessageResponseDto messageResponseDto : messageResponseDtoList) {
+
+            Member member = memberRepository.findByName(messageResponseDto.getMemberName()).orElseThrow(() -> new NullPointerException("해당 사용자를 찾을 수 없습니다."));
+
+            messageRepository.save(Message.builder()
+                    .chatRoom(chatRoom)
+                    .content(messageResponseDto.getContent())
+                    .member(member)
+                    .createdAt(messageResponseDto.getCreatedAt())
+                    .build());
+        }
+
+        operations.delete(MESSAGE, chatRoomId);
     }
 }

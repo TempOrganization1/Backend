@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    List<Message> findTop100ByChatRoomIdOrderByCreatedAtAsc(Long chatRoomId);
+    List<Message> findTop500ByChatRoomIdOrderByCreatedAtAsc(Long chatRoomId);
+
+    List<Message> findAllByChatRoomIdOrderByCreatedAtAsc(Long chatRoomId);
+
     Message findTopByChatRoomIdOrderByCreatedAtDesc(Long chatRoomId);
     Page<Message> findAllByChatRoomOrderByCreatedAtAsc(ChatRoom chatRoom, Pageable pageable);
 }
