@@ -31,7 +31,6 @@ public class MessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final ChannelTopic channelTopic;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
@@ -82,7 +81,7 @@ public class MessageService {
 
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
 
-        redisTemplate.convertAndSend(channelTopic.getTopic(), messageResponseDto);
+        redisTemplate.convertAndSend("/sub/chatrooms/" + chatRoomId, messageResponseDto);
 
         HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
