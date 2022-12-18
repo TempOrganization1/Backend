@@ -31,7 +31,7 @@ public class MessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
     public ResponseEntity<?> readMessages(Long chatRoomId) {
