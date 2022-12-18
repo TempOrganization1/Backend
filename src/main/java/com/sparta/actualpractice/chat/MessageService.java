@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class MessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
+    private final ChannelTopic channelTopic;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
@@ -80,7 +82,7 @@ public class MessageService {
 
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
 
-        redisTemplate.convertAndSend("/sub/chatrooms/" + chatRoomId, messageRequestDto);
+        redisTemplate.convertAndSend(channelTopic.getTopic(), messageRequestDto);
 
         HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
