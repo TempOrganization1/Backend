@@ -82,7 +82,7 @@ public class MessageService {
 
         MessageResponseDto messageResponseDto = new MessageResponseDto(message);
 
-        redisTemplate.convertAndSend(channelTopic.getTopic(), messageRequestDto);
+        redisTemplate.convertAndSend(channelTopic.getTopic(), messageResponseDto);
 
         HashOperations<String, String, List<MessageResponseDto>> operations = redisTemplate.opsForHash();
 
